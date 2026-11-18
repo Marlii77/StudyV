@@ -1,4 +1,4 @@
-StudyV 🚀
+# StudyV 🚀
 
 Eine moderne, interaktive Lernplattform im edlen Dark UI-Design, speziell entwickelt für die Berufsschule und das effiziente Lernen von Fächern wie Rechnungswesen, Gesprächsgestaltung und Sozialkunde.
 
