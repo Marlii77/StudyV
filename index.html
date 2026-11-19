@@ -196,10 +196,18 @@
     html[data-theme="daylight"] .dash-bento-card,
     html[data-theme="daylight"] .folder-glow-card,
     html[data-theme="daylight"] .cal-matrix-shell,
-    html[data-theme="daylight"] .exam-chrono-card {
+    html[data-theme="daylight"] .exam-chrono-card,
+    html[data-theme="daylight"] .report-telemetry-card,
+    html[data-theme="daylight"] .report-subject-accordion,
+    html[data-theme="daylight"] .settings-studio-card {
       background: #FFFFFF !important;
       border-color: #E2E5EE !important;
       box-shadow: 0 10px 26px -10px rgba(15, 23, 42, 0.08) !important;
+    }
+    html[data-theme="daylight"] .report-sub-panel,
+    html[data-theme="daylight"] .settings-sub-dock {
+      background: #F8FAFC !important;
+      border-color: #E2E8F0 !important;
     }
     html[data-theme="daylight"] .nebula-study-card {
       background: linear-gradient(155deg, #FFFFFF 0%, #F8FAFC 55%, #F1F5F9 100%) !important;
@@ -1363,6 +1371,237 @@
       border-radius: 0 4px 4px 0;
       background: var(--subj-hex, #60A5FA);
       box-shadow: 0 0 14px var(--subj-hex, #60A5FA);
+    }
+
+    /* ===================================================================== */
+    /* NEXT-LEVEL REPORTS: RADAR OBSERVATORY, RING GAUGES & EQUALIZER BARS   */
+    /* ===================================================================== */
+    @keyframes radarWebExpand {
+      0% {
+        opacity: 0;
+        transform: scale(0.18) rotate(-14deg);
+      }
+      70% {
+        opacity: 1;
+        transform: scale(1.03) rotate(1deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    @keyframes radarSweepBeam {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes equalizerBarRise {
+      0% {
+        transform: scaleY(0.08);
+        opacity: 0.35;
+      }
+      100% {
+        transform: scaleY(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes reportCardFlipIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .report-telemetry-card {
+      position: relative;
+      background: linear-gradient(160deg, #17171C 0%, #121216 100%);
+      border: 1px solid #24242D;
+      border-radius: 20px;
+      overflow: hidden;
+      opacity: 0;
+      animation: reportCardFlipIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: calc(var(--stagger, 0) * 65ms);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.25s ease,
+                  box-shadow 0.28s ease;
+    }
+
+    .report-telemetry-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(96, 165, 250, 0.42);
+      box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.78),
+                  0 0 26px -8px rgba(59, 130, 246, 0.24);
+    }
+
+    .radar-polygon-shape {
+      transform-origin: 150px 150px;
+      animation: radarWebExpand 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+    }
+
+    .radar-sweep-cone {
+      transform-origin: 150px 150px;
+      animation: radarSweepBeam 9s linear infinite;
+    }
+
+    .eq-bar-fill {
+      transform-origin: bottom center;
+      animation: equalizerBarRise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(var(--eq-idx, 0) * 55ms + 120ms);
+    }
+
+    .report-subject-accordion {
+      position: relative;
+      background: linear-gradient(165deg, #17171C 0%, #121215 100%);
+      border: 1px solid #24242D;
+      border-radius: 18px;
+      overflow: hidden;
+      opacity: 0;
+      animation: reportCardFlipIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: calc(var(--stagger, 0) * 70ms);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .report-subject-accordion:hover {
+      border-color: rgba(var(--subj-rgb, 96, 165, 250), 0.42);
+      box-shadow: 0 16px 34px -14px rgba(0, 0, 0, 0.72);
+    }
+
+    /* ===================================================================== */
+    /* NEXT-LEVEL SETTINGS: STUDIO DECK, ORBITAL AVATAR & DATA PULSE BRIDGE  */
+    /* ===================================================================== */
+    @keyframes avatarOrbitRotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes syncPacketTravel {
+      0% {
+        left: 6%;
+        opacity: 0;
+        transform: scale(0.7);
+      }
+      20% {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+      80% {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+      100% {
+        left: 90%;
+        opacity: 0;
+        transform: scale(0.7);
+      }
+    }
+
+    @keyframes themeSwatchSheen {
+      0% {
+        transform: translateX(-140%) skewX(-22deg);
+      }
+      100% {
+        transform: translateX(260%) skewX(-22deg);
+      }
+    }
+
+    .settings-studio-card {
+      position: relative;
+      background: linear-gradient(165deg, #17171C 0%, #121215 100%);
+      border: 1px solid #24242C;
+      border-radius: 20px;
+      overflow: hidden;
+      opacity: 0;
+      animation: reportCardFlipIn 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: calc(var(--stagger, 0) * 70ms);
+      transition: border-color 0.25s ease, box-shadow 0.28s ease;
+    }
+
+    .settings-studio-card:hover {
+      border-color: rgba(96, 165, 250, 0.34);
+      box-shadow: 0 18px 36px -14px rgba(0, 0, 0, 0.72);
+    }
+
+    .settings-studio-card.danger-caution-strip:hover,
+    html[data-theme="daylight"] .settings-studio-card.danger-caution-strip:hover {
+      border-color: rgba(239, 68, 68, 0.65) !important;
+      box-shadow: 0 18px 36px -14px rgba(0, 0, 0, 0.72),
+                  0 0 24px -8px rgba(239, 68, 68, 0.35) !important;
+    }
+
+    .avatar-orbital-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 999px;
+      border: 2px dashed rgba(96, 165, 250, 0.65);
+      animation: avatarOrbitRotate 16s linear infinite;
+      pointer-events: none;
+    }
+
+    .theme-mockup-card {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.24s ease,
+                  box-shadow 0.24s ease;
+    }
+
+    .theme-mockup-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .theme-mockup-sheen {
+      position: absolute;
+      inset: 0;
+      width: 45%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+      transform: translateX(-140%) skewX(-22deg);
+      pointer-events: none;
+    }
+
+    .theme-mockup-card:hover .theme-mockup-sheen {
+      animation: themeSwatchSheen 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .sync-pulse-dot {
+      position: absolute;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      margin-top: -4px;
+      border-radius: 999px;
+      background: #60A5FA;
+      box-shadow: 0 0 12px #3B82F6, 0 0 20px #60A5FA;
+      animation: syncPacketTravel 2.6s ease-in-out infinite;
+    }
+
+    .sync-pulse-dot.delay-2 {
+      animation-delay: 1.3s;
+      background: #34D399;
+      box-shadow: 0 0 12px #10B981;
+    }
+
+    .danger-caution-strip {
+      background-image: repeating-linear-gradient(
+        -45deg,
+        rgba(239, 68, 68, 0.08),
+        rgba(239, 68, 68, 0.08) 8px,
+        transparent 8px,
+        transparent 16px
+      );
     }
   </style>
 </head>
@@ -4772,6 +5011,7 @@
       calendarYear: 2026,
       calendarSubjectFilter: 'ALL',
       calendarSlideDir: '',
+      expandedReportSubjectId: null,
       exams: getDefaultExams(),
       quickNotes: [],
       flashcards: getDefaultFlashcards(),
@@ -4787,29 +5027,8 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return;
         const parsed = JSON.parse(raw);
-        if (parsed.courses && Array.isArray(parsed.courses) && parsed.courses.length >= 3) {
-          const defaults = getDefaultCourses();
-          COURSES = defaults.map(defCourse => {
-            const savedCourse = parsed.courses.find(c => c.id === defCourse.id);
-            if (!savedCourse) return defCourse;
-            return {
-              ...defCourse,
-              cards: defCourse.cards.map(defCard => {
-                const savedCard = savedCourse.cards.find(m => m.id === defCard.id);
-                if (!savedCard) return defCard;
-                const steps = Math.min(30, Math.max(0, savedCard.completedSteps || 0));
-                return {
-                  ...defCard,
-                  completedSteps: steps,
-                  totalSteps: 30,
-                  column: steps >= 30 ? 'completed' : (savedCard.column === 'completed' && steps < 30 ? 'todo' : (savedCard.column || 'todo')),
-                  checklist: Array.isArray(savedCard.checklist) ? savedCard.checklist : defCard.checklist,
-                  notes: Array.isArray(savedCard.notes) ? savedCard.notes : defCard.notes,
-                  notesCount: Array.isArray(savedCard.notes) ? savedCard.notes.length : defCard.notesCount
-                };
-              })
-            };
-          });
+        if (parsed.courses && Array.isArray(parsed.courses) && parsed.courses.length === 5) {
+          COURSES = parsed.courses;
         }
         if (parsed.appState) {
           appState = {
@@ -4820,14 +5039,6 @@
             draggedCardId: null,
             activeQuizSession: null
           };
-          if (Array.isArray(appState.flashcards)) {
-            const defCards = getDefaultFlashcards();
-            defCards.forEach(dc => {
-              if (!appState.flashcards.some(fc => fc.id === dc.id)) {
-                appState.flashcards.push(dc);
-              }
-            });
-          }
         }
       } catch (e) {
         // Fallback silently to defaults
@@ -4877,7 +5088,7 @@
     }
 
     // =========================================================================
-    // 2. REUSABLE UI RENDER HELPERS & 20 UNIQUE THEMED MODULE ARTWORKS
+    // 2. REUSABLE UI RENDER HELPERS & 20 UNIQUE MODULE ILLUSTRATIONS
     // =========================================================================
 
     function renderCategoryBadge(category) {
@@ -4902,150 +5113,103 @@
       return ticksHtml;
     }
 
-    function getCardPalette(card) {
-      const palettes = {
-        // Rechnungswesen (Blues / Cyan / Indigo)
-        'rw-1': { rgb: '59, 130, 246', accent: '#93C5FD', bg1: '#1E2436', bg2: '#161A26', bg3: '#12151E', h1: '#232B42', h2: '#1A1F2E', h3: '#141822' },
-        'rw-2': { rgb: '56, 189, 248', accent: '#7DD3FC', bg1: '#1A2734', bg2: '#141D26', bg3: '#11171F', h1: '#1F3040', h2: '#17222D', h3: '#131A23' },
-        'rw-3': { rgb: '99, 102, 241', accent: '#A5B4FC', bg1: '#202138', bg2: '#171828', bg3: '#13131F', h1: '#272945', h2: '#1C1D30', h3: '#151624' },
-        'rw-4': { rgb: '45, 212, 191', accent: '#5EEAD4', bg1: '#19292B', bg2: '#131F21', bg3: '#10181A', h1: '#1E3235', h2: '#172528', h3: '#121C1E' },
-
-        // Gesprächsgestaltung (Orange / Amber / Coral / Copper)
-        'gg-1': { rgb: '251, 146, 60', accent: '#FDBA74', bg1: '#2E221A', bg2: '#211914', bg3: '#181310', h1: '#382920', h2: '#271E18', h3: '#1D1713' },
-        'gg-2': { rgb: '245, 158, 11', accent: '#FCD34D', bg1: '#2D2518', bg2: '#201B13', bg3: '#18140F', h1: '#372D1D', h2: '#262016', h3: '#1D1812' },
-        'gg-3': { rgb: '249, 115, 22', accent: '#FED7AA', bg1: '#2F2019', bg2: '#221713', bg3: '#19120F', h1: '#39271E', h2: '#281C17', h3: '#1E1512' },
-        'gg-4': { rgb: '251, 113, 133', accent: '#FDA4AF', bg1: '#2E1D23', bg2: '#21151A', bg3: '#181114', h1: '#38232B', h2: '#27191F', h3: '#1D1317' },
-
-        // Sozialkunde (Violet / Purple / Indigo / Magenta)
-        'sk-1': { rgb: '139, 92, 246', accent: '#C4B5FD', bg1: '#241E36', bg2: '#1A1627', bg3: '#14111E', h1: '#2D2542', h2: '#201B30', h3: '#181423' },
-        'sk-2': { rgb: '168, 85, 247', accent: '#D8B4FE', bg1: '#271D36', bg2: '#1C1527', bg3: '#15101E', h1: '#302442', h2: '#221A30', h3: '#191423' },
-        'sk-3': { rgb: '129, 140, 248', accent: '#C7D2FE', bg1: '#1E2138', bg2: '#161828', bg3: '#12131F', h1: '#252945', h2: '#1B1E30', h3: '#151724' },
-        'sk-4': { rgb: '192, 132, 252', accent: '#E9D5FF', bg1: '#291E35', bg2: '#1D1626', bg3: '#16111D', h1: '#332542', h2: '#241B2F', h3: '#1B1423' },
-
-        // Englisch (Red / Crimson / Rose / Ruby)
-        'en-1': { rgb: '239, 68, 68', accent: '#FCA5A5', bg1: '#311B1D', bg2: '#231416', bg3: '#1A1011', h1: '#3C2124', h2: '#2B181B', h3: '#201315' },
-        'en-2': { rgb: '244, 63, 94', accent: '#FDA4AF', bg1: '#311A22', bg2: '#231319', bg3: '#1A0F13', h1: '#3C202A', h2: '#2B171E', h3: '#201217' },
-        'en-3': { rgb: '220, 38, 38', accent: '#FECACA', bg1: '#2F1919', bg2: '#221313', bg3: '#190F0F', h1: '#3A1F1F', h2: '#291717', h3: '#1F1212' },
-        'en-4': { rgb: '251, 113, 133', accent: '#FFE4E6', bg1: '#2D1C21', bg2: '#201418', bg3: '#181012', h1: '#382229', h2: '#27191E', h3: '#1D1316' },
-
-        // Kunden akquirieren und binden (Emerald / Teal / Mint / Lime)
-        'kab-1': { rgb: '16, 185, 129', accent: '#6EE7B7', bg1: '#182C25', bg2: '#13211C', bg3: '#0F1916', h1: '#1E372E', h2: '#172923', h3: '#121F1B' },
-        'kab-2': { rgb: '20, 184, 166', accent: '#5EEAD4', bg1: '#172B29', bg2: '#12201F', bg3: '#0E1817', h1: '#1D3633', h2: '#162826', h3: '#111E1D' },
-        'kab-3': { rgb: '34, 197, 94', accent: '#86EFAC', bg1: '#192C1F', bg2: '#132118', bg3: '#0F1912', h1: '#1F3727', h2: '#17291E', h3: '#121F17' },
-        'kab-4': { rgb: '52, 211, 153', accent: '#A7F3D0', bg1: '#192B24', bg2: '#13201B', bg3: '#0F1815', h1: '#20362D', h2: '#172821', h3: '#121E19' }
-      };
-
-      return palettes[card.id] || {
-        rgb: '59, 130, 246',
-        accent: '#93C5FD',
-        bg1: '#202026',
-        bg2: '#18181D',
-        bg3: '#141418',
-        h1: '#25252D',
-        h2: '#1C1C23',
-        h3: '#16161C'
-      };
-    }
-
-    function getTopicArtwork(card, index) {
+    function getTopicArtwork(card) {
       const id = card.id || '';
 
-      // 1–4: RECHNUNGSWESEN (4 unique illustrations)
+      // 1. RECHNUNGSWESEN (4 unique illustrations)
       if (id === 'rw-1') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <rect x="26" y="78" width="22" height="30" rx="4" fill="#3B82F6" fill-opacity="0.24" stroke="#60A5FA" stroke-opacity="0.4" />
-            <rect x="56" y="60" width="22" height="48" rx="4" fill="#3B82F6" fill-opacity="0.34" stroke="#60A5FA" stroke-opacity="0.5" />
-            <rect x="86" y="42" width="22" height="66" rx="4" fill="#3B82F6" fill-opacity="0.46" stroke="#93C5FD" stroke-opacity="0.6" />
-            <rect x="116" y="24" width="22" height="84" rx="4" fill="#60A5FA" fill-opacity="0.58" stroke="#BFDBFE" stroke-opacity="0.7" />
-            <path d="M24 64L62 48L96 32L134 14" stroke="#93C5FD" stroke-width="1.8" stroke-dasharray="3 3" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <rect x="26" y="76" width="22" height="30" rx="4" fill="#3B82F6" fill-opacity="0.22" stroke="#60A5FA" stroke-opacity="0.38" />
+            <rect x="56" y="58" width="22" height="48" rx="4" fill="#3B82F6" fill-opacity="0.32" stroke="#60A5FA" stroke-opacity="0.48" />
+            <rect x="86" y="40" width="22" height="66" rx="4" fill="#3B82F6" fill-opacity="0.44" stroke="#93C5FD" stroke-opacity="0.58" />
+            <rect x="116" y="22" width="22" height="84" rx="4" fill="#60A5FA" fill-opacity="0.56" stroke="#BFDBFE" stroke-opacity="0.68" />
+            <path d="M24 62L62 46L96 30L134 12" stroke="#93C5FD" stroke-width="1.6" stroke-dasharray="3 3" />
           </svg>
         `;
       }
       if (id === 'rw-2') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <rect x="44" y="18" width="96" height="90" rx="12" fill="#38BDF8" fill-opacity="0.16" stroke="#7DD3FC" stroke-opacity="0.4" />
-            <line x1="60" y1="40" x2="124" y2="40" stroke="#7DD3FC" stroke-opacity="0.4" stroke-width="2" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <rect x="44" y="18" width="96" height="88" rx="12" fill="#38BDF8" fill-opacity="0.14" stroke="#7DD3FC" stroke-opacity="0.38" />
+            <line x1="60" y1="40" x2="124" y2="40" stroke="#7DD3FC" stroke-opacity="0.38" stroke-width="2" />
             <line x1="60" y1="56" x2="108" y2="56" stroke="#7DD3FC" stroke-opacity="0.28" stroke-width="2" />
-            <text x="62" y="90" fill="#7DD3FC" fill-opacity="0.62" font-size="23" font-weight="800" font-family="Inter, sans-serif">19%</text>
+            <text x="62" y="88" fill="#7DD3FC" fill-opacity="0.62" font-size="22" font-weight="800" font-family="Inter, sans-serif">19%</text>
           </svg>
         `;
       }
       if (id === 'rw-3') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <line x1="28" y1="30" x2="144" y2="30" stroke="#818CF8" stroke-width="2.5" stroke-opacity="0.6" />
-            <line x1="86" y1="30" x2="86" y2="106" stroke="#818CF8" stroke-width="2.5" stroke-opacity="0.6" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <line x1="28" y1="30" x2="144" y2="30" stroke="#818CF8" stroke-width="2.5" stroke-opacity="0.55" />
+            <line x1="86" y1="30" x2="86" y2="104" stroke="#818CF8" stroke-width="2.5" stroke-opacity="0.55" />
             <text x="42" y="23" fill="#A5B4FC" fill-opacity="0.65" font-size="11" font-weight="700">SOLL</text>
             <text x="103" y="23" fill="#A5B4FC" fill-opacity="0.65" font-size="11" font-weight="700">HABEN</text>
-            <rect x="36" y="42" width="40" height="10" rx="3" fill="#6366F1" fill-opacity="0.38" />
-            <rect x="96" y="58" width="40" height="10" rx="3" fill="#818CF8" fill-opacity="0.48" />
+            <rect x="36" y="42" width="38" height="10" rx="3" fill="#6366F1" fill-opacity="0.38" />
+            <rect x="98" y="58" width="38" height="10" rx="3" fill="#818CF8" fill-opacity="0.48" />
           </svg>
         `;
       }
       if (id === 'rw-4') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <line x1="84" y1="22" x2="84" y2="106" stroke="#5EEAD4" stroke-width="2" stroke-opacity="0.5" />
-            <line x1="36" y1="42" x2="132" y2="42" stroke="#5EEAD4" stroke-width="2.2" stroke-opacity="0.6" />
-            <path d="M36 42L24 68H48L36 42Z" fill="#2DD4BF" fill-opacity="0.28" stroke="#5EEAD4" stroke-opacity="0.5" />
-            <path d="M132 42L120 68H144L132 42Z" fill="#2DD4BF" fill-opacity="0.28" stroke="#5EEAD4" stroke-opacity="0.5" />
-            <rect x="64" y="102" width="40" height="6" rx="3" fill="#5EEAD4" fill-opacity="0.45" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <rect x="28" y="24" width="52" height="82" rx="10" fill="#06B6D4" fill-opacity="0.2" stroke="#67E8F9" stroke-opacity="0.42" />
+            <rect x="90" y="24" width="52" height="82" rx="10" fill="#22D3EE" fill-opacity="0.28" stroke="#A5F3FC" stroke-opacity="0.5" />
+            <line x1="90" y1="54" x2="142" y2="54" stroke="#A5F3FC" stroke-opacity="0.45" />
           </svg>
         `;
       }
 
-      // 5–8: GESPRÄCHSGESTALTUNG (4 unique illustrations)
+      // 2. GESPRÄCHSGESTALTUNG (4 unique illustrations)
       if (id === 'gg-1') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <rect x="48" y="22" width="78" height="78" rx="14" stroke="#FB923C" stroke-opacity="0.5" stroke-width="2" />
-            <line x1="87" y1="22" x2="87" y2="100" stroke="#FB923C" stroke-opacity="0.34" stroke-dasharray="3 3" />
-            <line x1="48" y1="61" x2="126" y2="61" stroke="#FB923C" stroke-opacity="0.34" stroke-dasharray="3 3" />
-            <circle cx="87" cy="61" r="10" fill="#FB923C" fill-opacity="0.38" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <rect x="50" y="22" width="76" height="76" rx="14" stroke="#FB923C" stroke-opacity="0.48" stroke-width="2" />
+            <line x1="88" y1="22" x2="88" y2="98" stroke="#FB923C" stroke-opacity="0.32" stroke-dasharray="3 3" />
+            <line x1="50" y1="60" x2="126" y2="60" stroke="#FB923C" stroke-opacity="0.32" stroke-dasharray="3 3" />
+            <circle cx="88" cy="60" r="10" fill="#FB923C" fill-opacity="0.38" />
           </svg>
         `;
       }
       if (id === 'gg-2') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <path d="M24 64C44 36 126 36 146 64C126 92 44 92 24 64Z" stroke="#FBBF24" stroke-opacity="0.5" stroke-width="2" fill="#F59E0B" fill-opacity="0.12" />
-            <circle cx="85" cy="64" r="16" stroke="#FCD34D" stroke-opacity="0.6" stroke-width="2" fill="#F59E0B" fill-opacity="0.24" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <path d="M24 64C44 36 126 36 146 64C126 92 44 92 24 64Z" stroke="#FBBF24" stroke-opacity="0.48" stroke-width="2" fill="#F59E0B" fill-opacity="0.12" />
+            <circle cx="85" cy="64" r="16" stroke="#FCD34D" stroke-opacity="0.58" stroke-width="2" fill="#F59E0B" fill-opacity="0.24" />
             <circle cx="85" cy="64" r="6" fill="#FDE68A" fill-opacity="0.7" />
           </svg>
         `;
       }
       if (id === 'gg-3') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <rect x="34" y="54" width="6" height="22" rx="3" fill="#FB923C" fill-opacity="0.44" />
-            <rect x="48" y="40" width="6" height="50" rx="3" fill="#FB923C" fill-opacity="0.58" />
-            <rect x="62" y="28" width="6" height="74" rx="3" fill="#FDBA74" fill-opacity="0.72" />
-            <rect x="76" y="46" width="6" height="38" rx="3" fill="#FB923C" fill-opacity="0.54" />
-            <rect x="90" y="34" width="6" height="62" rx="3" fill="#FDBA74" fill-opacity="0.68" />
-            <rect x="104" y="50" width="6" height="30" rx="3" fill="#FB923C" fill-opacity="0.46" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <rect x="36" y="54" width="6" height="22" rx="3" fill="#FB7185" fill-opacity="0.45" />
+            <rect x="50" y="40" width="6" height="50" rx="3" fill="#FB7185" fill-opacity="0.6" />
+            <rect x="64" y="28" width="6" height="74" rx="3" fill="#FDA4AF" fill-opacity="0.75" />
+            <rect x="78" y="46" width="6" height="38" rx="3" fill="#FB7185" fill-opacity="0.55" />
+            <rect x="92" y="34" width="6" height="62" rx="3" fill="#FDA4AF" fill-opacity="0.7" />
+            <rect x="106" y="50" width="6" height="30" rx="3" fill="#FB7185" fill-opacity="0.45" />
           </svg>
         `;
       }
       if (id === 'gg-4') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <circle cx="96" cy="64" r="36" stroke="#FDA4AF" stroke-opacity="0.48" stroke-width="1.8" fill="#FB7185" fill-opacity="0.12" />
-            <ellipse cx="96" cy="64" rx="16" ry="36" stroke="#FDA4AF" stroke-opacity="0.4" stroke-width="1.5" />
-            <line x1="60" y1="64" x2="132" y2="64" stroke="#FDA4AF" stroke-opacity="0.4" stroke-width="1.5" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <circle cx="94" cy="62" r="38" stroke="#FDBA74" stroke-opacity="0.42" stroke-width="1.8" fill="#EA580C" fill-opacity="0.12" />
+            <ellipse cx="94" cy="62" rx="18" ry="38" stroke="#FDBA74" stroke-opacity="0.38" stroke-width="1.5" />
+            <line x1="56" y1="62" x2="132" y2="62" stroke="#FDBA74" stroke-opacity="0.38" stroke-width="1.5" />
           </svg>
         `;
       }
 
-      // 9–12: SOZIALKUNDE (4 unique cosmic illustrations)
+      // 3. SOZIALKUNDE (4 unique cosmic illustrations)
       if (id === 'sk-1') {
         return `
           <svg width="175" height="130" viewBox="0 0 175 130" fill="none" class="nebula-artwork-layer absolute right-0 bottom-0 pointer-events-none opacity-85">
             <defs>
               <radialGradient id="planet-sk1" cx="35%" cy="30%" r="70%">
                 <stop offset="0%" stop-color="#C4B5FD" stop-opacity="0.78" />
-                <stop offset="45%" stop-color="#8B5CF6" stop-opacity="0.48" />
+                <stop offset="45%" stop-color="#8B5CF6" stop-opacity="0.46" />
                 <stop offset="100%" stop-color="#1E1B4B" stop-opacity="0.05" />
               </radialGradient>
             </defs>
@@ -5057,110 +5221,139 @@
       if (id === 'sk-2') {
         return `
           <svg width="175" height="130" viewBox="0 0 175 130" fill="none" class="nebula-artwork-layer absolute right-0 bottom-0 pointer-events-none opacity-85">
-            <circle cx="126" cy="74" r="18" fill="rgba(192, 132, 252, 0.34)" stroke="rgba(216, 180, 254, 0.55)" stroke-width="1.5" />
-            <line x1="126" y1="30" x2="126" y2="48" stroke="rgba(216, 180, 254, 0.45)" stroke-width="1.6" stroke-linecap="round" />
-            <line x1="126" y1="100" x2="126" y2="118" stroke="rgba(216, 180, 254, 0.45)" stroke-width="1.6" stroke-linecap="round" />
-            <line x1="82" y1="74" x2="100" y2="74" stroke="rgba(216, 180, 254, 0.45)" stroke-width="1.6" stroke-linecap="round" />
-            <line x1="152" y1="74" x2="170" y2="74" stroke="rgba(216, 180, 254, 0.45)" stroke-width="1.6" stroke-linecap="round" />
+            <circle cx="124" cy="72" r="18" fill="#E879F9" fill-opacity="0.28" stroke="#F0ABFC" stroke-opacity="0.55" />
+            <path d="M124 30V46M124 98V114M82 72H98M150 72H166M94 42L106 54M142 90L154 102M154 42L142 54M106 90L94 102" stroke="#F0ABFC" stroke-opacity="0.42" stroke-width="1.6" stroke-linecap="round" />
           </svg>
         `;
       }
       if (id === 'sk-3') {
         return `
           <svg width="175" height="130" viewBox="0 0 175 130" fill="none" class="nebula-artwork-layer absolute right-0 bottom-0 pointer-events-none opacity-85">
-            <circle cx="126" cy="74" r="24" stroke="rgba(165, 180, 252, 0.32)" stroke-width="1.3" />
-            <circle cx="126" cy="74" r="44" stroke="rgba(165, 180, 252, 0.24)" stroke-width="1.3" />
-            <circle cx="126" cy="74" r="64" stroke="rgba(165, 180, 252, 0.14)" stroke-width="1.3" />
-            <circle cx="94" cy="44" r="3.5" fill="#C7D2FE" fill-opacity="0.75" />
+            <circle cx="126" cy="74" r="24" stroke="rgba(167, 139, 250, 0.34)" stroke-width="1.4" />
+            <circle cx="126" cy="74" r="44" stroke="rgba(167, 139, 250, 0.24)" stroke-width="1.3" />
+            <circle cx="126" cy="74" r="64" stroke="rgba(167, 139, 250, 0.14)" stroke-width="1.2" />
+            <circle cx="94" cy="44" r="3.5" fill="#C4B5FD" fill-opacity="0.8" />
           </svg>
         `;
       }
       if (id === 'sk-4') {
         return `
           <svg width="175" height="130" viewBox="0 0 175 130" fill="none" class="nebula-artwork-layer absolute right-0 bottom-0 pointer-events-none opacity-85">
-            <path d="M56 84L88 46L124 66L152 34" stroke="rgba(233, 213, 255, 0.45)" stroke-width="1.5" stroke-dasharray="3 3" />
-            <circle cx="56" cy="84" r="4" fill="#E9D5FF" fill-opacity="0.65" />
-            <circle cx="88" cy="46" r="5" fill="#D8B4FE" fill-opacity="0.75" />
-            <circle cx="124" cy="66" r="4" fill="#E9D5FF" fill-opacity="0.65" />
-            <circle cx="152" cy="34" r="5.5" fill="#C084FC" fill-opacity="0.8" />
+            <circle cx="66" cy="86" r="4" fill="#DDD6FE" fill-opacity="0.8" />
+            <circle cx="98" cy="52" r="4.5" fill="#C4B5FD" fill-opacity="0.85" />
+            <circle cx="136" cy="68" r="5" fill="#A78BFA" fill-opacity="0.9" />
+            <circle cx="148" cy="34" r="3.5" fill="#EDE9FE" fill-opacity="0.75" />
+            <path d="M66 86L98 52L136 68L148 34" stroke="#C4B5FD" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="3 3" />
           </svg>
         `;
       }
 
-      // 13–16: ENGLISCH (4 unique illustrations)
+      // 4. ENGLISCH (4 unique illustrations)
       if (id === 'en-1') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <rect x="40" y="32" width="98" height="68" rx="12" fill="#EF4444" fill-opacity="0.16" stroke="#FCA5A5" stroke-opacity="0.45" stroke-width="1.8" />
-            <path d="M44 38L89 70L134 38" stroke="#FCA5A5" stroke-opacity="0.55" stroke-width="1.8" stroke-linecap="round" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <rect x="42" y="28" width="96" height="68" rx="12" fill="#EF4444" fill-opacity="0.18" stroke="#FCA5A5" stroke-opacity="0.45" stroke-width="1.8" />
+            <path d="M44 32L90 66L136 32" stroke="#FCA5A5" stroke-opacity="0.55" stroke-width="1.8" stroke-linecap="round" />
           </svg>
         `;
       }
       if (id === 'en-2') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <rect x="30" y="24" width="76" height="44" rx="12" fill="#F43F5E" fill-opacity="0.22" stroke="#FDA4AF" stroke-opacity="0.48" />
-            <text x="45" y="51" fill="#FDA4AF" fill-opacity="0.72" font-size="13" font-weight="800" font-family="Inter, sans-serif">HELLO</text>
-            <rect x="68" y="60" width="72" height="40" rx="12" fill="#FB7185" fill-opacity="0.26" stroke="#FECDD3" stroke-opacity="0.52" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <rect x="34" y="24" width="76" height="44" rx="12" fill="#F43F5E" fill-opacity="0.22" stroke="#FDA4AF" stroke-opacity="0.48" />
+            <text x="48" y="51" fill="#FECDD3" fill-opacity="0.72" font-size="13" font-weight="800" font-family="Inter, sans-serif">HELLO</text>
+            <rect x="68" y="58" width="72" height="38" rx="11" fill="#FB7185" fill-opacity="0.26" stroke="#FFE4E6" stroke-opacity="0.45" />
           </svg>
         `;
       }
       if (id === 'en-3') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <path d="M92 22L132 38V68C132 90 114 104 92 110C70 104 52 90 52 68V38L92 22Z" fill="#DC2626" fill-opacity="0.2" stroke="#FECACA" stroke-opacity="0.48" stroke-width="1.8" />
-            <path d="M78 65L88 75L108 55" stroke="#FECACA" stroke-opacity="0.7" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <path d="M94 20L132 36V66C132 88 115 103 94 110C73 103 56 88 56 66V36L94 20Z" fill="#EF4444" fill-opacity="0.2" stroke="#FCA5A5" stroke-opacity="0.5" stroke-width="1.8" />
+            <path d="M80 65L90 75L110 54" stroke="#FECACA" stroke-opacity="0.7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         `;
       }
       if (id === 'en-4') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <rect x="46" y="22" width="84" height="86" rx="12" fill="#FB7185" fill-opacity="0.18" stroke="#FFE4E6" stroke-opacity="0.44" stroke-width="1.8" />
-            <text x="64" y="74" fill="#FFE4E6" fill-opacity="0.62" font-size="28" font-weight="800" font-family="Inter, sans-serif">A–Z</text>
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <rect x="46" y="20" width="84" height="86" rx="12" fill="#F87171" fill-opacity="0.18" stroke="#FCA5A5" stroke-opacity="0.45" stroke-width="1.8" />
+            <line x1="62" y1="20" x2="62" y2="106" stroke="#FCA5A5" stroke-opacity="0.35" stroke-width="1.6" />
+            <text x="74" y="68" fill="#FECACA" fill-opacity="0.68" font-size="22" font-weight="800" font-family="Inter, sans-serif">A–Z</text>
           </svg>
         `;
       }
 
-      // 17–20: KUNDEN AKQUIRIEREN UND BINDEN (4 unique illustrations)
+      // 5. KUNDEN AKQUIRIEREN UND BINDEN (4 unique illustrations)
       if (id === 'kab-1') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <path d="M62 34V72C62 88.5685 75.4315 102 92 102C108.569 102 122 88.5685 122 72V34H104V72C104 78.6274 98.6274 84 92 84C85.3726 84 80 78.6274 80 72V34H62Z" fill="#10B981" fill-opacity="0.24" stroke="#6EE7B7" stroke-opacity="0.52" stroke-width="1.8" />
-            <rect x="62" y="24" width="18" height="10" rx="2" fill="#6EE7B7" fill-opacity="0.6" />
-            <rect x="104" y="24" width="18" height="10" rx="2" fill="#6EE7B7" fill-opacity="0.6" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <path d="M62 34V68C62 84 74 96 90 96C106 96 118 84 118 68V34" stroke="#34D399" stroke-opacity="0.55" stroke-width="10" stroke-linecap="round" />
+            <line x1="56" y1="42" x2="68" y2="42" stroke="#A7F3D0" stroke-width="2.5" />
+            <line x1="112" y1="42" x2="124" y2="42" stroke="#A7F3D0" stroke-width="2.5" />
           </svg>
         `;
       }
       if (id === 'kab-2') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <circle cx="94" cy="64" r="40" stroke="#5EEAD4" stroke-opacity="0.35" stroke-width="1.8" />
-            <circle cx="94" cy="64" r="26" stroke="#5EEAD4" stroke-opacity="0.5" stroke-width="1.8" />
-            <circle cx="94" cy="64" r="11" fill="#14B8A6" fill-opacity="0.38" stroke="#99F6E4" stroke-opacity="0.7" stroke-width="1.8" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <circle cx="96" cy="64" r="40" stroke="#2DD4BF" stroke-opacity="0.3" stroke-width="1.8" />
+            <circle cx="96" cy="64" r="25" stroke="#2DD4BF" stroke-opacity="0.46" stroke-width="1.8" />
+            <circle cx="96" cy="64" r="10" fill="#5EEAD4" fill-opacity="0.45" stroke="#99F6E4" stroke-width="1.8" />
           </svg>
         `;
       }
       if (id === 'kab-3') {
         return `
-          <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-            <rect x="38" y="48" width="54" height="30" rx="15" stroke="#86EFAC" stroke-opacity="0.55" stroke-width="2.4" fill="#22C55E" fill-opacity="0.14" />
-            <rect x="76" y="48" width="54" height="30" rx="15" stroke="#BBF7D0" stroke-opacity="0.62" stroke-width="2.4" fill="#22C55E" fill-opacity="0.2" />
+          <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+            <rect x="44" y="42" width="54" height="30" rx="15" transform="rotate(-18 44 42)" stroke="#6EE7B7" stroke-opacity="0.55" stroke-width="3" />
+            <rect x="82" y="54" width="54" height="30" rx="15" transform="rotate(-18 82 54)" stroke="#34D399" stroke-opacity="0.65" stroke-width="3" />
           </svg>
         `;
       }
       return `
-        <svg width="165" height="125" viewBox="0 0 165 125" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
-          <polygon points="94,24 126,50 94,104 62,50" fill="#34D399" fill-opacity="0.22" stroke="#A7F3D0" stroke-opacity="0.55" stroke-width="1.8" />
-          <line x1="62" y1="50" x2="126" y2="50" stroke="#A7F3D0" stroke-opacity="0.45" stroke-width="1.5" />
-          <polyline points="78,24 94,50 110,24" stroke="#A7F3D0" stroke-opacity="0.45" stroke-width="1.5" />
+        <svg width="165" height="122" viewBox="0 0 165 122" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-85">
+          <polygon points="94,22 126,48 94,102 62,48" fill="#10B981" fill-opacity="0.22" stroke="#6EE7B7" stroke-opacity="0.55" stroke-width="1.8" />
+          <line x1="62" y1="48" x2="126" y2="48" stroke="#A7F3D0" stroke-opacity="0.45" stroke-width="1.5" />
         </svg>
       `;
+    }
+
+    function getCardPalette(card) {
+      const id = card.id || '';
+      const palettes = {
+        'rw-1': { rgb: '59, 130, 246', accent: '#93C5FD', bg1: '#1E2538', bg2: '#161B29', bg3: '#121520' },
+        'rw-2': { rgb: '56, 189, 248', accent: '#7DD3FC', bg1: '#1A2836', bg2: '#141E29', bg3: '#111720' },
+        'rw-3': { rgb: '99, 102, 241', accent: '#A5B4FC', bg1: '#202138', bg2: '#171829', bg3: '#121320' },
+        'rw-4': { rgb: '6, 182, 212', accent: '#67E8F9', bg1: '#182A33', bg2: '#132027', bg3: '#10181E' },
+
+        'gg-1': { rgb: '249, 115, 22', accent: '#FDBA74', bg1: '#302119', bg2: '#231813', bg3: '#19120F' },
+        'gg-2': { rgb: '245, 158, 11', accent: '#FCD34D', bg1: '#2E2417', bg2: '#221A12', bg3: '#18130E' },
+        'gg-3': { rgb: '244, 63, 94', accent: '#FDA4AF', bg1: '#301C23', bg2: '#23151A', bg3: '#191014' },
+        'gg-4': { rgb: '234, 88, 12', accent: '#FED7AA', bg1: '#2D1E18', bg2: '#211612', bg3: '#18110E' },
+
+        'sk-1': { rgb: '139, 92, 246', accent: '#C4B5FD', bg1: '#251E38', bg2: '#1B1629', bg3: '#14111F' },
+        'sk-2': { rgb: '217, 70, 239', accent: '#F0ABFC', bg1: '#2C1C34', bg2: '#201526', bg3: '#17101C' },
+        'sk-3': { rgb: '124, 58, 237', accent: '#DDD6FE', bg1: '#211C36', bg2: '#181528', bg3: '#12101E' },
+        'sk-4': { rgb: '168, 85, 247', accent: '#E9D5FF', bg1: '#271D36', bg2: '#1C1628', bg3: '#14101E' },
+
+        'en-1': { rgb: '239, 68, 68', accent: '#FCA5A5', bg1: '#301B1E', bg2: '#231417', bg3: '#190F12' },
+        'en-2': { rgb: '244, 63, 94', accent: '#FDA4AF', bg1: '#301B23', bg2: '#23141A', bg3: '#190F14' },
+        'en-3': { rgb: '220, 38, 38', accent: '#FECACA', bg1: '#2E1A1B', bg2: '#211314', bg3: '#180F10' },
+        'en-4': { rgb: '251, 113, 133', accent: '#FFE4E6', bg1: '#2E1D22', bg2: '#221519', bg3: '#181013' },
+
+        'kab-1': { rgb: '16, 185, 129', accent: '#6EE7B7', bg1: '#182C26', bg2: '#13211D', bg3: '#0F1816' },
+        'kab-2': { rgb: '20, 184, 166', accent: '#5EEAD4', bg1: '#172B2A', bg2: '#122020', bg3: '#0E1818' },
+        'kab-3': { rgb: '5, 150, 105', accent: '#A7F3D0', bg1: '#182B23', bg2: '#12201A', bg3: '#0E1814' },
+        'kab-4': { rgb: '52, 211, 153', accent: '#D1FAE5', bg1: '#1A2D26', bg2: '#14221D', bg3: '#101916' }
+      };
+      return palettes[id] || palettes['rw-1'];
     }
 
     function renderNebulaCard(card, index = 0) {
       const pal = getCardPalette(card);
       const pct = card.totalSteps > 0 ? Math.round((card.completedSteps / card.totalSteps) * 100) : 0;
+      const topGlow = `radial-gradient(90% 80% at 88% 12%, rgba(${pal.rgb}, 0.22) 0%, rgba(24, 24, 29, 0) 72%)`;
 
       return `
         <div class="nebula-card-slot" style="--stagger: ${index};">
@@ -5171,47 +5364,48 @@
             onmousemove="handleFolderCardMove(event, this)"
             onmouseleave="handleFolderCardLeave(this)"
             onclick="openQuizPopup('${card.id}')"
-            class="nebula-study-card group p-6 min-h-[192px] flex flex-col justify-between cursor-pointer"
-            style="--card-rgb: ${pal.rgb}; --title-accent: ${pal.accent}; --card-bg-1: ${pal.bg1}; --card-bg-2: ${pal.bg2}; --card-bg-3: ${pal.bg3}; --card-bg-hover-1: ${pal.h1}; --card-bg-hover-2: ${pal.h2}; --card-bg-hover-3: ${pal.h3};"
+            class="nebula-study-card group p-6 min-h-[188px] flex flex-col justify-between cursor-pointer"
+            style="--card-rgb: ${pal.rgb}; --title-accent: ${pal.accent}; --card-bg-1: ${pal.bg1}; --card-bg-2: ${pal.bg2}; --card-bg-3: ${pal.bg3};"
           >
+            <!-- Ambient Theme Glow -->
+            <div class="absolute inset-0 pointer-events-none" style="background: ${topGlow};"></div>
+
             <!-- Cursor-Following Spotlight -->
             <div class="folder-cursor-spotlight absolute inset-0 pointer-events-none" style="--accent-rgb: ${pal.rgb};"></div>
 
-            <!-- Unique Theme-Specific SVG Artwork -->
-            ${getTopicArtwork(card, index)}
+            <!-- Unique Module SVG Artwork -->
+            ${getTopicArtwork(card)}
 
-            <!-- Top Headline + Individual Module Reset Button -->
-            <div class="relative z-10 pr-10">
-              <div class="flex items-start justify-between gap-2">
+            <!-- Top Headline + Individual Reset Button -->
+            <div class="relative z-10 flex items-start justify-between gap-3">
+              <div class="pr-4">
                 <h3 class="nebula-card-title text-[20px] sm:text-[21.5px] font-extrabold leading-[1.25] tracking-[-0.025em] mb-2">
                   ${escapeHtml(card.title)}
                 </h3>
-                <button type="button"
-                        onclick="event.stopPropagation(); openResetModuleModal('${card.id}')"
-                        title="Lernstand dieses Moduls zurücksetzen"
-                        class="shrink-0 w-7 h-7 rounded-[8px] bg-white/[0.05] hover:bg-[#EF4444]/20 border border-white/[0.08] hover:border-[#EF4444]/40 text-[#9A9AA4] hover:text-[#FCA5A5] flex items-center justify-center transition">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                    <path d="M3 3v5h5" />
-                  </svg>
-                </button>
+                <div class="nebula-title-underline mb-3"></div>
+                <p class="text-[12.5px] text-[#9A9AA4] leading-[1.5] line-clamp-2 max-w-[90%]">
+                  ${escapeHtml(card.summary)}
+                </p>
               </div>
-              <div class="nebula-title-underline mb-3"></div>
-              <p class="text-[12.5px] text-[#A1A1AA] leading-[1.5] line-clamp-2 max-w-[85%]">
-                ${escapeHtml(card.summary)}
-              </p>
+
+              <button type="button"
+                      onclick="event.stopPropagation(); openResetModuleModal('${card.id}')"
+                      title="Lernstand dieses Moduls auf 0/30 zurücksetzen"
+                      class="w-7 h-7 rounded-[8px] bg-white/[0.06] hover:bg-[#EF4444]/25 border border-white/[0.08] hover:border-[#EF4444]/40 text-[#9A9AA4] hover:text-[#FCA5A5] flex items-center justify-center text-[13px] shrink-0 transition">
+                ↺
+              </button>
             </div>
 
-            <!-- Bottom Progress Bar (30 Fragen bis Done) -->
-            <div class="relative z-10 pt-4 mt-4 border-t border-white/[0.08] flex items-center justify-between gap-3">
+            <!-- Bottom Progress Bar -->
+            <div class="relative z-10 pt-4 mt-4 border-t border-white/[0.07] flex items-center justify-between gap-3">
               <div class="flex items-center gap-2.5">
                 ${renderSegmentedTicks(card.completedSteps, card.totalSteps, pal.accent)}
                 <span class="text-[12px] font-medium text-[#A1A1AA]">
-                  <strong class="text-[#F4F4F6]">${card.completedSteps}</strong> / ${card.totalSteps} Fragen (${pct}%)
+                  <strong class="text-[#F4F4F6]">${card.completedSteps}</strong> / ${card.totalSteps} (${pct}%)
                 </span>
               </div>
               <span class="text-[12px] font-semibold inline-flex items-center gap-1 transition-transform duration-200 group-hover:translate-x-1" style="color: ${pal.accent};">
-                Quiz starten <span>→</span>
+                6 Fragen Quiz <span>→</span>
               </span>
             </div>
           </article>
@@ -5258,54 +5452,13 @@
       renderWorkspace();
     }
 
-    function setHoveredChartDay(idx) {
-      appState.hoveredChartDay = idx;
-      shouldAnimateDashboard = false;
-      renderWorkspace();
-    }
-
-    function renderDashboardView() {
-      const animClass = shouldAnimateDashboard ? 'dash-card-animate' : '';
-      const headerAnimClass = shouldAnimateDashboard ? 'dash-header-enter' : '';
-      shouldAnimateDashboard = false;
-
+    function buildDashboardChartSvg() {
       const isLight = appState.appTheme === 'daylight';
       const gridColor = isLight ? '#E2E8F0' : '#202026';
       const axisTextColor = isLight ? '#64748B' : '#686873';
       const activeLabelColor = isLight ? '#2563EB' : '#93C5FD';
       const tooltipBg = isLight ? '#0F172A' : '#1E1E24';
 
-      const totalDone = COURSES.reduce((sum, c) => sum + c.cards.reduce((s, m) => s + m.completedSteps, 0), 0);
-      const totalAll = COURSES.reduce((sum, c) => sum + c.cards.reduce((s, m) => s + m.totalSteps, 0), 0);
-      const overallPct = totalAll > 0 ? Math.round((totalDone / totalAll) * 100) : 0;
-      const dailyPct = appState.dailyGoal > 0 ? Math.min(100, Math.round((appState.completedToday / appState.dailyGoal) * 100)) : 0;
-
-      const sortedExams = [...appState.exams].sort((a, b) => a.date.localeCompare(b.date));
-      const nextExam = sortedExams[0] || null;
-      const upcomingExams = sortedExams.slice(0, 3);
-      const masteredFlashcards = appState.flashcards.filter(f => f.mastered).length;
-
-      const getDaysCountdown = (isoDate) => {
-        if (!isoDate) return '';
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const target = new Date(isoDate + 'T00:00:00');
-        const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
-        if (diffDays < 0) return 'Vorbei';
-        if (diffDays === 0) return 'Heute';
-        if (diffDays === 1) return 'Morgen';
-        return `${diffDays}d`;
-      };
-
-      // Live Lernquote Gesamt (modules + flashcards + daily goal bonus)
-      const totalItemsAll = totalAll + Math.max(1, appState.flashcards.length);
-      const totalItemsDone = totalDone + masteredFlashcards;
-      const exactQuote = totalItemsAll > 0
-        ? Math.min(100, ((totalItemsDone / totalItemsAll) * 100) + (totalItemsDone === 0 && appState.completedToday > 0 ? Math.min(15, appState.completedToday * 2.5) : 0))
-        : 0;
-      const formattedQuote = `${exactQuote.toFixed(2)}%`;
-
-      // Real daily history series
       const rangeDays = appState.chartRange === '1T' ? 5 : appState.chartRange === '1M' ? 14 : 7;
       const todayKey = getTodayIsoKey();
       const seriesPoints = [];
@@ -5358,7 +5511,99 @@
       const pillX = Math.min(svgW - pillW - 4, Math.max(4, focusPt.x - pillW / 2));
       const pillY = Math.max(4, focusPt.y - 31);
 
-      // Comparison bars across all subjects + Karten (highest gets striped blue animated bar)
+      return `
+        <svg viewBox="0 0 ${svgW} ${svgH}" class="w-full h-[185px] overflow-visible">
+          <defs>
+            <linearGradient id="cobaltAreaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.34" />
+              <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.0" />
+            </linearGradient>
+          </defs>
+
+          ${[0, 0.25, 0.5, 0.75, 1].map(frac => {
+            const yPos = padT + plotH - frac * plotH;
+            const labelVal = Math.round(frac * maxVal);
+            return `
+              <line x1="${padL}" y1="${yPos.toFixed(1)}" x2="${svgW - padR}" y2="${yPos.toFixed(1)}" stroke="${gridColor}" stroke-width="1" />
+              <text x="${padL - 8}" y="${(yPos + 3.5).toFixed(1)}" text-anchor="end" fill="${axisTextColor}" font-size="9.5" font-family="Inter, sans-serif">${labelVal}</text>
+            `;
+          }).join('')}
+
+          <path d="${areaPath}" fill="url(#cobaltAreaGrad)" />
+          <path d="${linePath}" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" />
+
+          <line x1="${focusPt.x.toFixed(1)}" y1="${focusPt.y.toFixed(1)}" x2="${focusPt.x.toFixed(1)}" y2="${(padT + plotH).toFixed(1)}"
+                stroke="#3B82F6" stroke-opacity="0.45" stroke-width="1.2" stroke-dasharray="3 3" />
+
+          ${coords.filter((_, i) => coords.length <= 7 || i % 2 === 0 || i === coords.length - 1).map(pt => `
+            <text x="${pt.x.toFixed(1)}" y="${svgH - 4}" text-anchor="middle" fill="${pt.idx === focusIdx ? activeLabelColor : axisTextColor}" font-size="9.5" font-weight="${pt.idx === focusIdx ? '600' : '400'}" font-family="Inter, sans-serif">${pt.label}</text>
+          `).join('')}
+
+          ${coords.map(pt => `
+            <g class="cursor-pointer" onmouseenter="setHoveredChartDay(${pt.idx})" onclick="setHoveredChartDay(${pt.idx})">
+              <rect x="${(pt.x - 18).toFixed(1)}" y="${padT - 10}" width="36" height="${plotH + 24}" fill="transparent" />
+              <circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="2.8" fill="${pt.idx === focusIdx ? '#3B82F6' : '#60A5FA'}" fill-opacity="${pt.idx === focusIdx ? '1' : '0.55'}" />
+            </g>
+          `).join('')}
+
+          <circle cx="${focusPt.x.toFixed(1)}" cy="${focusPt.y.toFixed(1)}" r="8" fill="#3B82F6" fill-opacity="0.28">
+            <animate attributeName="r" values="6;12;6" dur="2.2s" repeatCount="indefinite" />
+            <animate attributeName="fill-opacity" values="0.38;0.08;0.38" dur="2.2s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="${focusPt.x.toFixed(1)}" cy="${focusPt.y.toFixed(1)}" r="4.2" fill="#FFFFFF" stroke="#3B82F6" stroke-width="2" />
+
+          <g>
+            <rect x="${pillX.toFixed(1)}" y="${pillY.toFixed(1)}" width="${pillW}" height="20" rx="10" fill="${tooltipBg}" stroke="#3B82F6" stroke-opacity="0.65" />
+            <polygon points="${(focusPt.x - 4).toFixed(1)},${(pillY + 20).toFixed(1)} ${(focusPt.x + 4).toFixed(1)},${(pillY + 20).toFixed(1)} ${focusPt.x.toFixed(1)},${(pillY + 24).toFixed(1)}" fill="${tooltipBg}" />
+            <text x="${(pillX + pillW / 2).toFixed(1)}" y="${(pillY + 13.5).toFixed(1)}" text-anchor="middle" fill="#FFFFFF" font-size="10" font-weight="600" font-family="Inter, sans-serif">${focusPt.val} Lekt.</text>
+          </g>
+        </svg>
+      `;
+    }
+
+    function setHoveredChartDay(idx) {
+      if (appState.hoveredChartDay === idx) return;
+      appState.hoveredChartDay = idx;
+      const chartBox = document.getElementById('dash-chart-container');
+      if (chartBox) {
+        chartBox.innerHTML = buildDashboardChartSvg();
+      }
+    }
+
+    function renderDashboardView() {
+      const animClass = shouldAnimateDashboard ? 'dash-card-animate' : '';
+      const headerAnimClass = shouldAnimateDashboard ? 'dash-header-enter' : '';
+      shouldAnimateDashboard = false;
+
+      const totalDone = COURSES.reduce((sum, c) => sum + c.cards.reduce((s, m) => s + m.completedSteps, 0), 0);
+      const totalAll = COURSES.reduce((sum, c) => sum + c.cards.reduce((s, m) => s + m.totalSteps, 0), 0);
+      const overallPct = totalAll > 0 ? Math.round((totalDone / totalAll) * 100) : 0;
+      const dailyPct = appState.dailyGoal > 0 ? Math.min(100, Math.round((appState.completedToday / appState.dailyGoal) * 100)) : 0;
+
+      const sortedExams = [...appState.exams].sort((a, b) => a.date.localeCompare(b.date));
+      const nextExam = sortedExams[0] || null;
+      const upcomingExams = sortedExams.slice(0, 3);
+      const masteredFlashcards = appState.flashcards.filter(f => f.mastered).length;
+
+      const getDaysCountdown = (isoDate) => {
+        if (!isoDate) return '';
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const target = new Date(isoDate + 'T00:00:00');
+        const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
+        if (diffDays < 0) return 'Vorbei';
+        if (diffDays === 0) return 'Heute';
+        if (diffDays === 1) return 'Morgen';
+        return `${diffDays}d`;
+      };
+
+      const totalItemsAll = totalAll + Math.max(1, appState.flashcards.length);
+      const totalItemsDone = totalDone + masteredFlashcards;
+      const exactQuote = totalItemsAll > 0
+        ? Math.min(100, ((totalItemsDone / totalItemsAll) * 100) + (totalItemsDone === 0 && appState.completedToday > 0 ? Math.min(15, appState.completedToday * 2.5) : 0))
+        : 0;
+      const formattedQuote = `${exactQuote.toFixed(2)}%`;
+
       const shortMap = {
         rechnungswesen: 'RW',
         gespraechsgestaltung: 'GG',
@@ -5393,6 +5638,8 @@
         }
       });
 
+      const isLight = appState.appTheme === 'daylight';
+
       return `
         <div class="flex-1 overflow-y-auto px-6 sm:px-9 py-7">
           <div class="max-w-[1160px]">
@@ -5407,8 +5654,8 @@
               <div class="flex items-center gap-3 flex-wrap">
                 <button onclick="openAddExamModal()"
                         class="dash-cta-pill inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[12.5px] font-semibold shadow-lg shadow-[#3B82F6]/20 transition">
-                  <span class="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[12px] font-bold">+</span>
-                  <span>Klausur eintragen</span>
+                  <span class="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[12px] font-bold text-white">+</span>
+                  <span class="text-white">Klausur eintragen</span>
                 </button>
 
                 <button onclick="navigateSection('settings')"
@@ -5449,8 +5696,8 @@
                 <div class="relative z-10 flex items-center justify-between">
                   <span class="text-[12.5px] font-medium text-[#8E8E93]">Tagesziel Fortschritt</span>
                   <div class="flex items-center gap-1 bg-[#101013] border border-[#24242A] rounded-[7px] p-0.5">
-                    <button onclick="adjustTodayProgress(-1)" class="w-5 h-5 rounded hover:bg-[#222228] text-[#9A9AA0] hover:text-white text-[12px] font-bold">−</button>
-                    <button onclick="adjustTodayProgress(1)" class="w-5 h-5 rounded bg-[#3B82F6]/20 hover:bg-[#3B82F6]/35 text-[#60A5FA] text-[12px] font-bold">+</button>
+                    <button type="button" onclick="adjustTodayProgress(-1)" class="w-6 h-6 rounded hover:bg-[#222228] text-[#9A9AA0] hover:text-[#3B82F6] text-[13px] font-bold transition">−</button>
+                    <button type="button" onclick="adjustTodayProgress(1)" class="w-6 h-6 rounded bg-[#3B82F6]/20 hover:bg-[#3B82F6]/35 text-[#3B82F6] text-[13px] font-bold transition">+</button>
                   </div>
                 </div>
                 <div class="relative z-10 mt-3">
@@ -5516,65 +5763,15 @@
                   <div class="flex items-center gap-1 bg-[#101013] border border-[#232329] rounded-full p-1">
                     ${['1T', '1W', '1M'].map(r => `
                       <button onclick="switchChartRange('${r}')"
-                              class="px-3 py-1 rounded-full text-[11.5px] font-semibold transition ${appState.chartRange === r ? 'bg-[#3B82F6] text-white' : 'text-[#8E8E93] hover:text-white'}">
+                              class="px-3 py-1 rounded-full text-[11.5px] font-semibold transition ${appState.chartRange === r ? 'bg-[#3B82F6] text-white' : 'text-[#8E8E93] hover:text-[#3B82F6]'}">
                         ${r}
                       </button>
                     `).join('')}
                   </div>
                 </div>
 
-                <!-- SVG Area Line Chart with Centered Point & Badge -->
-                <div class="relative z-10 w-full mt-1" onmouseleave="setHoveredChartDay(null)">
-                  <svg viewBox="0 0 ${svgW} ${svgH}" class="w-full h-[185px] overflow-visible">
-                    <defs>
-                      <linearGradient id="cobaltAreaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.34" />
-                        <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.0" />
-                      </linearGradient>
-                    </defs>
-
-                    ${[0, 0.25, 0.5, 0.75, 1].map(frac => {
-                      const yPos = padT + plotH - frac * plotH;
-                      const labelVal = Math.round(frac * maxVal);
-                      return `
-                        <line x1="${padL}" y1="${yPos.toFixed(1)}" x2="${svgW - padR}" y2="${yPos.toFixed(1)}" stroke="${gridColor}" stroke-width="1" />
-                        <text x="${padL - 8}" y="${(yPos + 3.5).toFixed(1)}" text-anchor="end" fill="${axisTextColor}" font-size="9.5" font-family="Inter, sans-serif">${labelVal}</text>
-                      `;
-                    }).join('')}
-
-                    <path d="${areaPath}" fill="url(#cobaltAreaGrad)" />
-                    <path d="${linePath}" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" />
-
-                    <!-- Vertical Drop Guide Line under Focus Point -->
-                    <line x1="${focusPt.x.toFixed(1)}" y1="${focusPt.y.toFixed(1)}" x2="${focusPt.x.toFixed(1)}" y2="${(padT + plotH).toFixed(1)}"
-                          stroke="#3B82F6" stroke-opacity="0.45" stroke-width="1.2" stroke-dasharray="3 3" />
-
-                    ${coords.filter((_, i) => coords.length <= 7 || i % 2 === 0 || i === coords.length - 1).map(pt => `
-                      <text x="${pt.x.toFixed(1)}" y="${svgH - 4}" text-anchor="middle" fill="${pt.idx === focusIdx ? activeLabelColor : axisTextColor}" font-size="9.5" font-weight="${pt.idx === focusIdx ? '600' : '400'}" font-family="Inter, sans-serif">${pt.label}</text>
-                    `).join('')}
-
-                    <!-- Interactive Hover Hit Zones for Every Day -->
-                    ${coords.map(pt => `
-                      <g class="cursor-pointer" onmouseenter="setHoveredChartDay(${pt.idx})" onclick="setHoveredChartDay(${pt.idx})">
-                        <rect x="${(pt.x - 18).toFixed(1)}" y="${padT - 10}" width="36" height="${plotH + 24}" fill="transparent" />
-                        <circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="2.6" fill="${pt.idx === focusIdx ? '#3B82F6' : '#60A5FA'}" fill-opacity="${pt.idx === focusIdx ? '1' : '0.55'}" />
-                      </g>
-                    `).join('')}
-
-                    <!-- Native SVG Pulse Ring (Exact Center, Zero Offset) -->
-                    <circle cx="${focusPt.x.toFixed(1)}" cy="${focusPt.y.toFixed(1)}" r="8" fill="#3B82F6" fill-opacity="0.28">
-                      <animate attributeName="r" values="6;12;6" dur="2.2s" repeatCount="indefinite" />
-                      <animate attributeName="fill-opacity" values="0.38;0.08;0.38" dur="2.2s" repeatCount="indefinite" />
-                    </circle>
-                    <circle cx="${focusPt.x.toFixed(1)}" cy="${focusPt.y.toFixed(1)}" r="4.2" fill="#FFFFFF" stroke="#3B82F6" stroke-width="2" />
-
-                    <!-- Centered Tooltip Pill + Pointer Triangle Directly Above Focus Point -->
-                    <g>
-                      <rect x="${pillX.toFixed(1)}" y="${pillY.toFixed(1)}" width="${pillW}" height="20" rx="10" fill="${tooltipBg}" stroke="#3B82F6" stroke-opacity="0.55" />
-                      <polygon points="${(focusPt.x - 4).toFixed(1)},${(pillY + 20).toFixed(1)} ${(focusPt.x + 4).toFixed(1)},${(pillY + 20).toFixed(1)} ${focusPt.x.toFixed(1)},${(pillY + 24).toFixed(1)}" fill="${tooltipBg}" />
-                      <text x="${(pillX + pillW / 2).toFixed(1)}" y="${(pillY + 13.5).toFixed(1)}" text-anchor="middle" fill="#FFFFFF" font-size="10" font-weight="600" font-family="Inter, sans-serif">${focusPt.val} Lekt.</text>
-                    </g>
-                  </svg>
+                <div id="dash-chart-container" class="relative z-10 w-full mt-1" onmouseleave="setHoveredChartDay(null)">
+                  ${buildDashboardChartSvg()}
                 </div>
               </div>
 
@@ -5588,7 +5785,7 @@
                      style="background: radial-gradient(ellipse at top right, rgba(59, 130, 246, 0.34) 0%, rgba(96, 165, 250, 0.12) 45%, transparent 72%);"></div>
 
                 <div class="relative z-10 flex items-center gap-3">
-                  <div class="w-11 h-11 rounded-full overflow-hidden border border-white/15 shrink-0">
+                  <div class="w-11 h-11 rounded-full overflow-hidden border border-[#2E2E36] shrink-0">
                     ${getUserAvatarMarkup()}
                   </div>
                   <div>
@@ -5604,19 +5801,18 @@
                   </div>
                 </div>
 
-                <!-- Vertical Comparison Bars (Highest category gets animated striped blue bar) -->
                 <div class="relative z-10 grid grid-cols-6 gap-1.5 items-end pt-2">
                   ${comparisonBars.map((bar, idx) => {
                     const isLeader = idx === bestBarIdx;
                     const barH = Math.max(26, Math.min(82, bar.pct || 26));
-                    const idleBarStyle = isLight
+                    const idleBg = isLight
                       ? 'background: linear-gradient(180deg, #E2E8F0 0%, #F1F5F9 100%); border-color: #CBD5E1;'
                       : 'background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);';
                     return `
                       <div onclick="${bar.action}" style="--bar-idx: ${idx};" class="flex flex-col items-center gap-1 cursor-pointer group">
                         ${isLeader ? `<span class="dash-badge-bob px-1.5 py-0.5 rounded-full bg-[#3B82F6] text-white text-[9px] font-bold shadow-md shadow-[#3B82F6]/30 whitespace-nowrap">↑ ${bar.pct}%</span>` : ''}
                         <div class="w-full rounded-[8px] border ${isLeader ? 'dash-striped-bar border-[#60A5FA]/60' : 'border-white/[0.08]'} transition-transform duration-200 group-hover:scale-105"
-                             style="height: ${barH}px; ${isLeader ? '' : idleBarStyle}"></div>
+                             style="height: ${barH}px; ${isLeader ? '' : idleBg}"></div>
                         <span class="text-[10px] font-medium ${isLeader ? 'text-[#3B82F6] font-semibold' : 'text-[#8E8E93]'} truncate max-w-full">${bar.label}</span>
                       </div>
                     `;
@@ -5628,7 +5824,7 @@
             <!-- Row 3: Aktive Lernfächer -->
             <div class="flex items-center justify-between mb-3.5">
               <h2 class="text-[15.5px] font-semibold text-[#F4F4F6]">Aktive Lernfächer</h2>
-              <button onclick="navigateSection('projects')" class="text-[12.5px] text-[#8E8E93] hover:text-white transition">
+              <button onclick="navigateSection('projects')" class="text-[12.5px] text-[#8E8E93] hover:text-[#3B82F6] transition">
                 Alle Ordner anzeigen ›
               </button>
             </div>
@@ -5669,7 +5865,7 @@
                       </div>
                     </div>
 
-                    <div class="relative z-10 pt-3 border-t border-white/[0.06]">
+                    <div class="relative z-10 pt-3 border-t border-[#24242A]">
                       <div class="flex items-center justify-between text-[11.5px] mb-2">
                         <span class="text-[#7E7E87]">Lernziel-Fortschritt</span>
                         <span class="font-semibold text-[#E4E4E7]">${pct}%</span>
@@ -5681,9 +5877,11 @@
               }).join('')}
             </div>
 
-            <!-- Compact Klausuren-Fahrplan Preview -->
             ${upcomingExams.length > 0 ? `
               <div class="dash-bento-card ${animClass} p-5">
+                <div class="flex items-center justify-between mb-3">
+                  <h3 class="text-[14.5px] font-semibold text-[#F4F4F6]">Anstehende Klassenarbeiten &amp; Tests</h3>
+                  <button onclick="navigateSection('calendar')" class="text-[12px] text-[#60A5FA] hover:underline">Kalender öffnen →</button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                   ${upcomingExams.map(ex => `
@@ -5706,7 +5904,7 @@
     }
 
     // =========================================================================
-    // 3B. PROJECTS OVERVIEW & SUBJECT BOARDS (5 Fächer + Einzel-Reset)
+    // 3B. SUBJECTS OVERVIEW (5 Fächer inkl. Englisch Rot & Kundenbindung Grün)
     // =========================================================================
 
     function renderSubjectsOverview() {
@@ -5746,19 +5944,19 @@
         },
         englisch: {
           accentColor: '#F87171',
-          accentRgb: '239, 68, 68',
-          glowGradient: 'radial-gradient(88% 82% at 92% 6%, rgba(239, 68, 68, 0.5) 0%, rgba(185, 28, 28, 0.18) 44%, rgba(20, 20, 22, 0) 78%)',
+          accentRgb: '248, 113, 113',
+          glowGradient: 'radial-gradient(88% 82% at 92% 6%, rgba(239, 68, 68, 0.48) 0%, rgba(185, 28, 28, 0.18) 44%, rgba(20, 20, 22, 0) 78%)',
           borderGlow: 'rgba(248, 113, 113, 0.26)',
           iconSvg: `
             <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" class="text-[#F87171]">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75 2.5 2.5 6.75 2.5 12C2.5 17.25 6.75 21.5 12 21.5C17.25 21.5 21.5 17.25 21.5 12C21.5 6.75 17.25 2.5 12 2.5ZM7.2 8.2C7.2 7.54 7.74 7 8.4 7H15.6C16.26 7 16.8 7.54 16.8 8.2C16.8 8.86 16.26 9.4 15.6 9.4H8.4C7.74 9.4 7.2 8.86 7.2 8.2ZM7.2 12C7.2 11.34 7.74 10.8 8.4 10.8H13.6C14.26 10.8 14.8 11.34 14.8 12C14.8 12.66 14.26 13.2 13.6 13.2H8.4C7.74 13.2 7.2 12.66 7.2 12ZM8.4 14.6C7.74 14.6 7.2 15.14 7.2 15.8C7.2 16.46 7.74 17 8.4 17H11.8C12.46 17 13 16.46 13 15.8C13 15.14 12.46 14.6 11.8 14.6H8.4Z" />
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75 2.5 2.5 6.75 2.5 12C2.5 17.25 6.75 21.5 12 21.5C17.25 21.5 21.5 17.25 21.5 12C21.5 6.75 17.25 2.5 12 2.5ZM7.2 8.2C7.2 7.54 7.74 7 8.4 7H15.6C16.26 7 16.8 7.54 16.8 8.2C16.8 8.86 16.26 9.4 15.6 9.4H8.4C7.74 9.4 7.2 8.86 7.2 8.2ZM7.2 12C7.2 11.34 7.74 10.8 8.4 10.8H13.6C14.26 10.8 14.8 11.34 14.8 12C14.8 12.66 14.26 13.2 13.6 13.2H8.4C7.74 13.2 7.2 12.66 7.2 12Z" />
             </svg>
           `
         },
         kundenbindung: {
           accentColor: '#34D399',
-          accentRgb: '16, 185, 129',
-          glowGradient: 'radial-gradient(88% 82% at 92% 6%, rgba(16, 185, 129, 0.5) 0%, rgba(5, 150, 105, 0.18) 44%, rgba(20, 20, 22, 0) 78%)',
+          accentRgb: '52, 211, 153',
+          glowGradient: 'radial-gradient(88% 82% at 92% 6%, rgba(16, 185, 129, 0.48) 0%, rgba(5, 150, 105, 0.18) 44%, rgba(20, 20, 22, 0) 78%)',
           borderGlow: 'rgba(52, 211, 153, 0.26)',
           iconSvg: `
             <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" class="text-[#34D399]">
@@ -5834,6 +6032,589 @@
                   </div>
                 `;
               }).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 3E. REPORTS VIEW (Telemetry Gauges, 5-Axis Radar Web & Equalizer Matrix)
+    // =========================================================================
+
+    function toggleReportSubjectExpand(courseId) {
+      appState.expandedReportSubjectId = appState.expandedReportSubjectId === courseId ? null : courseId;
+      renderWorkspace();
+    }
+
+    function renderReportsView() {
+      const totalCards = COURSES.reduce((s, c) => s + c.cards.length, 0);
+      const doneCards = COURSES.reduce((s, c) => s + c.cards.filter(m => m.column === 'completed').length, 0);
+      const totalQuestionsDone = COURSES.reduce((s, c) => s + c.cards.reduce((a, m) => a + m.completedSteps, 0), 0);
+      const totalQuestionsAll = COURSES.reduce((s, c) => s + c.cards.reduce((a, m) => a + m.totalSteps, 0), 0);
+      const questionsPct = totalQuestionsAll > 0 ? Math.round((totalQuestionsDone / totalQuestionsAll) * 100) : 0;
+      const modulesPct = totalCards > 0 ? Math.round((doneCards / totalCards) * 100) : 0;
+
+      const masteredCards = appState.flashcards.filter(f => f.mastered).length;
+      const totalFlashcards = appState.flashcards.length;
+      const flashcardsPct = totalFlashcards > 0 ? Math.round((masteredCards / totalFlashcards) * 100) : 0;
+
+      const dailyPct = appState.dailyGoal > 0 ? Math.min(100, Math.round((appState.completedToday / appState.dailyGoal) * 100)) : 0;
+
+      const subjectThemes = {
+        rechnungswesen: { hex: '#60A5FA', rgb: '59, 130, 246', short: 'RW' },
+        gespraechsgestaltung: { hex: '#FB923C', rgb: '249, 115, 22', short: 'GG' },
+        sozialkunde: { hex: '#C084FC', rgb: '168, 85, 247', short: 'SK' },
+        englisch: { hex: '#F87171', rgb: '239, 68, 68', short: 'EN' },
+        kundenbindung: { hex: '#34D399', rgb: '16, 185, 129', short: 'KAB' }
+      };
+
+      // Subject stats for Radar Chart & Equalizer Spectrum
+      const subjectMetrics = COURSES.map(c => {
+        const done = c.cards.reduce((s, m) => s + m.completedSteps, 0);
+        const total = c.cards.reduce((s, m) => s + m.totalSteps, 0);
+        const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+        const completedMods = c.cards.filter(m => m.column === 'completed').length;
+        const theme = subjectThemes[c.id] || subjectThemes.rechnungswesen;
+        return {
+          id: c.id,
+          title: c.title,
+          short: theme.short,
+          hex: theme.hex,
+          rgb: theme.rgb,
+          done,
+          total,
+          pct,
+          completedMods,
+          totalMods: c.cards.length,
+          cards: c.cards
+        };
+      });
+
+      // Find weakest incomplete module for smart "Schwachstellen-Fokus" recommendation
+      const allModules = COURSES.flatMap(c =>
+        c.cards.map(m => ({ ...m, courseTitle: c.title, courseId: c.id }))
+      );
+      const unfinishedModules = allModules.filter(m => m.completedSteps < m.totalSteps);
+      unfinishedModules.sort((a, b) => a.completedSteps - b.completedSteps);
+      const focusModule = unfinishedModules[0] || allModules[0] || null;
+
+      // 5-Axis Radar Geometry (Center 150, 150, Max Radius 96)
+      const cx = 150;
+      const cy = 150;
+      const maxR = 94;
+      const axisCount = subjectMetrics.length;
+      const radarVertices = subjectMetrics.map((sm, idx) => {
+        const angle = (-Math.PI / 2) + (idx * 2 * Math.PI) / axisCount;
+        // Minimum visual radius of 14% so polygon shape is always visible even at 0%
+        const effectiveRatio = Math.max(0.14, sm.pct / 100);
+        const vx = cx + Math.cos(angle) * (maxR * effectiveRatio);
+        const vy = cy + Math.sin(angle) * (maxR * effectiveRatio);
+        const lx = cx + Math.cos(angle) * (maxR + 24);
+        const ly = cy + Math.sin(angle) * (maxR + 24);
+        const ox = cx + Math.cos(angle) * maxR;
+        const oy = cy + Math.sin(angle) * maxR;
+        return { ...sm, angle, vx, vy, lx, ly, ox, oy };
+      });
+
+      const polygonPoints = radarVertices.map(v => `${v.vx.toFixed(1)},${v.vy.toFixed(1)}`).join(' ');
+
+      const ringConfigs = [
+        { label: 'Fragen-Beherrschung', value: `${totalQuestionsDone}/${totalQuestionsAll}`, pct: questionsPct, color: '#3B82F6', sub: 'Richtig beantwortet' },
+        { label: 'Module Done', value: `${doneCards}/${totalCards}`, pct: modulesPct, color: '#10B981', sub: '30/30 erreicht' },
+        { label: 'Karten-Retention', value: `${masteredCards}/${totalFlashcards}`, pct: flashcardsPct, color: '#A855F7', sub: 'Als gewusst markiert' },
+        { label: 'Tagesziel Heute', value: `${appState.completedToday}/${appState.dailyGoal}`, pct: dailyPct, color: '#F59E0B', sub: 'Aktive Einheiten' }
+      ];
+
+      const isLight = appState.appTheme === 'daylight';
+      const ringTrackColor = isLight ? '#E2E8F0' : '#22222B';
+      const radarGridStroke = isLight ? '#CBD5E1' : '#282834';
+
+      return `
+        <div class="flex-1 overflow-y-auto px-6 sm:px-9 py-7">
+          <div class="max-w-[1140px]">
+
+            <!-- Header -->
+            <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
+              <div>
+                <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#3B82F6]/12 border border-[#3B82F6]/25 text-[11px] font-semibold text-[#60A5FA] mb-1.5">
+                  <span>● LIVE LERN-TELEMETRIE</span>
+                </div>
+                <h1 class="text-[26px] font-bold text-[#F4F4F6] tracking-[-0.02em]">Kompetenz-Observatorium &amp; Reports</h1>
+                <p class="text-[13px] text-[#8E8E93] mt-0.5">Fortschrittsanalyse über alle ${COURSES.length} Fächer, 20 Lernmodule und dein Karteikarten-Deck</p>
+              </div>
+
+              ${focusModule ? `
+                <button onclick="openQuizPopup('${focusModule.id}')"
+                        class="dash-cta-pill inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[12.5px] font-semibold shadow-lg shadow-[#3B82F6]/25 transition">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="shrink-0">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM6.2 12C6.2 8.79675 8.79675 6.2 12 6.2C15.2033 6.2 17.8 8.79675 17.8 12C17.8 15.2033 15.2033 17.8 12 17.8C8.79675 17.8 6.2 15.2033 6.2 12ZM12 8.8C10.2327 8.8 8.8 10.2327 8.8 12C8.8 13.7673 10.2327 15.2 12 15.2C13.7673 15.2 15.2 13.7673 15.2 12C15.2 10.2327 13.7673 8.8 12 8.8Z" />
+                  </svg>
+                  <span>Schwachstelle trainieren: ${escapeHtml(focusModule.title)}</span>
+                  <span>→</span>
+                </button>
+              ` : ''}
+            </div>
+
+            <!-- Row 1: 4 Radial SVG Ring Gauges -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              ${ringConfigs.map((rc, idx) => {
+                const r = 24;
+                const circ = 2 * Math.PI * r;
+                const offset = circ - (rc.pct / 100) * circ;
+                return `
+                  <div style="--stagger: ${idx};" class="report-telemetry-card p-4 flex items-center gap-4">
+                    <div class="relative w-16 h-16 shrink-0 flex items-center justify-center">
+                      <svg class="w-full h-full -rotate-90" viewBox="0 0 60 60">
+                        <circle cx="30" cy="30" r="${r}" fill="none" stroke="${ringTrackColor}" stroke-width="5" />
+                        <circle cx="30" cy="30" r="${r}" fill="none" stroke="${rc.color}" stroke-width="5"
+                                stroke-linecap="round"
+                                stroke-dasharray="${circ.toFixed(1)}"
+                                stroke-dashoffset="${offset.toFixed(1)}"
+                                style="transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1);" />
+                      </svg>
+                      <span class="absolute text-[12.5px] font-bold text-[#F4F4F6]">${rc.pct}%</span>
+                    </div>
+                    <div class="min-w-0">
+                      <div class="text-[11.5px] font-medium text-[#8E8E93] truncate">${rc.label}</div>
+                      <div class="text-[20px] font-bold text-[#F4F4F6] tracking-[-0.02em] leading-tight mt-0.5">${rc.value}</div>
+                      <div class="text-[11px] text-[#7E7E87] mt-0.5 truncate">${rc.sub}</div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+
+            <!-- Row 2: 5-Axis Radar Chart (5 Cols) + Subject Equalizer Spectrum (7 Cols) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+              <!-- Left 5 Cols: Interactive 5-Axis Competency Radar -->
+              <div style="--stagger: 4;" class="lg:col-span-5 report-telemetry-card p-5 sm:p-6">
+                <div class="flex items-center justify-between mb-2">
+                  <div>
+                    <h2 class="text-[15.5px] font-bold text-[#F4F4F6]">5-Fächer Kompetenz-Netz</h2>
+                    <p class="text-[11.5px] text-[#8E8E93]">Klicke auf einen Achsenpunkt, um das Fach zu öffnen</p>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-full bg-[#3B82F6]/15 text-[11px] font-semibold text-[#60A5FA]">
+                    Radar
+                  </span>
+                </div>
+
+                <div class="w-full flex items-center justify-center my-2">
+                  <svg viewBox="0 0 300 300" class="w-full max-w-[300px] h-auto overflow-visible">
+                    <defs>
+                      <radialGradient id="radarPolyGrad" cx="50%" cy="50%" r="55%">
+                        <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.45" />
+                        <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.14" />
+                      </radialGradient>
+                      <linearGradient id="radarSweepGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.22" />
+                        <stop offset="100%" stop-color="#3B82F6" stop-opacity="0" />
+                      </linearGradient>
+                    </defs>
+
+                    <!-- Concentric Pentagon Grid Levels (25%, 50%, 75%, 100%) -->
+                    ${[0.25, 0.5, 0.75, 1].map(scale => {
+                      const pts = radarVertices.map(v => {
+                        const gx = cx + Math.cos(v.angle) * (maxR * scale);
+                        const gy = cy + Math.sin(v.angle) * (maxR * scale);
+                        return `${gx.toFixed(1)},${gy.toFixed(1)}`;
+                      }).join(' ');
+                      return `<polygon points="${pts}" fill="none" stroke="${radarGridStroke}" stroke-width="1" stroke-dasharray="${scale < 1 ? '2 2' : '0'}" />`;
+                    }).join('')}
+
+                    <!-- Axis Spokes -->
+                    ${radarVertices.map(v => `
+                      <line x1="${cx}" y1="${cy}" x2="${v.ox.toFixed(1)}" y2="${v.oy.toFixed(1)}" stroke="${radarGridStroke}" stroke-width="1" />
+                    `).join('')}
+
+                    <!-- Rotating Radar Scanner Line -->
+                    <g class="radar-sweep-cone">
+                      <line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy - maxR}" stroke="#60A5FA" stroke-opacity="0.45" stroke-width="1.5" />
+                    </g>
+
+                    <!-- Animated Competency Polygon -->
+                    <polygon points="${polygonPoints}"
+                             fill="url(#radarPolyGrad)"
+                             stroke="#60A5FA"
+                             stroke-width="2.2"
+                             stroke-linejoin="round"
+                             class="radar-polygon-shape" />
+
+                    <!-- Interactive Vertex Nodes & Labels -->
+                    ${radarVertices.map(v => `
+                      <g class="cursor-pointer group" onclick="openSubjectBoard('${v.id}')">
+                        <circle cx="${v.vx.toFixed(1)}" cy="${v.vy.toFixed(1)}" r="8" fill="${v.hex}" fill-opacity="0.24" />
+                        <circle cx="${v.vx.toFixed(1)}" cy="${v.vy.toFixed(1)}" r="4.5" fill="${v.hex}" stroke="#FFFFFF" stroke-width="1.5" />
+                        <text x="${v.lx.toFixed(1)}" y="${(v.ly - 3).toFixed(1)}" text-anchor="middle" fill="${v.hex}" font-size="11" font-weight="700" font-family="Inter, sans-serif">${v.short}</text>
+                        <text x="${v.lx.toFixed(1)}" y="${(v.ly + 10).toFixed(1)}" text-anchor="middle" fill="${isLight ? '#475569' : '#9A9AA4'}" font-size="9.5" font-weight="600" font-family="Inter, sans-serif">${v.pct}%</text>
+                      </g>
+                    `).join('')}
+                  </svg>
+                </div>
+
+                <!-- Legend Footer -->
+                <div class="pt-3 border-t border-[#24242C] flex flex-wrap gap-2 justify-center">
+                  ${subjectMetrics.map(sm => `
+                    <button onclick="openSubjectBoard('${sm.id}')"
+                            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.04] hover:bg-white/[0.09] text-[11px] text-[#A1A1AA] transition">
+                      <span class="w-2 h-2 rounded-full" style="background: ${sm.hex};"></span>
+                      <span>${sm.short}: <strong class="text-[#F4F4F6]">${sm.pct}%</strong></span>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Right 7 Cols: Subject Equalizer Breakdown & Module Matrix -->
+              <div class="lg:col-span-7 space-y-3.5">
+                <div class="flex items-center justify-between">
+                  <h2 class="text-[15.5px] font-bold text-[#F4F4F6]">Fächer-Spektrum &amp; Modul-Equalizer</h2>
+                  <span class="text-[12px] text-[#8E8E93]">Klicke ein Fach für Modul-Details</span>
+                </div>
+
+                ${subjectMetrics.map((sm, sIdx) => {
+                  const isExpanded = appState.expandedReportSubjectId === sm.id || sIdx === 0 && appState.expandedReportSubjectId === null;
+                  return `
+                    <div style="--stagger: ${sIdx + 5}; --subj-rgb: ${sm.rgb};" class="report-subject-accordion p-4 sm:p-5">
+                      <div onclick="toggleReportSubjectExpand('${sm.id}')" class="flex items-center justify-between gap-4 cursor-pointer">
+                        <div class="flex items-center gap-3 min-w-0">
+                          <span class="w-3 h-3 rounded-full shrink-0" style="background: ${sm.hex}; box-shadow: 0 0 12px ${sm.hex};"></span>
+                          <div class="min-w-0">
+                            <div class="text-[15px] font-bold text-[#F4F4F6] truncate">${escapeHtml(sm.title)}</div>
+                            <div class="text-[11.5px] text-[#8E8E93]">${sm.completedMods} von ${sm.totalMods} Modulen Done • ${sm.done}/${sm.total} Fragen</div>
+                          </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 shrink-0">
+                          <!-- Mini 4-Bar Equalizer Preview -->
+                          <div class="hidden sm:flex items-end gap-1 h-6 px-2 py-1 rounded-lg bg-white/[0.03]">
+                            ${sm.cards.map((m, mIdx) => {
+                              const mPct = m.totalSteps > 0 ? Math.max(18, Math.round((m.completedSteps / m.totalSteps) * 100)) : 18;
+                              return `<span style="--eq-idx: ${mIdx}; height: ${mPct}%; background: ${m.completedSteps > 0 ? sm.hex : '#32323C'};" class="eq-bar-fill w-1.5 rounded-t-sm"></span>`;
+                            }).join('')}
+                          </div>
+                          <span class="text-[14px] font-bold" style="color: ${sm.hex};">${sm.pct}%</span>
+                          <span class="text-[12px] text-[#8E8E93] transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}">▼</span>
+                        </div>
+                      </div>
+
+                      <!-- Overall Subject Progress Bar -->
+                      <div class="w-full h-1.5 bg-[#111114] rounded-full overflow-hidden mt-3">
+                        <div class="h-full rounded-full transition-all duration-500" style="width: ${sm.pct}%; background: ${sm.hex};"></div>
+                      </div>
+
+                      <!-- Expandable Individual Module Breakdown -->
+                      ${isExpanded ? `
+                        <div class="mt-4 pt-3.5 border-t border-[#24242C] grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          ${sm.cards.map(mod => {
+                            const modPct = mod.totalSteps > 0 ? Math.round((mod.completedSteps / mod.totalSteps) * 100) : 0;
+                            const isModDone = mod.completedSteps >= mod.totalSteps;
+                            return `
+                              <div onclick="openQuizPopup('${mod.id}')"
+                                   class="report-sub-panel bg-[#111114] hover:bg-[#191920] border border-[#24242D] rounded-[11px] p-3 cursor-pointer transition flex flex-col justify-between gap-2">
+                                <div class="flex items-start justify-between gap-2">
+                                  <span class="text-[12.5px] font-semibold text-[#F4F4F6] leading-snug">${escapeHtml(mod.title)}</span>
+                                  <span class="text-[11px] font-bold shrink-0 ${isModDone ? 'text-[#34D399]' : 'text-[#8E8E93]'}">
+                                    ${mod.completedSteps}/${mod.totalSteps}
+                                  </span>
+                                </div>
+                                <div class="flex items-center justify-between gap-2">
+                                  <div class="flex-1 h-1.5 bg-[#1E1E26] rounded-full overflow-hidden">
+                                    <div class="h-full rounded-full" style="width: ${modPct}%; background: ${isModDone ? '#10B981' : sm.hex};"></div>
+                                  </div>
+                                  <span class="text-[10.5px] font-semibold" style="color: ${sm.hex};">Üben →</span>
+                                </div>
+                              </div>
+                            `;
+                          }).join('')}
+                        </div>
+                      ` : ''}
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 3F. SETTINGS VIEW (Studio Control Deck, Live Theme Cards & Sync Bridge)
+    // =========================================================================
+
+    function syncGoalSlider(val) {
+      const parsed = Math.max(1, Math.min(30, parseInt(val || '6', 10)));
+      const slider = document.getElementById('daily-goal-slider');
+      const numInput = document.getElementById('daily-goal-input');
+      const badge = document.getElementById('daily-goal-live-badge');
+      if (slider) slider.value = parsed;
+      if (numInput) numInput.value = parsed;
+      if (badge) badge.textContent = `${parsed} Einheiten / Tag`;
+    }
+
+    function renderSettingsView() {
+      const cloudReady = !!(window.StudyVCloudBridge && window.StudyVCloudBridge.ready);
+      const goalPresets = [3, 6, 10, 15];
+
+      return `
+        <div class="flex-1 overflow-y-auto px-6 sm:px-9 py-7">
+          <div class="max-w-[920px]">
+
+            <!-- Top Studio Header -->
+            <div class="flex items-center justify-between flex-wrap gap-3 mb-6">
+              <div>
+                <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#3B82F6]/12 border border-[#3B82F6]/25 text-[11px] font-semibold text-[#60A5FA] mb-1.5">
+                  <span>⚙ STUDIO CONTROL DECK</span>
+                </div>
+                <h1 class="text-[26px] font-bold text-[#F4F4F6] tracking-[-0.02em]">Einstellungen &amp; Sync</h1>
+                <p class="text-[13px] text-[#8E8E93] mt-0.5">Personalisiere dein Lernstudio, wechsle App-Designs oder synchronisiere Handy &amp; PC</p>
+              </div>
+            </div>
+
+            <div class="space-y-5">
+
+              <!-- 1. Profile Studio Card with Animated Orbital Avatar Ring & Tactile Goal Slider -->
+              <div style="--stagger: 0;" class="settings-studio-card p-5 sm:p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-5 border-b border-[#25252D]">
+                  <div class="flex items-center gap-4">
+                    <div class="relative w-16 h-16 shrink-0">
+                      <span class="avatar-orbital-ring"></span>
+                      <div class="w-full h-full rounded-full overflow-hidden border-2 border-[#3B82F6]/60 bg-[#111113] shadow-lg">
+                        ${getUserAvatarMarkup()}
+                      </div>
+                    </div>
+                    <div>
+                      <div class="flex items-center gap-2">
+                        <h2 class="text-[17px] font-bold text-[#F4F4F6]">${escapeHtml(appState.userName)}</h2>
+                        <span class="px-2 py-0.5 rounded-full bg-[#3B82F6]/15 text-[10.5px] font-semibold text-[#60A5FA]">StudyV Pro</span>
+                      </div>
+                      <p class="text-[12px] text-[#8E8E93] mt-0.5">JPG, PNG oder WebP — wird automatisch quadratisch angepasst</p>
+                      <div class="flex items-center gap-2 mt-2.5">
+                        <input id="profile-image-input" type="file" accept="image/*" onchange="handleProfileImageUpload(event)" class="hidden" />
+                        <button type="button" onclick="document.getElementById('profile-image-input').click()"
+                                class="px-3.5 py-1.5 rounded-[9px] bg-[#242429] hover:bg-[#2E2E35] border border-[#35353E] text-[12px] font-semibold text-[#F4F4F6] transition">
+                          Profilbild ändern
+                        </button>
+                        ${appState.profileImage ? `
+                          <button type="button" onclick="removeProfileImage()"
+                                  class="px-3 py-1.5 rounded-[9px] bg-[#EF4444]/15 hover:bg-[#EF4444]/25 border border-[#EF4444]/30 text-[12px] font-medium text-[#FCA5A5] transition">
+                            Entfernen
+                          </button>
+                        ` : ''}
+                      </div>
+                    </div>
+                  </div>
+
+                  <button onclick="saveSettings()"
+                          class="dash-cta-pill self-start md:self-center px-5 py-2.5 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[13px] font-semibold shadow-lg shadow-[#3B82F6]/25 transition">
+                    ✓ Änderungen speichern
+                  </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-5 pt-5">
+                  <!-- Name Input (5 cols) -->
+                  <div class="md:col-span-5">
+                    <label class="block text-[12.5px] font-semibold text-[#E4E4E7] mb-2">Anzeigename</label>
+                    <input id="user-name-input" type="text" value="${escapeHtml(appState.userName)}"
+                           class="w-full bg-[#111113] border border-[#2C2C35] rounded-[10px] px-3.5 py-2.5 text-[14px] text-[#F4F4F6] focus:outline-none focus:border-[#3B82F6]" />
+                  </div>
+
+                  <!-- Tactile Daily Goal Slider + Presets (7 cols) -->
+                  <div class="md:col-span-7">
+                    <div class="flex items-center justify-between mb-2">
+                      <label class="text-[12.5px] font-semibold text-[#E4E4E7]">Tägliches Lernziel</label>
+                      <span id="daily-goal-live-badge" class="px-2.5 py-0.5 rounded-full bg-[#3B82F6]/15 text-[11.5px] font-bold text-[#60A5FA]">
+                        ${appState.dailyGoal} Einheiten / Tag
+                      </span>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                      <input id="daily-goal-slider" type="range" min="1" max="30" value="${appState.dailyGoal}"
+                             oninput="syncGoalSlider(this.value)"
+                             class="flex-1 accent-[#3B82F6] cursor-pointer" />
+                      <input id="daily-goal-input" type="number" min="1" max="30" value="${appState.dailyGoal}"
+                             oninput="syncGoalSlider(this.value)"
+                             class="w-16 text-center bg-[#111113] border border-[#2C2C35] rounded-[9px] px-2 py-1.5 text-[13.5px] font-bold text-[#F4F4F6] focus:outline-none focus:border-[#3B82F6]" />
+                    </div>
+
+                    <div class="flex items-center gap-1.5 mt-2.5">
+                      <span class="text-[11px] text-[#7E7E87] mr-1">Schnellwahl:</span>
+                      ${goalPresets.map(p => `
+                        <button type="button" onclick="syncGoalSlider(${p})"
+                                class="px-2.5 py-0.5 rounded-full bg-white/[0.05] hover:bg-[#3B82F6]/20 border border-white/[0.08] text-[11px] font-semibold text-[#A1A1AA] hover:text-[#60A5FA] transition">
+                          ${p} Einh.
+                        </button>
+                      `).join('')}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Interactive App-Design Gallery with Mini UI Window Previews -->
+              <div style="--stagger: 1;" class="settings-studio-card p-5 sm:p-6">
+                <div class="flex items-center justify-between flex-wrap gap-2 mb-4">
+                  <div>
+                    <h2 class="text-[15.5px] font-bold text-[#F4F4F6]">App-Design &amp; Farbwelt</h2>
+                    <p class="text-[12px] text-[#8E8E93] mt-0.5">Live-Vorschau der Oberfläche — Klicke auf ein Design zum sofortigen Wechseln</p>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                  ${APP_THEMES.map(th => {
+                    const isActive = (appState.appTheme || 'obsidian') === th.id;
+                    const isSwatchLight = th.id === 'daylight';
+                    return `
+                      <button type="button" onclick="selectAppTheme('${th.id}')"
+                              class="theme-mockup-card text-left p-3.5 rounded-[14px] border transition flex flex-col gap-3 ${isActive ? 'bg-[#3B82F6]/15 border-[#3B82F6] shadow-lg shadow-[#3B82F6]/15' : 'settings-sub-dock bg-[#111114] hover:bg-[#18181E] border-[#262630]'}">
+                        <div class="theme-mockup-sheen"></div>
+
+                        <!-- Miniature App UI Preview Frame -->
+                        <div class="w-full h-14 rounded-[9px] border border-white/10 p-1.5 flex gap-1.5 overflow-hidden"
+                             style="background: ${th.swatchBg};">
+                          <!-- Mini Sidebar -->
+                          <div class="w-6 h-full rounded-[5px] flex flex-col gap-1 p-1" style="background: ${th.swatchCard};">
+                            <span class="w-full h-1.5 rounded-full" style="background: ${th.swatchAccent};"></span>
+                            <span class="w-3/4 h-1 rounded-full opacity-40" style="background: ${isSwatchLight ? '#64748B' : '#94A3B8'};"></span>
+                            <span class="w-2/3 h-1 rounded-full opacity-30" style="background: ${isSwatchLight ? '#64748B' : '#94A3B8'};"></span>
+                          </div>
+                          <!-- Mini Content Cards -->
+                          <div class="flex-1 flex flex-col justify-between">
+                            <div class="grid grid-cols-2 gap-1 h-6">
+                              <div class="rounded-[4px]" style="background: ${th.swatchCard};"></div>
+                              <div class="rounded-[4px]" style="background: ${th.swatchCard};"></div>
+                            </div>
+                            <div class="h-3.5 rounded-[4px] flex items-center px-1.5" style="background: ${th.swatchCard};">
+                              <span class="w-1/2 h-1.5 rounded-full" style="background: ${th.swatchAccent};"></span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Theme Title & Description -->
+                        <div class="flex items-center justify-between gap-2">
+                          <div class="min-w-0">
+                            <div class="text-[13px] font-bold text-[#F4F4F6] truncate">${escapeHtml(th.name)}</div>
+                            <div class="text-[11px] text-[#8E8E93] truncate">${escapeHtml(th.desc)}</div>
+                          </div>
+                          <span class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0 ${isActive ? 'bg-[#3B82F6] text-white' : 'bg-white/[0.06] text-transparent'}">
+                            ✓
+                          </span>
+                        </div>
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+
+              <!-- 3. Handy & PC Sync Cockpit with Animated Data-Pulse Bridge -->
+              <div style="--stagger: 2;" class="settings-studio-card p-5 sm:p-6 space-y-4">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <div>
+                    <h2 class="text-[15.5px] font-bold text-[#F4F4F6]">Handy &amp; PC Sync-Brücke</h2>
+                    <p class="text-[12px] text-[#8E8E93] mt-0.5">Synchronisiere deinen Lernstand nahtlos zwischen Smartphone und Computer</p>
+                  </div>
+                  <span class="px-3 py-1 rounded-full text-[11px] font-semibold ${cloudReady ? 'bg-[#10B981]/15 border border-[#10B981]/30 text-[#34D399]' : 'bg-[#3B82F6]/15 border border-[#3B82F6]/30 text-[#60A5FA]'}">
+                    ${cloudReady ? '● Live Cloud aktiv' : '● Direkt-Sync bereit'}
+                  </span>
+                </div>
+
+                <!-- Visual Device-to-Device Data Pulse Bridge + Room Code -->
+                <div class="settings-sub-dock bg-[#111114] border border-[#24242D] rounded-[14px] p-4 space-y-4">
+                  <div class="flex items-center justify-between gap-3">
+                    <!-- PC Icon -->
+                    <div class="flex items-center gap-2 shrink-0">
+                      <div class="w-9 h-9 rounded-[10px] bg-[#3B82F6]/15 border border-[#3B82F6]/30 flex items-center justify-center text-[#60A5FA]">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M4 4C2.89543 4 2 4.89543 2 6V15C2 16.1046 2.89543 17 4 17H10V19H7C6.44772 19 6 19.4477 6 20C6 20.5523 6.44772 21 7 21H17C17.5523 21 18 20.5523 18 20C18 19.4477 17.5523 19 17 19H14V17H20C21.1046 17 22 16.1046 22 15V6C22 4.89543 21.1046 4 20 4H4Z" />
+                        </svg>
+                      </div>
+                      <span class="hidden sm:inline text-[12px] font-semibold text-[#E4E4E7]">PC / Mac</span>
+                    </div>
+
+                    <!-- Animated Pulse Track -->
+                    <div class="relative flex-1 h-6 flex items-center">
+                      <div class="w-full h-[2px] bg-gradient-to-r from-[#3B82F6]/40 via-[#60A5FA]/70 to-[#10B981]/40 rounded-full"></div>
+                      <span class="sync-pulse-dot"></span>
+                      <span class="sync-pulse-dot delay-2"></span>
+                    </div>
+
+                    <!-- Smartphone Icon -->
+                    <div class="flex items-center gap-2 shrink-0">
+                      <span class="hidden sm:inline text-[12px] font-semibold text-[#E4E4E7]">Handy</span>
+                      <div class="w-9 h-9 rounded-[10px] bg-[#10B981]/15 border border-[#10B981]/30 flex items-center justify-center text-[#34D399]">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M7 2.5C5.61929 2.5 4.5 3.61929 4.5 5V19C4.5 20.3807 5.61929 21.5 7 21.5H17C18.3807 21.5 19.5 20.3807 19.5 19V5C19.5 3.61929 18.3807 2.5 17 2.5H7ZM10.5 18C10.5 17.4477 10.9477 17 11.5 17H12.5C13.0523 17 13.5 17.4477 13.5 18C13.5 18.5523 13.0523 19 12.5 19H11.5C10.9477 19 10.5 18.5523 10.5 18Z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center justify-between flex-wrap gap-2 pt-2 border-t border-[#23232C]">
+                    <span class="text-[12px] font-medium text-[#9A9AA4]">Sync-Raum Code (auf beiden Geräten eingeben):</span>
+                    ${appState.lastSyncTime ? `<span class="text-[11px] font-semibold text-[#34D399]">✓ Abgeglichen um ${escapeHtml(appState.lastSyncTime)}</span>` : ''}
+                  </div>
+
+                  <div class="flex flex-wrap gap-2">
+                    <input id="sync-room-input" type="text" value="${escapeHtml(appState.syncRoomCode || '')}" placeholder="z. B. SV-84K2"
+                           class="w-40 uppercase font-mono font-bold tracking-widest bg-[#16161A] border border-[#2C2C35] rounded-[9px] px-3.5 py-2 text-[14px] text-[#F4F4F6] focus:outline-none focus:border-[#3B82F6]" />
+                    <button type="button" onclick="connectSyncRoom()"
+                            class="px-4 py-2 rounded-[9px] bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[12.5px] font-semibold transition">
+                      Verbinden &amp; Abgleichen
+                    </button>
+                    <button type="button" onclick="appState.syncRoomCode = generateRoomCode(); savePersistedState(); renderWorkspace();"
+                            class="px-3.5 py-2 rounded-[9px] bg-[#242429] hover:bg-[#2E2E35] border border-[#35353E] text-[12px] font-medium text-[#E4E4E7] transition">
+                      Neuer Code
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Instant Transfer via Sync-Key or File -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div class="settings-sub-dock bg-[#111114] border border-[#24242D] rounded-[13px] p-4 space-y-2.5">
+                    <div class="text-[13px] font-bold text-[#F4F4F6]">1. Von diesem Gerät senden</div>
+                    <p class="text-[11.5px] text-[#8E8E93]">Kopiere deinen Sync-Schlüssel oder lade eine Sync-Datei herunter.</p>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                      <button type="button" onclick="copySyncKey()" class="px-3.5 py-1.5 rounded-[8px] bg-[#242429] hover:bg-[#2E2E35] border border-[#35353E] text-[12px] font-semibold text-[#F4F4F6] transition">
+                        Sync-Schlüssel kopieren
+                      </button>
+                      <button type="button" onclick="exportSyncFile()" class="px-3.5 py-1.5 rounded-[8px] bg-[#242429] hover:bg-[#2E2E35] border border-[#35353E] text-[12px] font-semibold text-[#F4F4F6] transition">
+                        Sync-Datei speichern
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="settings-sub-dock bg-[#111114] border border-[#24242D] rounded-[13px] p-4 space-y-2.5">
+                    <div class="text-[13px] font-bold text-[#F4F4F6]">2. Auf anderem Gerät empfangen</div>
+                    <div class="flex gap-1.5">
+                      <input id="sync-key-input" type="text" placeholder="STUDY-V1:... einfügen"
+                             class="flex-1 min-w-0 bg-[#16161A] border border-[#2C2C35] rounded-[8px] px-3 py-1.5 text-[12px] text-[#F4F4F6] placeholder-[#686870] focus:outline-none focus:border-[#3B82F6]" />
+                      <button type="button" onclick="importSyncKey()" class="px-3.5 py-1.5 rounded-[8px] bg-[#10B981]/20 hover:bg-[#10B981]/30 border border-[#10B981]/40 text-[12px] font-semibold text-[#34D399] transition">
+                        Laden
+                      </button>
+                    </div>
+                    <div>
+                      <input id="sync-file-input" type="file" accept=".json,application/json" onchange="importSyncFile(event)" class="hidden" />
+                      <button type="button" onclick="document.getElementById('sync-file-input').click()" class="text-[11.5px] font-semibold text-[#60A5FA] hover:underline">
+                        Oder Sync-Datei (.json) auswählen →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Tactile Danger Zone / Reset Dock -->
+              <div style="--stagger: 3;" class="settings-studio-card danger-caution-strip p-5 flex items-center justify-between flex-wrap gap-4 border-[#EF4444]/30">
+                <div>
+                  <h2 class="text-[15px] font-bold text-[#F4F4F6]">Lernstand verwalten</h2>
+                  <p class="text-[12px] text-[#8E8E93] mt-0.5">Setzt alle Lernmodule auf 0 / 30 Fragen und alle Karteikarten zurück.</p>
+                </div>
+                <button type="button" onclick="openResetAllModal()"
+                        class="px-4 py-2 rounded-[10px] bg-[#EF4444] hover:bg-[#DC2626] text-white text-[13px] font-semibold shadow-md shadow-[#EF4444]/20 transition">
+                  ↺ Lernstand zurücksetzen
+                </button>
+              </div>
+
             </div>
           </div>
         </div>
@@ -6505,229 +7286,6 @@
                   </div>
                 `;
               }).join('')}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    // =========================================================================
-    // 3E. REPORTS VIEW
-    // =========================================================================
-
-    function renderReportsView() {
-      const totalCards = COURSES.reduce((s, c) => s + c.cards.length, 0);
-      const todoCount = COURSES.reduce((s, c) => s + c.cards.filter(m => m.column !== 'completed').length, 0);
-      const doneCount = COURSES.reduce((s, c) => s + c.cards.filter(m => m.column === 'completed').length, 0);
-
-      return `
-        <div class="flex-1 overflow-y-auto px-6 sm:px-9 py-7 max-w-4xl">
-          <h1 class="text-[26px] font-bold text-[#F4F4F6] tracking-[-0.02em] mb-1">Lernfortschritt &amp; Reports</h1>
-          <p class="text-[13.5px] text-[#8E8E93] mb-6">Auswertung über alle ${COURSES.length} Lernfächer (je 30 richtige Fragen bis Done)</p>
-
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            <div class="dash-bento-card p-4">
-              <div class="text-[12px] text-[#8E8E93]">Module Gesamt</div>
-              <div class="text-[22px] font-bold text-[#F4F4F6] mt-1">${totalCards} <span class="text-[13px] font-normal text-[#78787F]">Themen</span></div>
-            </div>
-            <div class="dash-bento-card p-4">
-              <div class="text-[12px] text-[#60A5FA]">In Bearbeitung (To Do)</div>
-              <div class="text-[22px] font-bold text-[#F4F4F6] mt-1">${todoCount} <span class="text-[13px] font-normal text-[#78787F]">von ${totalCards}</span></div>
-            </div>
-            <div class="dash-bento-card p-4">
-              <div class="text-[12px] text-[#34D399]">Abgeschlossen (Done)</div>
-              <div class="text-[22px] font-bold text-[#F4F4F6] mt-1">${doneCount} <span class="text-[13px] font-normal text-[#78787F]">von ${totalCards}</span></div>
-            </div>
-          </div>
-
-          <div class="dash-bento-card p-5 space-y-5">
-            ${COURSES.map(c => {
-              const done = c.cards.reduce((s, m) => s + m.completedSteps, 0);
-              const total = c.cards.reduce((s, m) => s + m.totalSteps, 0);
-              const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-              return `
-                <div>
-                  <div class="flex items-center justify-between text-[13.5px] mb-2">
-                    <span class="font-semibold text-[#F4F4F6]">${escapeHtml(c.title)}</span>
-                    <span class="text-[#9A9AA0]">${done} / ${total} Fragen (${pct}%)</span>
-                  </div>
-                  <div class="w-full h-2.5 bg-[#111113] rounded-full overflow-hidden border border-[#242428]">
-                    <div class="h-full bg-[#3B82F6] rounded-full transition-all" style="width: ${pct}%;"></div>
-                  </div>
-                </div>
-              `;
-            }).join('')}
-          </div>
-        </div>
-      `;
-    }
-
-    // =========================================================================
-    // 3F. SETTINGS VIEW (Profile, App Designs, Handy & PC Sync, Lernstand Reset)
-    // =========================================================================
-
-    function renderSettingsView() {
-      const cloudReady = !!(window.StudyVCloudBridge && window.StudyVCloudBridge.ready);
-
-      return `
-        <div class="flex-1 overflow-y-auto px-6 sm:px-9 py-7 max-w-3xl">
-          <h1 class="text-[26px] font-bold text-[#F4F4F6] tracking-[-0.02em] mb-1">Einstellungen</h1>
-          <p class="text-[13.5px] text-[#8E8E93] mb-6">Profil, App-Designs, Handy &amp; PC Synchronisation sowie Lernstand-Verwaltung</p>
-
-          <div class="space-y-5">
-            <!-- 1. Profil & Tagesziel -->
-            <div class="dash-bento-card p-5 space-y-5">
-              <div class="pb-5 border-b border-[#25252A]">
-                <label class="block text-[13px] font-semibold text-[#E4E4E7] mb-3">Profilbild</label>
-                <div class="flex items-center gap-4 flex-wrap">
-                  <div class="w-16 h-16 rounded-full overflow-hidden border border-[#34343C] bg-[#111113] shrink-0 shadow-md">
-                    ${getUserAvatarMarkup()}
-                  </div>
-                  <div class="space-y-2">
-                    <div class="flex items-center gap-2.5 flex-wrap">
-                      <input id="profile-image-input" type="file" accept="image/*" onchange="handleProfileImageUpload(event)" class="hidden" />
-                      <button type="button" onclick="document.getElementById('profile-image-input').click()"
-                              class="px-3.5 py-1.5 rounded-[8px] bg-[#242429] hover:bg-[#2E2E35] border border-[#35353E] text-[12.5px] font-medium text-[#F4F4F6] transition">
-                        Profilbild auswählen
-                      </button>
-                      ${appState.profileImage ? `
-                        <button type="button" onclick="removeProfileImage()"
-                                class="px-3 py-1.5 rounded-[8px] bg-[#EF4444]/12 hover:bg-[#EF4444]/20 border border-[#EF4444]/25 text-[12.5px] font-medium text-[#FCA5A5] transition">
-                          Entfernen
-                        </button>
-                      ` : ''}
-                    </div>
-                    <p class="text-[11.5px] text-[#7E7E87]">JPG, PNG oder WebP — wird automatisch quadratisch angepasst.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-[13px] font-medium text-[#E4E4E7] mb-2">Anzeigename</label>
-                  <input id="user-name-input" type="text" value="${escapeHtml(appState.userName)}"
-                         class="w-full bg-[#111113] border border-[#2C2C32] rounded-[8px] px-3 py-2 text-[14px] text-[#F4F4F6] focus:outline-none focus:border-[#3B82F6]" />
-                </div>
-                <div>
-                  <label class="block text-[13px] font-medium text-[#E4E4E7] mb-2">Tägliches Lernziel (Einheiten/Tag)</label>
-                  <input id="daily-goal-input" type="number" min="1" max="30" value="${appState.dailyGoal}"
-                         class="w-32 bg-[#111113] border border-[#2C2C32] rounded-[8px] px-3 py-2 text-[14px] text-[#F4F4F6] focus:outline-none focus:border-[#3B82F6]" />
-                </div>
-              </div>
-
-              <div>
-                <button onclick="saveSettings()" class="px-4 py-2 rounded-[8px] bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[13px] font-medium transition">
-                  Profil &amp; Ziel speichern
-                </button>
-              </div>
-            </div>
-
-            <!-- 2. App Designs -->
-            <div class="dash-bento-card p-5">
-              <div class="mb-3.5">
-                <h2 class="text-[15px] font-semibold text-[#F4F4F6]">App-Design auswählen</h2>
-                <p class="text-[12px] text-[#8E8E93] mt-0.5">Wechsle jederzeit zwischen dunklen Fokus-Themes und hellem Tageslicht-Design</p>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                ${APP_THEMES.map(th => {
-                  const isActive = (appState.appTheme || 'obsidian') === th.id;
-                  return `
-                    <button type="button" onclick="selectAppTheme('${th.id}')"
-                            class="text-left p-3.5 rounded-[12px] border transition flex items-center gap-3 ${isActive ? 'bg-[#3B82F6]/15 border-[#3B82F6]' : 'bg-[#111114] hover:bg-[#19191E] border-[#26262E]'}">
-                      <div class="w-10 h-10 rounded-[10px] border border-white/15 shrink-0 flex items-center justify-center relative overflow-hidden"
-                           style="background: ${th.swatchBg};">
-                        <span class="w-4 h-4 rounded-full" style="background: ${th.swatchAccent};"></span>
-                      </div>
-                      <div class="min-w-0">
-                        <div class="text-[13px] font-semibold text-[#F4F4F6] flex items-center gap-1.5">
-                          <span class="truncate">${escapeHtml(th.name)}</span>
-                          ${isActive ? '<span class="text-[#60A5FA] text-[11px]">✓</span>' : ''}
-                        </div>
-                        <div class="text-[11px] text-[#8E8E93] truncate">${escapeHtml(th.desc)}</div>
-                      </div>
-                    </button>
-                  `;
-                }).join('')}
-              </div>
-            </div>
-
-            <!-- 3. Handy & PC Sync -->
-            <div class="dash-bento-card p-5 space-y-4">
-              <div class="flex items-center justify-between flex-wrap gap-2">
-                <div>
-                  <h2 class="text-[15px] font-semibold text-[#F4F4F6]">Handy &amp; PC Sync</h2>
-                  <p class="text-[12px] text-[#8E8E93] mt-0.5">Synchronisiere deinen Lernstand, deine Termine und Karteikarten zwischen Smartphone und Computer</p>
-                </div>
-                <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold ${cloudReady ? 'bg-[#10B981]/15 border border-[#10B981]/30 text-[#34D399]' : 'bg-[#3B82F6]/15 border border-[#3B82F6]/30 text-[#60A5FA]'}">
-                  ${cloudReady ? '● Live Cloud aktiv' : '● Direkt-Sync bereit'}
-                </span>
-              </div>
-
-              <!-- Live Sync Room Code -->
-              <div class="bg-[#111114] border border-[#24242B] rounded-[12px] p-4 space-y-3">
-                <div class="flex items-center justify-between flex-wrap gap-2">
-                  <span class="text-[12.5px] font-medium text-[#E4E4E7]">Sync-Raum Code (auf Handy &amp; PC denselben Code eingeben)</span>
-                  ${appState.lastSyncTime ? `<span class="text-[11px] text-[#34D399]">Zuletzt synchronisiert: ${escapeHtml(appState.lastSyncTime)}</span>` : ''}
-                </div>
-                <div class="flex flex-wrap gap-2">
-                  <input id="sync-room-input" type="text" value="${escapeHtml(appState.syncRoomCode || '')}" placeholder="z. B. SV-84K2"
-                         class="w-40 uppercase font-mono tracking-wider bg-[#16161A] border border-[#2C2C35] rounded-[8px] px-3 py-2 text-[13.5px] text-[#F4F4F6] focus:outline-none focus:border-[#3B82F6]" />
-                  <button type="button" onclick="connectSyncRoom()"
-                          class="px-4 py-2 rounded-[8px] bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[12.5px] font-semibold transition">
-                    Verbinden &amp; Abgleichen
-                  </button>
-                  <button type="button" onclick="appState.syncRoomCode = generateRoomCode(); savePersistedState(); renderWorkspace();"
-                          class="px-3 py-2 rounded-[8px] bg-[#1E1E24] hover:bg-[#282830] border border-[#2E2E38] text-[12px] text-[#A1A1AA] hover:text-white transition">
-                    Neuer Code
-                  </button>
-                </div>
-              </div>
-
-              <!-- Instant Transfer via Sync-Key or File -->
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div class="bg-[#111114] border border-[#24242B] rounded-[12px] p-3.5 space-y-2.5">
-                  <div class="text-[12.5px] font-semibold text-[#F4F4F6]">1. Von diesem Gerät senden</div>
-                  <p class="text-[11.5px] text-[#8E8E93]">Kopiere deinen Sync-Schlüssel oder speichere eine Sync-Datei.</p>
-                  <div class="flex flex-wrap gap-2">
-                    <button type="button" onclick="copySyncKey()" class="px-3 py-1.5 rounded-[8px] bg-[#242429] hover:bg-[#2E2E35] border border-[#35353E] text-[12px] font-medium text-[#F4F4F6] transition">
-                      Sync-Schlüssel kopieren
-                    </button>
-                    <button type="button" onclick="exportSyncFile()" class="px-3 py-1.5 rounded-[8px] bg-[#242429] hover:bg-[#2E2E35] border border-[#35353E] text-[12px] font-medium text-[#F4F4F6] transition">
-                      Sync-Datei speichern
-                    </button>
-                  </div>
-                </div>
-
-                <div class="bg-[#111114] border border-[#24242B] rounded-[12px] p-3.5 space-y-2.5">
-                  <div class="text-[12.5px] font-semibold text-[#F4F4F6]">2. Auf anderem Gerät empfangen</div>
-                  <div class="flex gap-1.5">
-                    <input id="sync-key-input" type="text" placeholder="STUDY-V1:... einfügen"
-                           class="flex-1 min-w-0 bg-[#16161A] border border-[#2C2C35] rounded-[8px] px-2.5 py-1.5 text-[12px] text-[#F4F4F6] placeholder-[#686870] focus:outline-none focus:border-[#3B82F6]" />
-                    <button type="button" onclick="importSyncKey()" class="px-3 py-1.5 rounded-[8px] bg-[#10B981]/20 hover:bg-[#10B981]/30 border border-[#10B981]/35 text-[12px] font-semibold text-[#34D399] transition">
-                      Laden
-                    </button>
-                  </div>
-                  <div>
-                    <input id="sync-file-input" type="file" accept=".json,application/json" onchange="importSyncFile(event)" class="hidden" />
-                    <button type="button" onclick="document.getElementById('sync-file-input').click()" class="text-[11.5px] text-[#60A5FA] hover:underline">
-                      Oder Sync-Datei (.json) auswählen →
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 4. Lernstand verwalten (Reset Button) -->
-            <div class="dash-bento-card p-5 flex items-center justify-between flex-wrap gap-4">
-              <div>
-                <h2 class="text-[15px] font-semibold text-[#F4F4F6]">Lernstand verwalten</h2>
-                <p class="text-[12px] text-[#8E8E93] mt-0.5">Setzt alle Lernmodule auf 0 / 30 Fragen und alle Karteikarten zurück.</p>
-              </div>
-              <button type="button" onclick="openResetAllModal()"
-                      class="px-4 py-2 rounded-[9px] bg-[#EF4444]/15 hover:bg-[#EF4444]/25 border border-[#EF4444]/35 text-[#FCA5A5] text-[13px] font-semibold transition">
-                ↺ Lernstand zurücksetzen
-              </button>
             </div>
           </div>
         </div>
