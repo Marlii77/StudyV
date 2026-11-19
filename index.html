@@ -561,14 +561,19 @@
       border-top-color: rgba(255, 255, 255, 0.14);
       border-radius: 18px;
       overflow: hidden;
-      clip-path: inset(0 round 18px);
-      -webkit-mask-image: -webkit-radial-gradient(white, black);
-      isolation: isolate;
+      contain: layout paint;
       transform: translateY(0px) scale(1);
-      transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1),
-                  border-color 0.25s ease,
-                  box-shadow 0.28s ease,
-                  background 0.28s ease;
+      transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.22s ease,
+                  box-shadow 0.24s ease;
+    }
+
+    .nebula-study-card:hover {
+      background: linear-gradient(155deg, var(--card-bg-hover-1, #25252D) 0%, var(--card-bg-hover-2, #1C1C23) 52%, var(--card-bg-hover-3, #16161C) 100%);
+      border-color: rgba(var(--card-rgb, 96, 165, 250), 0.45);
+      transform: translateY(-4px) scale(1.006);
+      box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.72),
+                  0 0 22px -8px rgba(var(--card-rgb, 96, 165, 250), 0.22);
     }
 
     .nebula-study-card:hover {
@@ -1103,8 +1108,17 @@
       height: 100%;
       width: 100%;
       border-radius: 21.5px;
-      background: #141418;
+      background:
+        radial-gradient(95% 75% at 50% 0%, var(--frame-inner-tint, rgba(59, 130, 246, 0.16)) 0%, rgba(20, 20, 24, 0) 70%),
+        linear-gradient(165deg, #1B1B22 0%, #141418 55%, #101014 100%);
       overflow: hidden;
+    }
+
+    html[data-theme="daylight"] .neon-frame-inner,
+    html[data-theme="daylight"] .neon-frame-inner.is-back {
+      background:
+        radial-gradient(95% 75% at 50% 0%, rgba(37, 99, 235, 0.08) 0%, rgba(255, 255, 255, 0) 70%),
+        linear-gradient(165deg, #FFFFFF 0%, #F8FAFC 100%) !important;
     }
 
     .neon-frame-shimmer {
@@ -1112,55 +1126,55 @@
       background: inherit;
       background-size: inherit;
       animation: inherit;
-      filter: blur(18px);
-      opacity: 0.55;
-      z-index: -1;
-      pointer-events: none;
-      transition: opacity 0.28s ease, filter 0.28s ease;
     }
 
-    .flashcard-flipper:hover .neon-frame-outer::before {
-      opacity: 0.78;
-      filter: blur(22px);
+    /* Interactive 6-Question Quiz Modal (GPU-promoted Blur + Smooth Rendering) */
+    #quiz-popup-overlay {
+      -webkit-backdrop-filter: blur(7px);
+      backdrop-filter: blur(7px);
+      transform: translateZ(0);
+      will-change: opacity;
     }
 
-    /* Clean, neutral interior without any color tint inside the tile */
-    .neon-frame-inner,
-    .neon-frame-inner.is-back {
-      position: relative;
-      z-index: 1;
-      height: 100%;
-      width: 100%;
-      border-radius: 21.5px;
-      background: #141418;
-      overflow: hidden;
-    }
-
-    .card-glyph-badge {
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease;
-    }
-
-    .flashcard-flipper:hover .card-glyph-badge {
-      transform: scale(1.07) translateY(-1px);
-    }
-
-    .card-ambient-spark {
-      animation: cardSparkFloat 3.6s ease-in-out infinite;
-    }
-
-    /* Interactive 6-Question Quiz Modal (Question Design.png) */
     .quiz-glass-card {
       position: relative;
       border-radius: 26px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background-color: #131514;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background-color: rgba(19, 21, 20, 0.88);
       background-image:
-        radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+        radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
         var(--quiz-ambient-glow, radial-gradient(95% 65% at 50% 0%, rgba(16, 185, 129, 0.22) 0%, rgba(19, 21, 20, 0) 72%));
       background-size: 16px 16px, 100% 100%;
-      box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.85),
-                  0 0 45px -12px var(--quiz-outer-shadow, rgba(16, 185, 129, 0.25));
-      transition: background-image 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+      box-shadow: 0 24px 52px -14px rgba(0, 0, 0, 0.85);
+      contain: layout paint;
+      transform: translateZ(0);
+      transition: border-color 0.2s ease;
+    }
+
+    html[data-theme="daylight"] .quiz-glass-card {
+      background-color: rgba(255, 255, 255, 0.92) !important;
+    }
+
+    .quiz-option-btn {
+      touch-action: manipulation;
+      transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease, transform 0.1s ease;
+    }
+
+    .quiz-option-btn:active:not(:disabled) {
+      transform: scale(0.99);
+    }
+
+    /* Pause background infinite animations while quiz modal is open */
+    body.quiz-open .nebula-artwork-layer,
+    body.quiz-open .folder-glow-orb,
+    body.quiz-open .sparkle-star-lg,
+    body.quiz-open .sparkle-star-md,
+    body.quiz-open .sparkle-star-sm,
+    body.quiz-open .sparkle-glint-dot,
+    body.quiz-open .cobalt-spotlight-beam,
+    body.quiz-open .neon-frame-outer,
+    body.quiz-open .radar-sweep-cone {
+      animation-play-state: paused !important;
     }
 
     /* ===================================================================== */
@@ -1821,7 +1835,7 @@
   <!-- ===================================================================== -->
   <!-- INTERACTIVE 6-QUESTION QUIZ POP-UP (Question Design.png)              -->
   <!-- ===================================================================== -->
-  <div id="quiz-popup-overlay" onclick="closeQuizPopup()" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-[4px] hidden items-center justify-center p-4 animate-fade-in">
+  <div id="quiz-popup-overlay" onclick="closeQuizPopup()" class="fixed inset-0 z-50 bg-black/68 backdrop-blur-[7px] hidden items-center justify-center p-4">
     <div id="quiz-popup-box" onclick="event.stopPropagation()" class="w-full max-w-[440px]"></div>
   </div>
 
@@ -5075,7 +5089,7 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return;
         const parsed = JSON.parse(raw);
-        if (parsed.courses && Array.isArray(parsed.courses) && parsed.courses.length === 5) {
+        if (parsed.courses && Array.isArray(parsed.courses) && parsed.courses.length >= 3) {
           COURSES = parsed.courses;
         }
         if (parsed.appState) {
@@ -5093,7 +5107,14 @@
       }
     }
 
+    let saveDebounceTimer = null;
+    let quizWorkspaceDirty = false;
+
     function savePersistedState() {
+      if (saveDebounceTimer) {
+        clearTimeout(saveDebounceTimer);
+        saveDebounceTimer = null;
+      }
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
           courses: COURSES,
@@ -5122,6 +5143,17 @@
         // Ignore storage quota errors
       }
     }
+
+    function scheduleSavePersistedState() {
+      if (saveDebounceTimer) clearTimeout(saveDebounceTimer);
+      saveDebounceTimer = setTimeout(() => {
+        savePersistedState();
+      }, 280);
+    }
+
+    window.addEventListener('beforeunload', () => {
+      if (saveDebounceTimer) savePersistedState();
+    });
 
     function getCurrentCourse() {
       return COURSES.find(c => c.id === appState.activeCourseId) || COURSES[0];
@@ -7400,20 +7432,31 @@
         finished: false
       };
 
+      document.body.classList.add('quiz-open');
       const overlay = document.getElementById('quiz-popup-overlay');
       if (overlay) {
         overlay.classList.remove('hidden');
         overlay.classList.add('flex');
       }
-      renderQuizPopup();
+      renderQuizPopup(true);
     }
 
     function closeQuizPopup() {
       appState.activeQuizSession = null;
+      document.body.classList.remove('quiz-open');
       const overlay = document.getElementById('quiz-popup-overlay');
       if (overlay) {
         overlay.classList.add('hidden');
         overlay.classList.remove('flex');
+      }
+      if (saveDebounceTimer) {
+        savePersistedState();
+      }
+      if (quizWorkspaceDirty) {
+        quizWorkspaceDirty = false;
+        shouldAnimateDashboard = false;
+        shouldAnimateReports = false;
+        renderWorkspace();
       }
     }
 
@@ -7434,18 +7477,18 @@
           }
         }
         recordLessonCompletion(1);
-        savePersistedState();
+        quizWorkspaceDirty = true;
+        scheduleSavePersistedState();
         triggerAutoSync();
-        renderWorkspace();
       }
-      renderQuizPopup();
+      renderQuizPopup(false);
     }
 
     function toggleQuizTip() {
       const session = appState.activeQuizSession;
       if (!session) return;
       session.showTip = !session.showTip;
-      renderQuizPopup();
+      renderQuizPopup(false);
     }
 
     function skipQuizQuestion() {
@@ -7458,7 +7501,7 @@
       } else {
         session.finished = true;
       }
-      renderQuizPopup();
+      renderQuizPopup(false);
     }
 
     function nextQuizQuestion() {
@@ -7471,21 +7514,22 @@
       } else {
         session.finished = true;
       }
-      renderQuizPopup();
+      renderQuizPopup(false);
     }
 
-    function renderQuizPopup() {
+    function renderQuizPopup(isInitialOpen = false) {
       const box = document.getElementById('quiz-popup-box');
       const session = appState.activeQuizSession;
       if (!box || !session) return;
 
       const card = getCardById(session.cardId);
       const totalQ = session.questions.length;
+      const entryAnim = isInitialOpen ? 'animate-scale-in' : '';
 
       if (session.finished) {
         const isDone = card && card.completedSteps >= card.totalSteps;
         box.innerHTML = `
-          <div class="quiz-glass-card p-6 sm:p-7 text-center animate-scale-in"
+          <div class="quiz-glass-card p-6 sm:p-7 text-center"
                style="--quiz-ambient-glow: radial-gradient(95% 65% at 50% 0%, rgba(16, 185, 129, 0.28) 0%, rgba(19, 21, 20, 0) 72%);">
             <div class="w-12 h-12 rounded-full bg-[#10B981]/20 border border-[#10B981]/40 text-[#34D399] flex items-center justify-center mx-auto mb-3 text-[20px] font-bold">
               ✓
@@ -7520,7 +7564,7 @@
           : 'radial-gradient(95% 65% at 50% 0%, rgba(239, 68, 68, 0.28) 0%, rgba(19, 21, 20, 0) 72%)';
 
       box.innerHTML = `
-        <div class="quiz-glass-card p-6 sm:p-7 animate-scale-in" style="--quiz-ambient-glow: ${ambientGlow};">
+        <div class="quiz-glass-card p-6 sm:p-7 ${entryAnim}" style="--quiz-ambient-glow: ${ambientGlow};">
           <!-- Top Bar -->
           <div class="flex items-center justify-between gap-2 mb-4">
             <span class="px-3 py-1 rounded-full bg-white/[0.06] border border-white/[0.1] text-[11.5px] font-semibold text-[#E4E4E7]">
@@ -7572,7 +7616,7 @@
               return `
                 <button onclick="selectQuizOption(${idx})"
                         ${hasAnswered ? 'disabled' : ''}
-                        class="w-full text-left p-3.5 rounded-[14px] border text-[13.5px] leading-snug transition flex items-center gap-3 ${rowClass}">
+                        class="quiz-option-btn w-full text-left p-3.5 rounded-[14px] border text-[13.5px] leading-snug flex items-center gap-3 ${rowClass}">
                   ${iconHtml}
                   <span class="flex-1">${escapeHtml(opt)}</span>
                 </button>
@@ -8024,23 +8068,33 @@
       appState.activeCourseId = courseId;
       appState.showSubjectOverview = false;
       appState.activeNav = 'projects';
+      syncNavHighlight('projects');
       savePersistedState();
       renderWorkspace();
     }
 
-    function handleFolderCardMove(event, cardEl) {
-      const rect = cardEl.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = ((y - centerY) / centerY) * -3.5;
-      const rotateY = ((x - centerX) / centerX) * 3.5;
+    let cardMoveRafId = null;
 
-      cardEl.style.setProperty('--mouse-x', `${x}px`);
-      cardEl.style.setProperty('--mouse-y', `${y}px`);
-      cardEl.style.setProperty('--tilt-x', `${rotateX.toFixed(2)}deg`);
-      cardEl.style.setProperty('--tilt-y', `${rotateY.toFixed(2)}deg`);
+    function handleFolderCardMove(event, cardEl) {
+      if (appState.activeQuizSession || cardMoveRafId) return;
+      const clientX = event.clientX;
+      const clientY = event.clientY;
+      cardMoveRafId = requestAnimationFrame(() => {
+        cardMoveRafId = null;
+        if (!cardEl || appState.activeQuizSession) return;
+        const rect = cardEl.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -3.5;
+        const rotateY = ((x - centerX) / centerX) * 3.5;
+
+        cardEl.style.setProperty('--mouse-x', `${x}px`);
+        cardEl.style.setProperty('--mouse-y', `${y}px`);
+        cardEl.style.setProperty('--tilt-x', `${rotateX.toFixed(2)}deg`);
+        cardEl.style.setProperty('--tilt-y', `${rotateY.toFixed(2)}deg`);
+      });
     }
 
     function handleFolderCardLeave(cardEl) {
