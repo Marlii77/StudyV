@@ -898,6 +898,222 @@
                   0 0 45px -12px var(--quiz-outer-shadow, rgba(16, 185, 129, 0.25));
       transition: background-image 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
     }
+
+    /* ===================================================================== */
+    /* NEXT-LEVEL CALENDAR: CHRONO-MATRIX, HUD RETICLES & COUNTDOWN PASSES   */
+    /* ===================================================================== */
+    @keyframes calWaveCascade {
+      0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.94);
+        filter: blur(3px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0px);
+      }
+    }
+
+    @keyframes calMonthSlideNext {
+      from {
+        opacity: 0;
+        transform: translateX(26px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes calMonthSlidePrev {
+      from {
+        opacity: 0;
+        transform: translateX(-26px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes chronoOrbitSpin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes examTicketSlide {
+      from {
+        opacity: 0;
+        transform: translateX(16px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    .cal-month-slide-next {
+      animation: calMonthSlideNext 0.34s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .cal-month-slide-prev {
+      animation: calMonthSlidePrev 0.34s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .cal-matrix-shell {
+      position: relative;
+      background: linear-gradient(170deg, #16161B 0%, #111114 100%);
+      border: 1px solid #24242C;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 24px 50px -16px rgba(0, 0, 0, 0.78);
+    }
+
+    /* Subtle architectural scanlines across the calendar matrix */
+    .cal-matrix-scanlines {
+      background-image: repeating-linear-gradient(
+        0deg,
+        rgba(255, 255, 255, 0.015) 0px,
+        rgba(255, 255, 255, 0.015) 1px,
+        transparent 1px,
+        transparent 28px
+      );
+    }
+
+    /* Magnetic grid illumination following cursor across the entire month */
+    .cal-grid-magnetic-glow {
+      opacity: 0;
+      background: radial-gradient(
+        340px circle at var(--grid-x, 50%) var(--grid-y, 50%),
+        rgba(96, 165, 250, 0.11),
+        transparent 72%
+      );
+      transition: opacity 0.3s ease;
+    }
+
+    .cal-matrix-shell:hover .cal-grid-magnetic-glow {
+      opacity: 1;
+    }
+
+    .cal-day-tile {
+      position: relative;
+      border-radius: 13px;
+      background: rgba(24, 24, 29, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.055);
+      opacity: 0;
+      animation: calWaveCascade 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: calc(var(--wave, 0) * 28ms);
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                  background-color 0.22s ease,
+                  border-color 0.22s ease,
+                  box-shadow 0.24s ease;
+    }
+
+    .cal-day-tile:hover {
+      background: rgba(33, 34, 42, 0.95);
+      border-color: rgba(96, 165, 250, 0.45);
+      transform: translateY(-2px) scale(1.025);
+      z-index: 10;
+      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.75),
+                  0 0 18px -6px rgba(59, 130, 246, 0.35);
+    }
+
+    .cal-day-tile:active {
+      transform: scale(0.97);
+    }
+
+    .cal-day-tile.is-today {
+      background: linear-gradient(155deg, rgba(37, 99, 235, 0.24) 0%, rgba(23, 27, 40, 0.95) 100%);
+      border-color: rgba(96, 165, 250, 0.65);
+      box-shadow: inset 0 0 18px rgba(59, 130, 246, 0.16), 0 0 22px -8px rgba(59, 130, 246, 0.5);
+    }
+
+    .cal-day-tile.has-exam {
+      background: linear-gradient(160deg, rgba(29, 28, 37, 0.95) 0%, rgba(20, 20, 26, 0.96) 100%);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    /* HUD Corner Reticles that snap inward on hover (unique to Calendar) */
+    .cal-reticle {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-color: #60A5FA;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cal-reticle-tl {
+      top: 3px;
+      left: 3px;
+      border-top: 1.5px solid #60A5FA;
+      border-left: 1.5px solid #60A5FA;
+      border-top-left-radius: 4px;
+      transform: translate(-3px, -3px);
+    }
+
+    .cal-reticle-br {
+      bottom: 3px;
+      right: 3px;
+      border-bottom: 1.5px solid #60A5FA;
+      border-right: 1.5px solid #60A5FA;
+      border-bottom-right-radius: 4px;
+      transform: translate(3px, 3px);
+    }
+
+    .cal-day-tile:hover .cal-reticle {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    /* Orbiting halo around Today's day badge */
+    .cal-today-orbit {
+      position: absolute;
+      inset: -3px;
+      border-radius: 999px;
+      border: 1.5px dashed rgba(147, 197, 253, 0.75);
+      animation: chronoOrbitSpin 12s linear infinite;
+      pointer-events: none;
+    }
+
+    /* Chrono Exam Pass Cards */
+    .exam-chrono-card {
+      position: relative;
+      background: linear-gradient(160deg, #18181E 0%, #131317 100%);
+      border: 1px solid #262630;
+      border-radius: 18px;
+      overflow: hidden;
+      opacity: 0;
+      animation: examTicketSlide 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: calc(var(--stagger, 0) * 75ms);
+      transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.24s ease,
+                  box-shadow 0.28s ease;
+    }
+
+    .exam-chrono-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(var(--subj-rgb, 96, 165, 250), 0.48);
+      box-shadow: 0 18px 36px -12px rgba(0, 0, 0, 0.8),
+                  0 0 24px -8px rgba(var(--subj-rgb, 96, 165, 250), 0.25);
+    }
+
+    .exam-chrono-bar {
+      position: absolute;
+      left: 0;
+      top: 14px;
+      bottom: 14px;
+      width: 3.5px;
+      border-radius: 0 4px 4px 0;
+      background: var(--subj-hex, #60A5FA);
+      box-shadow: 0 0 14px var(--subj-hex, #60A5FA);
+    }
   </style>
 </head>
 <body class="bg-[#111113] text-[#F4F4F6] select-none">
@@ -5958,89 +6174,297 @@
       const daysHeader = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
       const todayIso = getTodayIsoKey();
 
-      const sortedExams = [...appState.exams].sort((a, b) => a.date.localeCompare(b.date));
+      const subjectStyles = {
+        'Rechnungswesen': { hex: '#60A5FA', rgb: '96, 165, 250', pillBg: 'rgba(59, 130, 246, 0.16)', pillBorder: 'rgba(96, 165, 250, 0.35)', text: '#93C5FD', courseId: 'rechnungswesen' },
+        'Gesprächsgestaltung': { hex: '#FB923C', rgb: '251, 146, 60', pillBg: 'rgba(249, 115, 22, 0.16)', pillBorder: 'rgba(251, 146, 60, 0.35)', text: '#FDBA74', courseId: 'gespraechsgestaltung' },
+        'Sozialkunde': { hex: '#A78BFA', rgb: '167, 139, 250', pillBg: 'rgba(139, 92, 246, 0.18)', pillBorder: 'rgba(167, 139, 250, 0.38)', text: '#C4B5FD', courseId: 'sozialkunde' },
+        'Englisch': { hex: '#F87171', rgb: '248, 113, 113', pillBg: 'rgba(239, 68, 68, 0.16)', pillBorder: 'rgba(248, 113, 113, 0.35)', text: '#FCA5A5', courseId: 'englisch' },
+        'Kunden akquirieren und binden': { hex: '#34D399', rgb: '52, 211, 153', pillBg: 'rgba(16, 185, 129, 0.16)', pillBorder: 'rgba(52, 211, 153, 0.35)', text: '#6EE7B7', courseId: 'kunden-akquirieren-binden' }
+      };
+
+      const filterSubjects = ['ALL', 'Rechnungswesen', 'Gesprächsgestaltung', 'Sozialkunde', 'Englisch', 'Kunden akquirieren und binden'];
+      const activeSubjFilter = appState.selectedCalendarSubject || 'ALL';
+
+      const allSortedExams = [...appState.exams].sort((a, b) => a.date.localeCompare(b.date));
+      const visibleExams = activeSubjFilter === 'ALL'
+        ? allSortedExams
+        : allSortedExams.filter(e => e.subject === activeSubjFilter);
+
+      const monthPrefix = `${year}-${String(month + 1).padStart(2, '0')}`;
+      const examsThisMonthCount = visibleExams.filter(e => e.date.startsWith(monthPrefix)).length;
+
+      const getCountdownMeta = (isoDate) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const target = new Date(isoDate + 'T00:00:00');
+        const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
+        if (diffDays < 0) {
+          return { label: 'Vorbei', short: '✓', ringColor: '#52525B', progress: 1, textClass: 'text-[#8E8E93]' };
+        }
+        if (diffDays === 0) {
+          return { label: 'Heute!', short: '0d', ringColor: '#EF4444', progress: 1, textClass: 'text-[#FCA5A5]' };
+        }
+        if (diffDays === 1) {
+          return { label: 'Morgen', short: '1d', ringColor: '#F87171', progress: 0.94, textClass: 'text-[#FCA5A5]' };
+        }
+        if (diffDays <= 5) {
+          return { label: `in ${diffDays} Tagen`, short: `${diffDays}d`, ringColor: '#F59E0B', progress: Math.max(0.25, 1 - diffDays / 21), textClass: 'text-[#FCD34D]' };
+        }
+        return { label: `in ${diffDays} Tagen`, short: `${diffDays}d`, ringColor: '#38BDF8', progress: Math.max(0.15, 1 - Math.min(30, diffDays) / 30), textClass: 'text-[#7DD3FC]' };
+      };
+
+      const ringR = 17;
+      const ringC = 2 * Math.PI * ringR;
 
       return `
-        <div class="flex-1 overflow-y-auto px-6 sm:px-9 py-7 max-w-6xl">
-          <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
-            <div>
-              <h1 class="text-[26px] font-bold text-[#F4F4F6] tracking-[-0.02em]">Klassenarbeiten &amp; Test-Kalender</h1>
-              <p class="text-[13.5px] text-[#8E8E93]">Trage deine Prüfungstermine ein und notiere direkt, was in der Arbeit dran kommt</p>
-            </div>
-            <button onclick="openAddExamModal()" class="px-4 py-2 rounded-[8px] bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[13px] font-medium transition">
-              + Termin eintragen
-            </button>
-          </div>
+        <div class="flex-1 overflow-y-auto px-6 sm:px-9 py-7">
+          <div class="max-w-[1180px]">
 
-          <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
-            <!-- Monthly Grid -->
-            <div class="xl:col-span-7 bg-[#161618] border border-[#242428] rounded-[12px] p-4">
-              <div class="flex items-center justify-between mb-4">
-                <h2 class="text-[15px] font-semibold text-[#F4F4F6]">${monthNames[month]} ${year}</h2>
-                <div class="flex items-center gap-1.5">
-                  <button onclick="changeCalendarMonth(-1)" class="px-2.5 py-1 rounded bg-[#222226] hover:bg-[#2B2B30] text-[12.5px] text-[#E4E4E7]">←</button>
-                  <button onclick="changeCalendarMonth(1)" class="px-2.5 py-1 rounded bg-[#222226] hover:bg-[#2B2B30] text-[12.5px] text-[#E4E4E7]">→</button>
+            <!-- Top Chrono Header Bar -->
+            <div class="flex items-center justify-between flex-wrap gap-4 mb-5">
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="w-2 h-2 rounded-full bg-[#60A5FA] animate-pulse"></span>
+                  <span class="text-[11.5px] font-semibold uppercase tracking-wider text-[#60A5FA]">Prüfungs-Chronometer</span>
+                </div>
+                <h1 class="text-[25px] sm:text-[28px] font-bold text-[#F4F4F6] tracking-[-0.025em]">
+                  Klassenarbeiten &amp; Test-Kalender
+                </h1>
+              </div>
+
+              <div class="flex items-center gap-2.5 flex-wrap">
+                <button onclick="jumpToCalendarToday()"
+                        class="px-3.5 py-2 rounded-[10px] bg-[#18181D] hover:bg-[#222229] border border-[#2A2A33] text-[12.5px] font-medium text-[#D4D4D8] hover:text-white transition active:scale-95">
+                  Heute
+                </button>
+                <button onclick="openAddExamModal()"
+                        class="dash-cta-pill group inline-flex items-center gap-2 px-4 py-2 rounded-[10px] bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[13px] font-semibold shadow-lg shadow-[#3B82F6]/20 transition active:scale-95">
+                  <span class="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[12px] font-bold transition-transform duration-300 group-hover:rotate-90">+</span>
+                  <span>Termin eintragen</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Subject Filter Strip -->
+            <div class="flex items-center gap-2 flex-wrap mb-6">
+              ${filterSubjects.map(subj => {
+                const isActive = activeSubjFilter === subj;
+                const st = subjectStyles[subj];
+                const label = subj === 'ALL' ? `Alle Fächer (${allSortedExams.length})` : subj;
+                return `
+                  <button onclick="selectCalendarFilterSubject('${subj}')"
+                          class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[12px] font-medium transition ${isActive ? 'bg-[#F4F4F6] text-[#111113] shadow-sm' : 'bg-[#16161B] hover:bg-[#1E1E25] border border-[#26262F] text-[#9A9AA4] hover:text-white'}">
+                    ${st ? `<span class="w-2 h-2 rounded-full" style="background-color: ${st.hex};"></span>` : ''}
+                    <span>${escapeHtml(label)}</span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+
+              <!-- LEFT 7 COLS: Chrono-Matrix Monthly Grid -->
+              <div onmousemove="handleCalendarGridMove(event, this)"
+                   class="xl:col-span-7 cal-matrix-shell cal-matrix-scanlines p-5 sm:p-6">
+                
+                <!-- Magnetic Cursor Light Field across Grid -->
+                <div class="cal-grid-magnetic-glow absolute inset-0 pointer-events-none"></div>
+
+                <!-- Month Control Header -->
+                <div class="relative z-10 flex items-center justify-between gap-3 mb-5">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-[12px] bg-[#1D1E26] border border-[#2C2E3A] flex items-center justify-center text-[#60A5FA]">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 2.5C8.43 2.5 9.1 3.17 9.1 4V4.8H14.9V4C14.9 3.17 15.57 2.5 16.4 2.5C17.23 2.5 17.9 3.17 17.9 4V5.02C19.98 5.64 21.5 7.57 21.5 9.85V16.8C21.5 19.4 19.4 21.5 16.8 21.5H7.2C4.6 21.5 2.5 19.4 2.5 16.8V9.85C2.5 7.57 4.02 5.64 6.1 5.02V4C6.1 3.17 6.77 2.5 7.6 2.5ZM5.8 11.2C5.8 10.21 6.61 9.4 7.6 9.4H16.4C17.39 9.4 18.2 10.21 18.2 11.2V16.2C18.2 17.19 17.39 18 16.4 18H7.6C6.61 18 5.8 17.19 5.8 16.2V11.2Z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h2 class="text-[18px] font-bold text-[#F4F4F6] tracking-[-0.015em]">${monthNames[month]} ${year}</h2>
+                      <p class="text-[11.5px] text-[#7E7E87]">
+                        ${examsThisMonthCount === 0 ? 'Keine Termine in diesem Monat • Tag anklicken zum Planen' : `${examsThisMonthCount} Prüfungstermin${examsThisMonthCount > 1 ? 'e' : ''} in diesem Monat`}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-1.5 bg-[#101013] border border-[#24242C] rounded-[11px] p-1">
+                    <button onclick="changeCalendarMonth(-1)" title="Vorheriger Monat"
+                            class="w-8 h-8 rounded-[8px] hover:bg-[#1E1E24] active:scale-90 text-[#A1A1AA] hover:text-white flex items-center justify-center transition">
+                      ←
+                    </button>
+                    <button onclick="changeCalendarMonth(1)" title="Nächster Monat"
+                            class="w-8 h-8 rounded-[8px] hover:bg-[#1E1E24] active:scale-90 text-[#A1A1AA] hover:text-white flex items-center justify-center transition">
+                      →
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Weekday Column Headers -->
+                <div class="relative z-10 grid grid-cols-7 gap-2 mb-2.5 text-center">
+                  ${daysHeader.map((d, idx) => `
+                    <div class="py-1 text-[11px] font-semibold uppercase tracking-wider ${idx >= 5 ? 'text-[#60A5FA]/75' : 'text-[#7E7E87]'}">
+                      ${d}
+                    </div>
+                  `).join('')}
+                </div>
+
+                <!-- Animated Matrix Grid -->
+                <div class="relative z-10 grid grid-cols-7 gap-2 ${appState.calendarSlideDir || ''}">
+                  ${Array.from({ length: startOffset }).map(() => `
+                    <div class="min-h-[84px] rounded-[13px] bg-[#121216]/45 border border-white/[0.02]"></div>
+                  `).join('')}
+
+                  ${Array.from({ length: daysInMonth }, (_, i) => {
+                    const dayNum = i + 1;
+                    const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+                    const isToday = iso === todayIso;
+                    const dayExams = visibleExams.filter(e => e.date === iso);
+                    const cellIndex = startOffset + i;
+                    const row = Math.floor(cellIndex / 7);
+                    const col = cellIndex % 7;
+                    const waveStep = row + col;
+
+                    return `
+                      <div onclick="openAddExamModal('${iso}')"
+                           style="--wave: ${waveStep};"
+                           class="cal-day-tile group min-h-[84px] p-2 cursor-pointer flex flex-col justify-between ${isToday ? 'is-today' : ''} ${dayExams.length > 0 ? 'has-exam' : ''}">
+                        
+                        <!-- HUD Corner Reticles (snap in on hover) -->
+                        <span class="cal-reticle cal-reticle-tl"></span>
+                        <span class="cal-reticle cal-reticle-br"></span>
+
+                        <!-- Day Number + Quick Add Hint -->
+                        <div class="flex items-center justify-between">
+                          <div class="relative inline-flex items-center justify-center w-6 h-6">
+                            ${isToday ? '<span class="cal-today-orbit"></span>' : ''}
+                            <span class="text-[12px] font-semibold ${isToday ? 'text-white bg-[#3B82F6] w-5 h-5 rounded-full flex items-center justify-center shadow-sm shadow-[#3B82F6]/50' : dayExams.length > 0 ? 'text-[#F4F4F6]' : 'text-[#9A9AA4] group-hover:text-white'}">
+                              ${dayNum}
+                            </span>
+                          </div>
+
+                          <span class="opacity-0 group-hover:opacity-100 text-[11px] font-bold text-[#60A5FA] transition-opacity">+</span>
+                        </div>
+
+                        <!-- Subject Color-Coded Event Pills -->
+                        <div class="mt-1.5 space-y-1">
+                          ${dayExams.slice(0, 2).map(ex => {
+                            const st = subjectStyles[ex.subject] || subjectStyles['Rechnungswesen'];
+                            return `
+                              <div onclick="event.stopPropagation(); openExamDetailModal('${ex.id}')"
+                                   style="background: ${st.pillBg}; border: 1px solid ${st.pillBorder}; color: ${st.text};"
+                                   class="px-1.5 py-0.5 rounded-[6px] text-[10px] font-semibold truncate hover:brightness-125 transition">
+                                ${escapeHtml(ex.subject)}
+                              </div>
+                            `;
+                          }).join('')}
+                          ${dayExams.length > 2 ? `
+                            <div class="text-[9.5px] font-medium text-[#8E8E93] pl-1">+${dayExams.length - 2} weitere</div>
+                          ` : ''}
+                        </div>
+                      </div>
+                    `;
+                  }).join('')}
                 </div>
               </div>
 
-              <div class="grid grid-cols-7 gap-1.5 mb-2 text-center text-[11.5px] font-medium text-[#8E8E93]">
-                ${daysHeader.map(d => `<div class="py-1">${d}</div>`).join('')}
-              </div>
+              <!-- RIGHT 5 COLS: Chrono Countdown Exam Passes ("Was kommt dran?") -->
+              <div class="xl:col-span-5 space-y-3.5">
+                <div class="flex items-center justify-between px-1">
+                  <h2 class="text-[15.5px] font-bold text-[#F4F4F6] tracking-[-0.01em]">
+                    Prüfungs-Fahrplan (${visibleExams.length})
+                  </h2>
+                  <span class="text-[11.5px] text-[#7E7E87]">Chronologisch sortiert</span>
+                </div>
 
-              <div class="grid grid-cols-7 gap-1.5">
-                ${Array.from({ length: startOffset }).map(() => `<div class="min-h-[76px] rounded-[8px] bg-[#131315]/50"></div>`).join('')}
-                ${Array.from({ length: daysInMonth }, (_, i) => {
-                  const dayNum = i + 1;
-                  const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
-                  const isToday = iso === todayIso;
-                  const dayExams = sortedExams.filter(e => e.date === iso);
+                ${visibleExams.length === 0 ? `
+                  <div class="cal-matrix-shell p-8 text-center">
+                    <div class="w-12 h-12 rounded-[14px] bg-[#1D1E26] border border-[#2C2E3A] text-[#60A5FA] flex items-center justify-center mx-auto mb-3">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.6 2.5C8.43 2.5 9.1 3.17 9.1 4V4.8H14.9V4C14.9 3.17 15.57 2.5 16.4 2.5C17.23 2.5 17.9 3.17 17.9 4V5.02C19.98 5.64 21.5 7.57 21.5 9.85V16.8C21.5 19.4 19.4 21.5 16.8 21.5H7.2C4.6 21.5 2.5 19.4 2.5 16.8V9.85C2.5 7.57 4.02 5.64 6.1 5.02V4C6.1 3.17 6.77 2.5 7.6 2.5ZM5.8 11.2C5.8 10.21 6.61 9.4 7.6 9.4H16.4C17.39 9.4 18.2 10.21 18.2 11.2V16.2C18.2 17.19 17.39 18 16.4 18H7.6C6.61 18 5.8 17.19 5.8 16.2V11.2Z" />
+                      </svg>
+                    </div>
+                    <p class="text-[13.5px] font-medium text-[#E4E4E7] mb-1">Keine Prüfungen in dieser Ansicht</p>
+                    <p class="text-[12px] text-[#7E7E87] mb-4">Klicke auf einen Tag im Kalender oder trage direkt eine Klassenarbeit ein.</p>
+                    <button onclick="openAddExamModal()" class="px-4 py-2 rounded-[9px] bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[12.5px] font-semibold transition">
+                      + Jetzt Termin anlegen
+                    </button>
+                  </div>
+                ` : visibleExams.map((ex, idx) => {
+                  const st = subjectStyles[ex.subject] || subjectStyles['Rechnungswesen'];
+                  const cd = getCountdownMeta(ex.date);
+                  const dashOffset = ringC * (1 - cd.progress);
 
                   return `
-                    <div onclick="openAddExamModal('${iso}')"
-                         class="min-h-[76px] rounded-[8px] p-1.5 border cursor-pointer transition ${isToday ? 'bg-[#1D2330] border-[#3B82F6]' : 'bg-[#1A1A1D] hover:bg-[#1F1F23] border-[#252529]'}">
-                      <div class="flex items-center justify-between">
-                        <span class="text-[11.5px] font-medium ${isToday ? 'text-[#60A5FA]' : 'text-[#9A9AA0]'}">${dayNum}</span>
-                      </div>
-                      <div class="mt-1 space-y-1">
-                        ${dayExams.map(ex => `
-                          <div onclick="event.stopPropagation(); openExamDetailModal('${ex.id}')"
-                               class="px-1.5 py-0.5 rounded text-[10px] font-medium truncate ${ex.type === 'Klassenarbeit' ? 'bg-[#EF4444]/20 border border-[#EF4444]/35 text-[#FCA5A5]' : 'bg-[#3B82F6]/20 border border-[#3B82F6]/35 text-[#93C5FD]'}">
-                            ${escapeHtml(ex.subject)}
+                    <div class="exam-chrono-card p-4 sm:p-5 pl-5"
+                         style="--stagger: ${idx}; --subj-hex: ${st.hex}; --subj-rgb: ${st.rgb};">
+                      <div class="exam-chrono-bar"></div>
+
+                      <div class="flex items-start justify-between gap-3 mb-3">
+                        <div class="min-w-0">
+                          <div class="flex items-center gap-2 flex-wrap mb-1.5">
+                            <span style="background: ${st.pillBg}; border: 1px solid ${st.pillBorder}; color: ${st.text};"
+                                  class="px-2.5 py-0.5 rounded-[6px] text-[11px] font-semibold leading-none">
+                              ${escapeHtml(ex.subject)}
+                            </span>
+                            <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-white/[0.05] text-[#C4C4CC]">
+                              ${escapeHtml(ex.type)}
+                            </span>
+                            <span class="text-[11.5px] font-semibold ${cd.textClass}">
+                              • ${formatGermanDate(ex.date)} (${cd.label})
+                            </span>
                           </div>
-                        `).join('')}
+                          <h3 class="text-[15.5px] font-bold text-[#F4F4F6] leading-snug">
+                            ${escapeHtml(ex.title)}
+                          </h3>
+                        </div>
+
+                        <!-- Radial Countdown Gauge + Delete -->
+                        <div class="flex items-center gap-2 shrink-0">
+                          <div class="relative w-11 h-11 flex items-center justify-center" title="${cd.label}">
+                            <svg class="w-11 h-11 -rotate-90" viewBox="0 0 42 42">
+                              <circle cx="21" cy="21" r="${ringR}" fill="none" stroke="#24242D" stroke-width="3" />
+                              <circle cx="21" cy="21" r="${ringR}" fill="none" stroke="${cd.ringColor}" stroke-width="3"
+                                      stroke-linecap="round"
+                                      stroke-dasharray="${ringC.toFixed(1)}"
+                                      stroke-dashoffset="${dashOffset.toFixed(1)}" />
+                            </svg>
+                            <span class="absolute text-[10.5px] font-bold text-[#F4F4F6]">${cd.short}</span>
+                          </div>
+
+                          <button onclick="deleteExam('${ex.id}')" title="Termin löschen"
+                                  class="w-7 h-7 rounded-lg hover:bg-[#EF4444]/15 text-[#78787F] hover:text-[#F87171] flex items-center justify-center text-[12px] transition">
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- "Was kommt dran?" Syllabus Box -->
+                      <div class="bg-[#111114] border border-[#23232B] rounded-[11px] p-3.5 mb-3">
+                        <div class="flex items-center justify-between mb-1.5">
+                          <span class="text-[10.5px] font-bold uppercase tracking-wider" style="color: ${st.text};">
+                            Was kommt dran?
+                          </span>
+                        </div>
+                        <p class="text-[12.5px] text-[#D4D4D8] leading-relaxed whitespace-pre-line">${escapeHtml(ex.topics)}</p>
+                      </div>
+
+                      <!-- Direct Jump to Practice Subject -->
+                      <div class="flex items-center justify-between">
+                        <button onclick="openExamDetailModal('${ex.id}')"
+                                class="text-[12px] text-[#8E8E93] hover:text-white transition">
+                          Details öffnen
+                        </button>
+                        <button onclick="openSubjectFromExam('${escapeHtml(ex.subject)}')"
+                                class="inline-flex items-center gap-1.5 text-[12px] font-semibold transition hover:translate-x-0.5"
+                                style="color: ${st.text};">
+                          <span>Fach jetzt üben</span>
+                          <span>→</span>
+                        </button>
                       </div>
                     </div>
                   `;
                 }).join('')}
               </div>
-            </div>
 
-            <!-- Upcoming Exams & "Was kommt dran?" List -->
-            <div class="xl:col-span-5 space-y-3.5">
-              <h2 class="text-[15px] font-semibold text-[#F4F4F6]">Anstehende Klassenarbeiten &amp; Tests (${sortedExams.length})</h2>
-              ${sortedExams.length === 0 ? `
-                <div class="bg-[#1A1A1D] border border-[#26262A] rounded-[12px] p-6 text-center text-[13px] text-[#8E8E93]">
-                  Noch keine Termine eingetragen. Klicke auf „+ Termin eintragen“.
-                </div>
-              ` : sortedExams.map(ex => `
-                <div class="bg-[#1A1A1D] border border-[#26262A] rounded-[12px] p-4">
-                  <div class="flex items-center justify-between gap-2 mb-2">
-                    <div class="flex items-center gap-2">
-                      ${renderCategoryBadge(ex.subject)}
-                      <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-[#252529] text-[#D4D4D8]">${escapeHtml(ex.type)}</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                      <span class="text-[12px] font-semibold text-[#E59A3C]">${formatGermanDate(ex.date)}</span>
-                      <button onclick="deleteExam('${ex.id}')" title="Termin löschen" class="text-[#78787F] hover:text-[#F87171] text-[12px] px-1">✕</button>
-                    </div>
-                  </div>
-                  <h3 class="text-[14.5px] font-semibold text-[#F4F4F6] mb-2">${escapeHtml(ex.title)}</h3>
-                  <div class="bg-[#131315] border border-[#242429] rounded-[8px] p-3">
-                    <div class="text-[11px] font-semibold uppercase tracking-wider text-[#60A5FA] mb-1">Was kommt dran?</div>
-                    <p class="text-[12.5px] text-[#C4C4CC] leading-relaxed whitespace-pre-line">${escapeHtml(ex.topics)}</p>
-                  </div>
-                </div>
-              `).join('')}
             </div>
           </div>
         </div>
@@ -7093,9 +7517,46 @@
       let y = appState.calendarYear;
       if (m < 0) { m = 11; y -= 1; }
       if (m > 11) { m = 0; y += 1; }
+      appState.calendarSlideDir = delta > 0 ? 'cal-month-slide-next' : 'cal-month-slide-prev';
       appState.calendarMonth = m;
       appState.calendarYear = y;
       renderWorkspace();
+    }
+
+    function jumpToCalendarToday() {
+      const now = new Date();
+      const targetYear = now.getFullYear();
+      const targetMonth = now.getMonth();
+      const currentTotal = appState.calendarYear * 12 + appState.calendarMonth;
+      const targetTotal = targetYear * 12 + targetMonth;
+      appState.calendarSlideDir = targetTotal >= currentTotal ? 'cal-month-slide-next' : 'cal-month-slide-prev';
+      appState.calendarYear = targetYear;
+      appState.calendarMonth = targetMonth;
+      renderWorkspace();
+      showToast('Zum aktuellen Monat gesprungen');
+    }
+
+    function selectCalendarFilterSubject(subject) {
+      appState.selectedCalendarSubject = subject;
+      appState.calendarSlideDir = '';
+      renderWorkspace();
+    }
+
+    function handleCalendarGridMove(event, shellEl) {
+      const rect = shellEl.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      shellEl.style.setProperty('--grid-x', `${x}px`);
+      shellEl.style.setProperty('--grid-y', `${y}px`);
+    }
+
+    function openSubjectFromExam(subjectTitle) {
+      const matched = COURSES.find(c => c.title === subjectTitle);
+      if (matched) {
+        openSubjectBoard(matched.id);
+      } else {
+        navigateSection('projects');
+      }
     }
 
     function submitNewExam(event) {
