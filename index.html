@@ -200,7 +200,7 @@
     html[data-theme="daylight"] .report-telemetry-card,
     html[data-theme="daylight"] .report-subject-accordion,
     html[data-theme="daylight"] .settings-studio-card {
-      background: #FFFFFF !important;
+      background-color: #FFFFFF !important;
       border-color: #E2E5EE !important;
       box-shadow: 0 10px 26px -10px rgba(15, 23, 42, 0.08) !important;
     }
@@ -221,11 +221,9 @@
       background-clip: text !important;
       color: transparent !important;
     }
-    html[data-theme="daylight"] .neon-frame-inner {
-      background: radial-gradient(115% 85% at 18% 0%, rgba(59, 130, 246, 0.08) 0%, #FFFFFF 58%, #F8FAFC 100%) !important;
-    }
+    html[data-theme="daylight"] .neon-frame-inner,
     html[data-theme="daylight"] .neon-frame-inner.is-back {
-      background: radial-gradient(120% 90% at 82% 100%, rgba(16, 185, 129, 0.12) 0%, #FFFFFF 58%, #F8FAFC 100%) !important;
+      background: #FFFFFF !important;
     }
     html[data-theme="daylight"] .quiz-glass-card {
       background-color: #FFFFFF !important;
@@ -963,10 +961,16 @@
 
     @keyframes neonGlowBreath {
       0%, 100% {
-        box-shadow: 0 0 42px -10px var(--frame-glow), 0 22px 40px -14px rgba(0, 0, 0, 0.88);
+        filter: hue-rotate(0deg);
+        box-shadow: 0 0 36px -8px rgba(59, 130, 246, 0.45),
+                    0 0 18px -4px rgba(168, 85, 247, 0.35),
+                    0 22px 40px -14px rgba(0, 0, 0, 0.85);
       }
       50% {
-        box-shadow: 0 0 58px -6px var(--frame-glow), 0 26px 46px -14px rgba(0, 0, 0, 0.92);
+        filter: hue-rotate(180deg);
+        box-shadow: 0 0 44px -6px rgba(236, 72, 153, 0.48),
+                    0 0 22px -4px rgba(16, 185, 129, 0.38),
+                    0 26px 46px -14px rgba(0, 0, 0, 0.9);
       }
     }
 
@@ -1077,65 +1081,67 @@
       transition: opacity 0.24s ease 0.16s, visibility 0s linear 0s;
     }
 
+    /* Outer-only shifting rainbow/neon border & outer aura glow */
     .neon-frame-outer {
       position: relative;
       width: 100%;
       height: 100%;
       border-radius: 24px;
-      padding: 2px;
-      background: var(--frame-border-gradient);
-      animation: neonGlowBreath 4.8s ease-in-out infinite;
-      transition: filter 0.28s ease, transform 0.28s ease;
+      padding: 2.5px;
+      background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 35%, #EC4899 70%, #10B981 100%);
+      animation: neonGlowBreath 7s ease-in-out infinite;
+      transition: transform 0.28s ease;
     }
 
     .flashcard-flipper:hover .neon-frame-outer {
-      filter: brightness(1.06);
+      transform: scale(1.004);
     }
 
-    .neon-frame-inner {
+    .neon-frame-inner,
+    .neon-frame-inner.is-back {
       position: relative;
       height: 100%;
       width: 100%;
-      border-radius: 22px;
-      background: radial-gradient(115% 85% at 18% 0%, rgba(255, 255, 255, 0.06) 0%, rgba(19, 19, 23, 0.99) 54%, #111114 100%);
+      border-radius: 21.5px;
+      background: #141418;
       overflow: hidden;
     }
 
-    .neon-frame-inner.is-back {
-      background: radial-gradient(120% 90% at 82% 100%, var(--frame-inner-tint, rgba(56, 189, 248, 0.18)) 0%, rgba(18, 18, 22, 0.99) 58%, #111114 100%);
-    }
-
     .neon-frame-shimmer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 50%;
-      height: 1.5px;
-      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.75) 50%, transparent 100%);
-      animation: cardEdgeSweep 4.6s ease-in-out infinite;
+      border-radius: 27px;
+      background: inherit;
+      background-size: inherit;
+      animation: inherit;
+      filter: blur(18px);
+      opacity: 0.55;
+      z-index: -1;
+      pointer-events: none;
+      transition: opacity 0.28s ease, filter 0.28s ease;
     }
 
-    .neon-frame-spotlight {
-      opacity: 0;
-      background: radial-gradient(
-        300px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(255, 255, 255, 0.09),
-        transparent 70%
-      );
-      transition: opacity 0.25s ease;
+    .flashcard-flipper:hover .neon-frame-outer::before {
+      opacity: 0.78;
+      filter: blur(22px);
     }
 
-    .flashcard-flipper:hover .neon-frame-spotlight {
-      opacity: 1;
+    /* Clean, neutral interior without any color tint inside the tile */
+    .neon-frame-inner,
+    .neon-frame-inner.is-back {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      width: 100%;
+      border-radius: 21.5px;
+      background: #141418;
+      overflow: hidden;
     }
 
     .card-glyph-badge {
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease;
     }
 
     .flashcard-flipper:hover .card-glyph-badge {
-      transform: scale(1.08) translateY(-1px);
-      box-shadow: 0 0 18px -4px var(--frame-glow);
+      transform: scale(1.07) translateY(-1px);
     }
 
     .card-ambient-spark {
@@ -1428,12 +1434,14 @@
       border: 1px solid #24242D;
       border-radius: 20px;
       overflow: hidden;
-      opacity: 0;
-      animation: reportCardFlipIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: calc(var(--stagger, 0) * 65ms);
       transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
                   border-color 0.25s ease,
                   box-shadow 0.28s ease;
+    }
+
+    .report-telemetry-card.rep-anim {
+      animation: reportCardFlipIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(var(--stagger, 0) * 65ms);
     }
 
     .report-telemetry-card:hover {
@@ -1465,10 +1473,12 @@
       border: 1px solid #24242D;
       border-radius: 18px;
       overflow: hidden;
-      opacity: 0;
-      animation: reportCardFlipIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: calc(var(--stagger, 0) * 70ms);
       transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .report-subject-accordion.rep-anim {
+      animation: reportCardFlipIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: calc(var(--stagger, 0) * 70ms);
     }
 
     .report-subject-accordion:hover {
@@ -1514,7 +1524,25 @@
         transform: translateX(-140%) skewX(-22deg);
       }
       100% {
-        transform: translateX(260%) skewX(-22deg);
+        transform: translateX(320%) skewX(-22deg);
+      }
+    }
+
+    @keyframes cautionStripeSlide {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 45.25px 0;
+      }
+    }
+
+    @keyframes dashedBorderMarch {
+      0% {
+        stroke-dashoffset: 0;
+      }
+      100% {
+        stroke-dashoffset: -28;
       }
     }
 
@@ -1524,9 +1552,7 @@
       border: 1px solid #24242C;
       border-radius: 20px;
       overflow: hidden;
-      opacity: 0;
-      animation: reportCardFlipIn 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      animation-delay: calc(var(--stagger, 0) * 70ms);
+      opacity: 1;
       transition: border-color 0.25s ease, box-shadow 0.28s ease;
     }
 
@@ -1535,11 +1561,15 @@
       box-shadow: 0 18px 36px -14px rgba(0, 0, 0, 0.72);
     }
 
+    .settings-studio-card.danger-caution-strip {
+      border-color: rgba(239, 68, 68, 0.38) !important;
+    }
+
     .settings-studio-card.danger-caution-strip:hover,
     html[data-theme="daylight"] .settings-studio-card.danger-caution-strip:hover {
-      border-color: rgba(239, 68, 68, 0.65) !important;
+      border-color: rgba(239, 68, 68, 0.85) !important;
       box-shadow: 0 18px 36px -14px rgba(0, 0, 0, 0.72),
-                  0 0 24px -8px rgba(239, 68, 68, 0.35) !important;
+                  0 0 26px -6px rgba(239, 68, 68, 0.42) !important;
     }
 
     .avatar-orbital-ring {
@@ -1594,14 +1624,33 @@
       box-shadow: 0 0 12px #10B981;
     }
 
+    @keyframes cautionStripeMove {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 22.6274px 0;
+      }
+    }
+
     .danger-caution-strip {
       background-image: repeating-linear-gradient(
         -45deg,
-        rgba(239, 68, 68, 0.08),
-        rgba(239, 68, 68, 0.08) 8px,
+        rgba(239, 68, 68, 0.11),
+        rgba(239, 68, 68, 0.11) 8px,
         transparent 8px,
         transparent 16px
       );
+      background-size: 45.25px 45.25px;
+      animation: cautionStripeSlide 2.8s linear infinite;
+    }
+
+    .danger-caution-strip:hover {
+      animation-duration: 1.5s;
+    }
+
+    .danger-dashed-rect {
+      animation: dashedBorderMarch 1.4s linear infinite;
     }
   </style>
 </head>
@@ -1663,7 +1712,6 @@
               </svg>
               <span>Search</span>
             </span>
-            <span class="text-[10.5px] text-[#66666E] bg-[#1C1C20] border border-[#28282D] px-1.5 py-0.5 rounded">⌘K</span>
           </button>
 
           <button onclick="openNotificationsModal()" class="w-full flex items-center justify-between px-3 py-2 rounded-[8px] text-[13.5px] font-normal text-[#9A9AA0] hover:text-[#F4F4F6] hover:bg-[#1E1E22] transition">
@@ -5011,7 +5059,7 @@
       calendarYear: 2026,
       calendarSubjectFilter: 'ALL',
       calendarSlideDir: '',
-      expandedReportSubjectId: null,
+      expandedReportSubjectId: 'rechnungswesen',
       exams: getDefaultExams(),
       quickNotes: [],
       flashcards: getDefaultFlashcards(),
@@ -6042,12 +6090,25 @@
     // 3E. REPORTS VIEW (Telemetry Gauges, 5-Axis Radar Web & Equalizer Matrix)
     // =========================================================================
 
+    let shouldAnimateReports = true;
+
     function toggleReportSubjectExpand(courseId) {
+      const scroller = document.getElementById('reports-scroll-container');
+      const savedScrollTop = scroller ? scroller.scrollTop : 0;
+      shouldAnimateReports = false;
       appState.expandedReportSubjectId = appState.expandedReportSubjectId === courseId ? null : courseId;
       renderWorkspace();
+      const restoredScroller = document.getElementById('reports-scroll-container');
+      if (restoredScroller) {
+        restoredScroller.scrollTop = savedScrollTop;
+      }
     }
 
     function renderReportsView() {
+      const animateReports = shouldAnimateReports;
+      const repAnim = animateReports ? 'rep-anim' : '';
+      shouldAnimateReports = false;
+
       const totalCards = COURSES.reduce((s, c) => s + c.cards.length, 0);
       const doneCards = COURSES.reduce((s, c) => s + c.cards.filter(m => m.column === 'completed').length, 0);
       const totalQuestionsDone = COURSES.reduce((s, c) => s + c.cards.reduce((a, m) => a + m.completedSteps, 0), 0);
@@ -6131,7 +6192,7 @@
       const radarGridStroke = isLight ? '#CBD5E1' : '#282834';
 
       return `
-        <div class="flex-1 overflow-y-auto px-6 sm:px-9 py-7">
+        <div id="reports-scroll-container" class="flex-1 overflow-y-auto px-6 sm:px-9 py-7">
           <div class="max-w-[1140px]">
 
             <!-- Header -->
@@ -6163,7 +6224,7 @@
                 const circ = 2 * Math.PI * r;
                 const offset = circ - (rc.pct / 100) * circ;
                 return `
-                  <div style="--stagger: ${idx};" class="report-telemetry-card p-4 flex items-center gap-4">
+                  <div style="--stagger: ${idx};" class="report-telemetry-card ${repAnim} p-4 flex items-center gap-4">
                     <div class="relative w-16 h-16 shrink-0 flex items-center justify-center">
                       <svg class="w-full h-full -rotate-90" viewBox="0 0 60 60">
                         <circle cx="30" cy="30" r="${r}" fill="none" stroke="${ringTrackColor}" stroke-width="5" />
@@ -6189,7 +6250,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
               <!-- Left 5 Cols: Interactive 5-Axis Competency Radar -->
-              <div style="--stagger: 4;" class="lg:col-span-5 report-telemetry-card p-5 sm:p-6">
+              <div style="--stagger: 4;" class="lg:col-span-5 report-telemetry-card ${repAnim} p-5 sm:p-6">
                 <div class="flex items-center justify-between mb-2">
                   <div>
                     <h2 class="text-[15.5px] font-bold text-[#F4F4F6]">5-Fächer Kompetenz-Netz</h2>
@@ -6239,6 +6300,7 @@
                              stroke="#60A5FA"
                              stroke-width="2.2"
                              stroke-linejoin="round"
+                             style="${animateReports ? '' : 'animation: none; opacity: 1;'}"
                              class="radar-polygon-shape" />
 
                     <!-- Interactive Vertex Nodes & Labels -->
@@ -6275,7 +6337,7 @@
                 ${subjectMetrics.map((sm, sIdx) => {
                   const isExpanded = appState.expandedReportSubjectId === sm.id || sIdx === 0 && appState.expandedReportSubjectId === null;
                   return `
-                    <div style="--stagger: ${sIdx + 5}; --subj-rgb: ${sm.rgb};" class="report-subject-accordion p-4 sm:p-5">
+                    <div style="--stagger: ${sIdx + 5}; --subj-rgb: ${sm.rgb};" class="report-subject-accordion ${repAnim} p-4 sm:p-5">
                       <div onclick="toggleReportSubjectExpand('${sm.id}')" class="flex items-center justify-between gap-4 cursor-pointer">
                         <div class="flex items-center gap-3 min-w-0">
                           <span class="w-3 h-3 rounded-full shrink-0" style="background: ${sm.hex}; box-shadow: 0 0 12px ${sm.hex};"></span>
@@ -6290,7 +6352,7 @@
                           <div class="hidden sm:flex items-end gap-1 h-6 px-2 py-1 rounded-lg bg-white/[0.03]">
                             ${sm.cards.map((m, mIdx) => {
                               const mPct = m.totalSteps > 0 ? Math.max(18, Math.round((m.completedSteps / m.totalSteps) * 100)) : 18;
-                              return `<span style="--eq-idx: ${mIdx}; height: ${mPct}%; background: ${m.completedSteps > 0 ? sm.hex : '#32323C'};" class="eq-bar-fill w-1.5 rounded-t-sm"></span>`;
+                              return `<span style="--eq-idx: ${mIdx}; height: ${mPct}%; background: ${m.completedSteps > 0 ? sm.hex : '#32323C'}; ${animateReports ? '' : 'animation: none; opacity: 1;'}" class="eq-bar-fill w-1.5 rounded-t-sm"></span>`;
                             }).join('')}
                           </div>
                           <span class="text-[14px] font-bold" style="color: ${sm.hex};">${sm.pct}%</span>
@@ -6359,7 +6421,7 @@
       const goalPresets = [3, 6, 10, 15];
 
       return `
-        <div class="flex-1 overflow-y-auto px-6 sm:px-9 py-7">
+        <div class="flex-1 overflow-y-auto px-6 sm:px-9 pt-7 pb-14">
           <div class="max-w-[920px]">
 
             <!-- Top Studio Header -->
@@ -6603,14 +6665,19 @@
                 </div>
               </div>
 
-              <!-- 4. Tactile Danger Zone / Reset Dock -->
-              <div style="--stagger: 3;" class="settings-studio-card danger-caution-strip p-5 flex items-center justify-between flex-wrap gap-4 border-[#EF4444]/30">
-                <div>
+              <!-- 4. Tactile Danger Zone / Reset Dock with Animated Dashed Lines -->
+              <div style="--stagger: 3;" class="settings-studio-card danger-caution-strip p-5 flex items-center justify-between flex-wrap gap-4 relative">
+                <svg class="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none">
+                  <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="19" ry="19"
+                        fill="none" stroke="rgba(239, 68, 68, 0.55)" stroke-width="1.5" stroke-dasharray="8 6"
+                        class="danger-dashed-rect" />
+                </svg>
+                <div class="relative z-10">
                   <h2 class="text-[15px] font-bold text-[#F4F4F6]">Lernstand verwalten</h2>
                   <p class="text-[12px] text-[#8E8E93] mt-0.5">Setzt alle Lernmodule auf 0 / 30 Fragen und alle Karteikarten zurück.</p>
                 </div>
                 <button type="button" onclick="openResetAllModal()"
-                        class="px-4 py-2 rounded-[10px] bg-[#EF4444] hover:bg-[#DC2626] text-white text-[13px] font-semibold shadow-md shadow-[#EF4444]/20 transition">
+                        class="relative z-10 px-4 py-2 rounded-[10px] bg-[#EF4444] hover:bg-[#DC2626] text-white text-[13px] font-semibold shadow-md shadow-[#EF4444]/20 transition">
                   ↺ Lernstand zurücksetzen
                 </button>
               </div>
@@ -6953,7 +7020,6 @@
                       <div class="neon-frame-outer">
                         <div class="neon-frame-inner p-7 sm:p-9 flex flex-col justify-between">
                           <div class="neon-frame-shimmer pointer-events-none"></div>
-                          <div class="neon-frame-spotlight absolute inset-0 pointer-events-none"></div>
 
                           <!-- Top Row: Solid Icon + Subject + Card Counter -->
                           <div class="relative z-10 flex items-center justify-between gap-3">
@@ -6992,7 +7058,6 @@
                       <div class="neon-frame-outer">
                         <div class="neon-frame-inner is-back p-7 sm:p-9 flex flex-col justify-between">
                           <div class="neon-frame-shimmer pointer-events-none"></div>
-                          <div class="neon-frame-spotlight absolute inset-0 pointer-events-none"></div>
 
                           <!-- Top Row -->
                           <div class="relative z-10 flex items-center justify-between gap-3">
@@ -7938,6 +8003,9 @@
       appState.activeNav = navId;
       if (navId === 'dashboard') {
         shouldAnimateDashboard = true;
+      }
+      if (navId === 'reports') {
+        shouldAnimateReports = true;
       }
       if (navId === 'projects') {
         appState.showSubjectOverview = true;
