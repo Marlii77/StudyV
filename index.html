@@ -10,11 +10,11 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="theme-color" content="#111113" />
-  <link id="studyv-favicon" rel="icon" type="image/png" href="IconV.png" />
-  <link rel="shortcut icon" type="image/png" href="IconV.png" />
-  <link id="studyv-apple-icon" rel="apple-touch-icon" href="IconV.png" />
-  <link id="studyv-apple-icon-180" rel="apple-touch-icon" sizes="180x180" href="IconV.png" />
-  <link rel="manifest" id="studyv-manifest" />
+  <link id="studyv-favicon" rel="icon" type="image/png" href="./IconV.png" />
+  <link rel="shortcut icon" type="image/png" href="./IconV.png" />
+  <link id="studyv-apple-icon" rel="apple-touch-icon" href="./IconV.png" />
+  <link id="studyv-apple-icon-180" rel="apple-touch-icon" sizes="180x180" href="./IconV.png" />
+  <link rel="manifest" id="studyv-manifest" href="./manifest.json" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,9 +30,17 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: var(--theme-bg, #111113);
       color: var(--theme-text, #F4F4F6);
+      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       transition: background-color 0.28s ease, color 0.28s ease;
+    }
+
+    #app-root {
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      padding-left: env(safe-area-inset-left, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
     }
 
     /* ===================================================================== */
@@ -285,6 +293,60 @@
     }
     html[data-theme="daylight"] #left-sidebar img[alt="StudyV Logo"] {
       filter: invert(1) brightness(0.15);
+    }
+
+    html[data-theme="daylight"] .mistake-trainer-pill {
+      background-color: rgba(239, 68, 68, 0.1) !important;
+      border-color: rgba(239, 68, 68, 0.35) !important;
+      color: #DC2626 !important;
+    }
+
+    html[data-theme="daylight"] .exam-sim-pill,
+    html[data-theme="daylight"] .sidebar-xp-card,
+    html[data-theme="daylight"] .sidebar-pomo-card,
+    html[data-theme="daylight"] .dash-xp-pill {
+      background-color: #FFFFFF !important;
+      border-color: #CBD5E1 !important;
+      color: #1E293B !important;
+    }
+
+    html[data-theme="daylight"] .search-palette-shell {
+      background-color: #FFFFFF !important;
+      border-color: #CBD5E1 !important;
+      box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.24) !important;
+    }
+    html[data-theme="daylight"] .search-result-item:hover {
+      background-color: #F1F5F9 !important;
+    }
+    html[data-theme="daylight"] mark.search-hl {
+      background-color: rgba(37, 99, 235, 0.18) !important;
+      color: #1D4ED8 !important;
+    }
+
+    html[data-theme="daylight"] .quiz-kbd-chip {
+      background-color: #E2E8F0 !important;
+      border-color: #CBD5E1 !important;
+      color: #334155 !important;
+    }
+
+    html[data-theme="daylight"] .quiz-glass-card .border-white\/\[0\.09\],
+    html[data-theme="daylight"] .quiz-glass-card .border-white\/\[0\.05\],
+    html[data-theme="daylight"] .quiz-glass-card .border-white\/20 {
+      border-color: #CBD5E1 !important;
+    }
+
+    html[data-theme="daylight"] .quiz-glass-card .text-\[\#6EE7B7\],
+    html[data-theme="daylight"] .quiz-glass-card .text-\[\#A7F3D0\] {
+      color: #047857 !important;
+    }
+
+    html[data-theme="daylight"] .quiz-glass-card .text-\[\#FCA5A5\],
+    html[data-theme="daylight"] .quiz-glass-card .text-\[\#FECACA\] {
+      color: #B91C1C !important;
+    }
+
+    html[data-theme="daylight"] .quiz-glass-card .text-\[\#FDE68A\] {
+      color: #B45309 !important;
     }
 
     /* Subtle Dark Scrollbars */
@@ -566,14 +628,6 @@
       transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
                   border-color 0.22s ease,
                   box-shadow 0.24s ease;
-    }
-
-    .nebula-study-card:hover {
-      background: linear-gradient(155deg, var(--card-bg-hover-1, #25252D) 0%, var(--card-bg-hover-2, #1C1C23) 52%, var(--card-bg-hover-3, #16161C) 100%);
-      border-color: rgba(var(--card-rgb, 96, 165, 250), 0.45);
-      transform: translateY(-4px) scale(1.006);
-      box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.72),
-                  0 0 22px -8px rgba(var(--card-rgb, 96, 165, 250), 0.22);
     }
 
     .nebula-study-card:hover {
@@ -1686,7 +1740,7 @@
         <div class="flex items-center justify-between px-1.5 pb-4">
           <button onclick="navigateSection('dashboard')" class="flex items-center gap-2.5 text-left group focus:outline-none">
             <div class="w-6 h-6 flex items-center justify-center shrink-0">
-              <img src="IconV.png" alt="StudyV Logo"
+              <img src="./IconV.png" alt="StudyV Logo"
                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
                    class="w-6 h-6 object-contain" />
               <svg style="display:none;" width="22" height="22" viewBox="0 0 24 24" fill="none" class="text-[#F4F4F6]">
@@ -1726,6 +1780,7 @@
               </svg>
               <span>Search</span>
             </span>
+            <kbd class="quiz-kbd-chip text-[10.5px] font-mono text-[#7E7E87] bg-[#1C1C20] border border-[#28282D] px-1.5 py-0.5 rounded">Strg+K</kbd>
           </button>
 
           <button onclick="openNotificationsModal()" class="w-full flex items-center justify-between px-3 py-2 rounded-[8px] text-[13.5px] font-normal text-[#9A9AA0] hover:text-[#F4F4F6] hover:bg-[#1E1E22] transition">
@@ -1796,6 +1851,12 @@
             <span>Settings</span>
           </button>
         </nav>
+
+        <!-- Compact Sidebar Streak & XP Level Card -->
+        <div id="sidebar-gamification-slot" class="mt-4"></div>
+
+        <!-- Compact Expandable Pomodoro Focus Timer Widget -->
+        <div id="sidebar-pomodoro-slot" class="mt-3"></div>
       </div>
     </aside>
 
@@ -1812,7 +1873,7 @@
           </svg>
         </button>
         <div class="flex items-center gap-2">
-          <img src="IconV.png" alt="StudyV Logo"
+          <img src="./IconV.png" alt="StudyV Logo"
                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
                class="w-5 h-5 object-contain" />
           <svg style="display:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-[#F4F4F6]">
@@ -1835,7 +1896,7 @@
   <!-- ===================================================================== -->
   <!-- INTERACTIVE 6-QUESTION QUIZ POP-UP (Question Design.png)              -->
   <!-- ===================================================================== -->
-  <div id="quiz-popup-overlay" onclick="closeQuizPopup()" class="fixed inset-0 z-50 bg-black/68 backdrop-blur-[7px] hidden items-center justify-center p-4">
+  <div id="quiz-popup-overlay" onclick="handleQuizBackdropClick()" class="fixed inset-0 z-50 bg-black/68 backdrop-blur-[7px] hidden items-center justify-center p-4">
     <div id="quiz-popup-box" onclick="event.stopPropagation()" class="w-full max-w-[440px]"></div>
   </div>
 
@@ -5078,9 +5139,26 @@
       quickNotes: [],
       flashcards: getDefaultFlashcards(),
       selectedFlashcardSubject: 'ALL',
+      flashcardDueFilterOnly: false,
       flashcardPage: 0,
       flashcardSlideDir: '',
       flippedFlashcardIds: {},
+      wrongQuestions: {},
+      xp: 0,
+      streakDays: 0,
+      lastActiveDate: null,
+      streakFreezeWeekKey: '',
+      streakFreezeUsedThisWeek: false,
+      streakShieldSavedToday: false,
+      soundEnabled: false,
+      pomoExpanded: false,
+      pomoMode: 'focus',
+      pomoFocusMinutes: 25,
+      pomoBreakMinutes: 5,
+      pomoRemainingSeconds: 25 * 60,
+      pomoRunning: false,
+      pomoAutoGoal: true,
+      pomoSessionsDone: 0,
       notifications: []
     };
 
@@ -5099,8 +5177,31 @@
             activeNav: 'dashboard',
             selectedCardId: null,
             draggedCardId: null,
-            activeQuizSession: null
+            activeQuizSession: null,
+            pomoRunning: false,
+            wrongQuestions: (parsed.appState.wrongQuestions && typeof parsed.appState.wrongQuestions === 'object')
+              ? parsed.appState.wrongQuestions
+              : {},
+            xp: typeof parsed.appState.xp === 'number' ? parsed.appState.xp : 0,
+            streakDays: typeof parsed.appState.streakDays === 'number' ? parsed.appState.streakDays : 0,
+            soundEnabled: !!parsed.appState.soundEnabled,
+            pomoFocusMinutes: typeof parsed.appState.pomoFocusMinutes === 'number' ? parsed.appState.pomoFocusMinutes : 25,
+            pomoBreakMinutes: typeof parsed.appState.pomoBreakMinutes === 'number' ? parsed.appState.pomoBreakMinutes : 5,
+            pomoRemainingSeconds: typeof parsed.appState.pomoRemainingSeconds === 'number'
+              ? parsed.appState.pomoRemainingSeconds
+              : ((parsed.appState.pomoFocusMinutes || 25) * 60),
+            pomoAutoGoal: typeof parsed.appState.pomoAutoGoal === 'boolean' ? parsed.appState.pomoAutoGoal : true,
+            pomoSessionsDone: typeof parsed.appState.pomoSessionsDone === 'number' ? parsed.appState.pomoSessionsDone : 0
           };
+          if (Array.isArray(appState.flashcards)) {
+            appState.flashcards = appState.flashcards.map(fc => ({
+              box: typeof fc.box === 'number' ? fc.box : (fc.mastered ? 3 : 0),
+              intervalDays: typeof fc.intervalDays === 'number' ? fc.intervalDays : (fc.mastered ? 4 : 0),
+              dueDate: fc.dueDate || null,
+              isCustom: !!fc.isCustom,
+              ...fc
+            }));
+          }
         }
       } catch (e) {
         // Fallback silently to defaults
@@ -5135,7 +5236,21 @@
             quickNotes: appState.quickNotes,
             flashcards: appState.flashcards,
             selectedFlashcardSubject: appState.selectedFlashcardSubject,
+            flashcardDueFilterOnly: appState.flashcardDueFilterOnly,
             flashcardPage: appState.flashcardPage,
+            wrongQuestions: appState.wrongQuestions,
+            xp: appState.xp,
+            streakDays: appState.streakDays,
+            lastActiveDate: appState.lastActiveDate,
+            streakFreezeWeekKey: appState.streakFreezeWeekKey,
+            streakFreezeUsedThisWeek: appState.streakFreezeUsedThisWeek,
+            streakShieldSavedToday: appState.streakShieldSavedToday,
+            soundEnabled: appState.soundEnabled,
+            pomoFocusMinutes: appState.pomoFocusMinutes,
+            pomoBreakMinutes: appState.pomoBreakMinutes,
+            pomoRemainingSeconds: appState.pomoRemainingSeconds,
+            pomoAutoGoal: appState.pomoAutoGoal,
+            pomoSessionsDone: appState.pomoSessionsDone,
             notifications: appState.notifications
           }
         }));
@@ -5165,6 +5280,795 @@
         if (found) return found;
       }
       return null;
+    }
+
+    // =========================================================================
+    // 1B. OPTIONAL WEB AUDIO SOUND FEEDBACK (Zero external files)
+    // =========================================================================
+
+    let sharedAudioCtx = null;
+
+    function getAudioContext() {
+      if (!sharedAudioCtx) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) {
+          sharedAudioCtx = new AudioCtx();
+        }
+      }
+      if (sharedAudioCtx && sharedAudioCtx.state === 'suspended') {
+        sharedAudioCtx.resume().catch(() => {});
+      }
+      return sharedAudioCtx;
+    }
+
+    function playStudySound(type = 'correct', forcePlay = false) {
+      if (!forcePlay && !appState.soundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+
+        const playTone = (freq, startOffset, duration, gainPeak = 0.045, wave = 'sine') => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = wave;
+          osc.frequency.setValueAtTime(freq, now + startOffset);
+          gain.gain.setValueAtTime(0.0001, now + startOffset);
+          gain.gain.exponentialRampToValueAtTime(gainPeak, now + startOffset + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + startOffset + duration);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + startOffset);
+          osc.stop(now + startOffset + duration + 0.02);
+        };
+
+        if (type === 'correct') {
+          playTone(523.25, 0, 0.13, 0.045, 'sine');
+          playTone(659.25, 0.075, 0.18, 0.05, 'sine');
+        } else if (type === 'wrong') {
+          playTone(196.0, 0, 0.14, 0.04, 'triangle');
+          playTone(164.81, 0.09, 0.19, 0.045, 'triangle');
+        } else if (type === 'flip') {
+          playTone(340, 0, 0.055, 0.025, 'sine');
+          playTone(460, 0.025, 0.06, 0.02, 'sine');
+        } else if (type === 'complete') {
+          playTone(523.25, 0, 0.14, 0.045, 'sine');
+          playTone(659.25, 0.08, 0.14, 0.045, 'sine');
+          playTone(783.99, 0.16, 0.16, 0.05, 'sine');
+          playTone(1046.5, 0.25, 0.28, 0.055, 'sine');
+        }
+      } catch (e) {
+        // Ignore browser autoplay restrictions
+      }
+    }
+
+    function toggleSoundEffects() {
+      appState.soundEnabled = !appState.soundEnabled;
+      savePersistedState();
+      triggerAutoSync();
+      if (appState.soundEnabled) {
+        playStudySound('correct', true);
+      }
+      renderWorkspace();
+      showToast(appState.soundEnabled ? 'Sound-Effekte aktiviert' : 'Sound-Effekte deaktiviert');
+    }
+
+    // =========================================================================
+    // 1C. STREAK & XP LEVEL ENGINE (Level 1–100 + Weekly Streak Freeze)
+    // =========================================================================
+
+    function getOffsetIsoKey(dayOffset = 0) {
+      const d = new Date();
+      d.setDate(d.getDate() + dayOffset);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+
+    function getIsoWeekKey(dateObj = new Date()) {
+      const tmp = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()));
+      const dayNum = tmp.getUTCDay() || 7;
+      tmp.setUTCDate(tmp.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(tmp.getUTCFullYear(), 0, 1));
+      const weekNo = Math.ceil((((tmp - yearStart) / 86400000) + 1) / 7);
+      return `${tmp.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+    }
+
+    function ensureCurrentWeekFreezeReset() {
+      const currentWeek = getIsoWeekKey(new Date());
+      if (appState.streakFreezeWeekKey !== currentWeek) {
+        appState.streakFreezeWeekKey = currentWeek;
+        appState.streakFreezeUsedThisWeek = false;
+        appState.streakShieldSavedToday = false;
+      }
+    }
+
+    function updateLearningStreakOnActivity() {
+      ensureCurrentWeekFreezeReset();
+      const today = getOffsetIsoKey(0);
+      const yesterday = getOffsetIsoKey(-1);
+      const twoDaysAgo = getOffsetIsoKey(-2);
+
+      if (appState.lastActiveDate === today) {
+        if ((appState.streakDays || 0) < 1) {
+          appState.streakDays = 1;
+        }
+        return;
+      }
+
+      if (appState.lastActiveDate === yesterday) {
+        appState.streakDays = (appState.streakDays || 0) + 1;
+        appState.lastActiveDate = today;
+      } else if (
+        appState.lastActiveDate === twoDaysAgo &&
+        (appState.streakDays || 0) > 0 &&
+        !appState.streakFreezeUsedThisWeek
+      ) {
+        appState.streakFreezeUsedThisWeek = true;
+        appState.streakShieldSavedToday = true;
+        appState.streakDays = (appState.streakDays || 0) + 1;
+        appState.lastActiveDate = today;
+        showToast('Streak-Schutz eingesetzt! Deine Lernserie läuft weiter.');
+      } else {
+        appState.streakDays = 1;
+        appState.lastActiveDate = today;
+      }
+      updateSidebarGamification();
+    }
+
+    function getEffectiveStreakInfo() {
+      ensureCurrentWeekFreezeReset();
+      const today = getOffsetIsoKey(0);
+      const yesterday = getOffsetIsoKey(-1);
+      const twoDaysAgo = getOffsetIsoKey(-2);
+      const freezeAvailable = !appState.streakFreezeUsedThisWeek;
+
+      let displayDays = 0;
+      let shieldReady = freezeAvailable;
+
+      if (appState.lastActiveDate === today || appState.lastActiveDate === yesterday) {
+        displayDays = Math.max(1, appState.streakDays || 1);
+      } else if (appState.lastActiveDate === twoDaysAgo && (appState.streakDays || 0) > 0 && freezeAvailable) {
+        displayDays = appState.streakDays;
+        shieldReady = true;
+      }
+
+      return {
+        days: displayDays,
+        activeToday: appState.lastActiveDate === today,
+        freezeAvailable,
+        shieldReady,
+        savedToday: !!appState.streakShieldSavedToday
+      };
+    }
+
+    function getXpNeededForLevel(level) {
+      return 100 + Math.max(0, level - 1) * 25;
+    }
+
+    function getLevelInfo(totalXp = appState.xp || 0) {
+      let safeXp = Math.max(0, Math.floor(totalXp));
+      let level = 1;
+      let remaining = safeXp;
+
+      while (level < 100) {
+        const needed = getXpNeededForLevel(level);
+        if (remaining >= needed) {
+          remaining -= needed;
+          level += 1;
+        } else {
+          break;
+        }
+      }
+
+      const nextLevelXp = level >= 100 ? getXpNeededForLevel(99) : getXpNeededForLevel(level);
+      const currentLevelXp = level >= 100 ? nextLevelXp : remaining;
+      const pct = level >= 100 ? 100 : Math.min(100, Math.round((currentLevelXp / nextLevelXp) * 100));
+
+      return {
+        level,
+        currentLevelXp,
+        nextLevelXp,
+        pct,
+        totalXp: safeXp
+      };
+    }
+
+    function awardXp(amount, reason = '') {
+      if (!amount || amount <= 0) return false;
+      const prevLevel = getLevelInfo(appState.xp || 0).level;
+      appState.xp = Math.max(0, (appState.xp || 0) + amount);
+      updateLearningStreakOnActivity();
+      const nextLevel = getLevelInfo(appState.xp).level;
+      updateSidebarGamification();
+
+      if (nextLevel > prevLevel) {
+        playStudySound('complete');
+        showToast(`Level Up! Du hast Level ${nextLevel} erreicht (+${amount} XP)`);
+        return true;
+      }
+      return false;
+    }
+
+    function updateSidebarGamification() {
+      const slot = document.getElementById('sidebar-gamification-slot');
+      if (!slot) return;
+      const lvl = getLevelInfo(appState.xp || 0);
+      const streak = getEffectiveStreakInfo();
+
+      slot.innerHTML = `
+        <div onclick="navigateSection('dashboard')"
+             class="sidebar-xp-card bg-[#1B1B1F] hover:bg-[#202026] border border-[#282830] rounded-[12px] p-3 cursor-pointer transition">
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <div class="flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded-[6px] bg-[#3B82F6]/20 text-[#60A5FA] flex items-center justify-center">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.5L14.9 8.4L21.4 9.3L16.7 13.9L17.8 20.4L12 17.3L6.2 20.4L7.3 13.9L2.6 9.3L9.1 8.4L12 2.5Z" />
+                </svg>
+              </span>
+              <span class="text-[12px] font-bold text-[#F4F4F6]">Level ${lvl.level}</span>
+            </div>
+
+            <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full ${streak.days > 0 ? 'bg-[#F59E0B]/15 text-[#FBBF24]' : 'bg-white/[0.05] text-[#8E8E93]'} text-[11px] font-bold"
+                 title="${streak.freezeAvailable ? '1x Wöchentlicher Streak-Schutz bereit' : 'Wöchentlicher Streak-Schutz genutzt'}">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.9 2.6C13.3 5.2 11.8 7.3 10.3 9C8.9 10.6 7.8 12.2 8.2 14.4C8.5 16.1 9.9 17.4 11.6 17.6C10.7 16.5 10.5 15 11.3 13.7C12 12.6 13.2 11.8 13.4 10.3C15.4 11.8 16.6 14.3 16.1 16.9C15.6 19.6 13.2 21.5 10.5 21.5C6.8 21.5 4 18.5 4.4 14.7C4.8 10.8 8.3 7.5 11.4 4.1C11.9 3.5 12.4 3 12.9 2.6Z" />
+              </svg>
+              <span>${streak.days}d</span>
+              ${streak.freezeAvailable ? `
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="text-[#60A5FA] ml-0.5">
+                  <path d="M12 2.5L19 5.5V11.5C19 16.2 16 20.3 12 21.8C8 20.3 5 16.2 5 11.5V5.5L12 2.5Z" />
+                </svg>
+              ` : ''}
+            </div>
+          </div>
+
+          <div class="w-full h-1.5 bg-[#111114] rounded-full overflow-hidden mb-1.5">
+            <div class="h-full bg-[#3B82F6] rounded-full transition-all duration-300" style="width: ${lvl.pct}%;"></div>
+          </div>
+          <div class="flex items-center justify-between text-[10.5px] text-[#8E8E93]">
+            <span>${lvl.currentLevelXp} / ${lvl.nextLevelXp} XP</span>
+            <span class="text-[#60A5FA] font-semibold">${lvl.totalXp} XP</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 1C-2. INTEGRATED POMODORO FOCUS TIMER WIDGET (Persistent across views)
+    // =========================================================================
+
+    let pomoTickInterval = null;
+
+    function formatPomoClock(seconds) {
+      const safe = Math.max(0, Math.floor(seconds || 0));
+      const m = Math.floor(safe / 60);
+      const s = safe % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function updateSidebarPomodoro() {
+      const slot = document.getElementById('sidebar-pomodoro-slot');
+      if (!slot) return;
+
+      const isFocus = appState.pomoMode !== 'break';
+      const timeText = formatPomoClock(appState.pomoRemainingSeconds);
+      const totalSec = (isFocus ? appState.pomoFocusMinutes : appState.pomoBreakMinutes) * 60;
+      const progressPct = totalSec > 0
+        ? Math.min(100, Math.max(0, Math.round(((totalSec - appState.pomoRemainingSeconds) / totalSec) * 100)))
+        : 0;
+
+      slot.innerHTML = `
+        <div class="sidebar-pomo-card bg-[#1B1B1F] border ${appState.pomoRunning ? (isFocus ? 'border-[#3B82F6]/50' : 'border-[#10B981]/50') : 'border-[#282830]'} rounded-[12px] p-3 transition">
+          <!-- Compact Header Bar -->
+          <div class="flex items-center justify-between gap-2">
+            <button type="button" onclick="togglePomodoroExpand()" class="flex items-center gap-2 min-w-0 text-left focus:outline-none">
+              <span class="w-6 h-6 rounded-[7px] ${isFocus ? 'bg-[#3B82F6]/20 text-[#60A5FA]' : 'bg-[#10B981]/20 text-[#34D399]'} flex items-center justify-center shrink-0">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM12.9 7.25C12.9 6.75294 12.4971 6.35 12 6.35C11.5029 6.35 11.1 6.75294 11.1 7.25V12C11.1 12.26 11.21 12.51 11.41 12.68L14.51 15.38C14.88 15.7 15.45 15.66 15.78 15.29C16.1 14.92 16.06 14.35 15.69 14.02L12.9 11.59V7.25Z" />
+                </svg>
+              </span>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <span id="sidebar-pomo-time" class="text-[13px] font-mono font-bold text-[#F4F4F6]">${timeText}</span>
+                  <span class="text-[10px] font-semibold uppercase tracking-wider ${isFocus ? 'text-[#60A5FA]' : 'text-[#34D399]'}">
+                    ${isFocus ? 'Fokus' : 'Pause'}
+                  </span>
+                </div>
+                <div class="text-[10px] text-[#8E8E93] truncate">${appState.pomoSessionsDone || 0} Runden • ${appState.pomoExpanded ? 'Zuklappen ▲' : 'Einstellen ▼'}</div>
+              </div>
+            </button>
+
+            <div class="flex items-center gap-1 shrink-0">
+              <button type="button" onclick="togglePomodoroTimer()"
+                      title="${appState.pomoRunning ? 'Pause' : 'Starten'}"
+                      class="w-7 h-7 rounded-[8px] ${appState.pomoRunning ? 'bg-[#F59E0B]/20 text-[#FBBF24] hover:bg-[#F59E0B]/30' : 'bg-[#3B82F6] text-white hover:bg-[#2563EB]'} flex items-center justify-center transition">
+                ${appState.pomoRunning
+                  ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg>`
+                  : `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5.2C7 4.25 8.05 3.68 8.85 4.2L19.1 10.95C19.83 11.43 19.83 12.52 19.1 13L8.85 19.75C8.05 20.27 7 19.7 7 18.75V5.2Z"/></svg>`
+                }
+              </button>
+              <button type="button" onclick="resetPomodoroTimer()" title="Timer zurücksetzen"
+                      class="w-7 h-7 rounded-[8px] bg-white/[0.05] hover:bg-white/[0.12] text-[#9A9AA0] hover:text-white flex items-center justify-center transition">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20C15.73 20 18.84 17.45 19.73 14H17.65C16.83 16.33 14.61 18 12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6C13.66 6 15.14 6.69 16.22 7.78L13 11H20V4L17.65 6.35C16.2 4.9 14.21 4 12 4Z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="w-full h-1 bg-[#111114] rounded-full overflow-hidden mt-2">
+            <div id="sidebar-pomo-bar" class="h-full ${isFocus ? 'bg-[#3B82F6]' : 'bg-[#10B981]'} rounded-full transition-all duration-300" style="width: ${progressPct}%;"></div>
+          </div>
+
+          <!-- Expandable Drawer Controls -->
+          ${appState.pomoExpanded ? `
+            <div class="mt-3 pt-2.5 border-t border-[#262630] space-y-2.5">
+              <!-- Presets -->
+              <div class="grid grid-cols-2 gap-1.5">
+                <button type="button" onclick="setPomodoroPreset(25, 5)"
+                        class="px-2 py-1.5 rounded-[7px] text-[11px] font-semibold border transition ${appState.pomoFocusMinutes === 25 && appState.pomoBreakMinutes === 5 ? 'bg-[#3B82F6]/20 border-[#3B82F6]/50 text-[#60A5FA]' : 'bg-white/[0.04] border-white/[0.08] text-[#A1A1AA] hover:text-white'}">
+                  25 / 5 Min
+                </button>
+                <button type="button" onclick="setPomodoroPreset(50, 10)"
+                        class="px-2 py-1.5 rounded-[7px] text-[11px] font-semibold border transition ${appState.pomoFocusMinutes === 50 && appState.pomoBreakMinutes === 10 ? 'bg-[#3B82F6]/20 border-[#3B82F6]/50 text-[#60A5FA]' : 'bg-white/[0.04] border-white/[0.08] text-[#A1A1AA] hover:text-white'}">
+                  50 / 10 Min
+                </button>
+              </div>
+
+              <!-- Custom Minutes Input -->
+              <div class="flex items-center gap-1.5">
+                <input id="pomo-custom-min" type="number" min="1" max="120" value="${appState.pomoFocusMinutes}"
+                       class="w-16 bg-[#111114] border border-[#2C2C35] rounded-[7px] px-2 py-1 text-[11.5px] font-semibold text-[#F4F4F6] text-center focus:outline-none focus:border-[#3B82F6]" />
+                <span class="text-[11px] text-[#8E8E93]">Min</span>
+                <button type="button" onclick="applyCustomPomodoroMinutes()"
+                        class="ml-auto px-2.5 py-1 rounded-[7px] bg-white/[0.07] hover:bg-white/[0.14] text-[11px] font-semibold text-[#E4E4E7] transition">
+                  Setzen
+                </button>
+              </div>
+
+              <!-- Auto +1 Tagesziel Toggle -->
+              <label onclick="togglePomodoroAutoGoal()" class="flex items-center justify-between gap-2 cursor-pointer pt-0.5">
+                <span class="text-[11px] text-[#9A9AA4]">+1 Tagesziel &amp; +25 XP nach Fokus</span>
+                <span class="w-7 h-4 rounded-full relative transition-colors ${appState.pomoAutoGoal ? 'bg-[#3B82F6]' : 'bg-[#2C2C36]'}">
+                  <span class="w-3 h-3 rounded-full bg-white absolute top-0.5 transition-transform ${appState.pomoAutoGoal ? 'translate-x-3.5' : 'translate-x-0.5'}"></span>
+                </span>
+              </label>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function togglePomodoroExpand() {
+      appState.pomoExpanded = !appState.pomoExpanded;
+      updateSidebarPomodoro();
+    }
+
+    function setPomodoroPreset(focusMin, breakMin) {
+      pausePomodoroTimer();
+      appState.pomoMode = 'focus';
+      appState.pomoFocusMinutes = focusMin;
+      appState.pomoBreakMinutes = breakMin;
+      appState.pomoRemainingSeconds = focusMin * 60;
+      savePersistedState();
+      updateSidebarPomodoro();
+      showToast(`Fokus-Timer auf ${focusMin}/${breakMin} Min gesetzt`);
+    }
+
+    function applyCustomPomodoroMinutes() {
+      const val = parseInt(document.getElementById('pomo-custom-min')?.value || '25', 10);
+      const safeMin = Math.max(1, Math.min(120, isNaN(val) ? 25 : val));
+      pausePomodoroTimer();
+      appState.pomoMode = 'focus';
+      appState.pomoFocusMinutes = safeMin;
+      appState.pomoRemainingSeconds = safeMin * 60;
+      savePersistedState();
+      updateSidebarPomodoro();
+      showToast(`Eigene Fokuszeit: ${safeMin} Minuten`);
+    }
+
+    function togglePomodoroAutoGoal() {
+      appState.pomoAutoGoal = !appState.pomoAutoGoal;
+      savePersistedState();
+      updateSidebarPomodoro();
+    }
+
+    function pausePomodoroTimer() {
+      appState.pomoRunning = false;
+      if (pomoTickInterval) {
+        clearInterval(pomoTickInterval);
+        pomoTickInterval = null;
+      }
+    }
+
+    function togglePomodoroTimer() {
+      if (appState.pomoRunning) {
+        pausePomodoroTimer();
+        updateSidebarPomodoro();
+        return;
+      }
+
+      appState.pomoRunning = true;
+      updateSidebarPomodoro();
+
+      if (pomoTickInterval) clearInterval(pomoTickInterval);
+      pomoTickInterval = setInterval(() => {
+        if (!appState.pomoRunning) {
+          clearInterval(pomoTickInterval);
+          pomoTickInterval = null;
+          return;
+        }
+        appState.pomoRemainingSeconds = Math.max(0, (appState.pomoRemainingSeconds || 0) - 1);
+
+        const clockEl = document.getElementById('sidebar-pomo-time');
+        const barEl = document.getElementById('sidebar-pomo-bar');
+        const isFocus = appState.pomoMode !== 'break';
+        const totalSec = (isFocus ? appState.pomoFocusMinutes : appState.pomoBreakMinutes) * 60;
+        const pct = totalSec > 0 ? Math.min(100, Math.round(((totalSec - appState.pomoRemainingSeconds) / totalSec) * 100)) : 0;
+
+        if (clockEl) clockEl.textContent = formatPomoClock(appState.pomoRemainingSeconds);
+        if (barEl) barEl.style.width = `${pct}%`;
+
+        if (appState.pomoRemainingSeconds <= 0) {
+          completePomodoroPhase();
+        }
+      }, 1000);
+    }
+
+    function completePomodoroPhase() {
+      pausePomodoroTimer();
+      const wasFocus = appState.pomoMode !== 'break';
+
+      if (wasFocus) {
+        appState.pomoSessionsDone = (appState.pomoSessionsDone || 0) + 1;
+        appState.pomoMode = 'break';
+        appState.pomoRemainingSeconds = (appState.pomoBreakMinutes || 5) * 60;
+
+        if (appState.pomoAutoGoal) {
+          recordLessonCompletion(1);
+          const leveled = awardXp(25, 'Fokus-Einheit abgeschlossen');
+          if (!leveled) playStudySound('complete');
+          showToast(`Fokus-Einheit fertig! +1 Tagesziel & +25 XP — Jetzt ${appState.pomoBreakMinutes} Min Pause`);
+        } else {
+          playStudySound('complete');
+          showToast(`Fokus-Einheit abgeschlossen! Jetzt ${appState.pomoBreakMinutes} Min Pause`);
+        }
+
+        savePersistedState();
+        triggerAutoSync();
+        if (!appState.activeQuizSession && (appState.activeNav === 'dashboard' || appState.activeNav === 'reports')) {
+          shouldAnimateDashboard = false;
+          shouldAnimateReports = false;
+          renderWorkspace();
+        }
+      } else {
+        appState.pomoMode = 'focus';
+        appState.pomoRemainingSeconds = (appState.pomoFocusMinutes || 25) * 60;
+        playStudySound('correct');
+        savePersistedState();
+        showToast('Pause vorbei — Bereit für die nächste Fokus-Runde!');
+      }
+
+      updateSidebarPomodoro();
+    }
+
+    function resetPomodoroTimer() {
+      pausePomodoroTimer();
+      appState.pomoMode = 'focus';
+      appState.pomoRemainingSeconds = (appState.pomoFocusMinutes || 25) * 60;
+      savePersistedState();
+      updateSidebarPomodoro();
+    }
+
+    // =========================================================================
+    // 1D. MISTAKE TRAINER HELPERS & FISHER-YATES SHUFFLE
+    // =========================================================================
+
+    function getWrongQuestionKey(cardId, poolIndex) {
+      return `${cardId}::${poolIndex}`;
+    }
+
+    function getValidWrongQuestionsList() {
+      if (!appState.wrongQuestions || typeof appState.wrongQuestions !== 'object') {
+        appState.wrongQuestions = {};
+        return [];
+      }
+      const list = [];
+      let cleaned = false;
+      Object.entries(appState.wrongQuestions).forEach(([key, entry]) => {
+        if (!entry || !entry.cardId || typeof entry.poolIndex !== 'number') {
+          delete appState.wrongQuestions[key];
+          cleaned = true;
+          return;
+        }
+        const card = getCardById(entry.cardId);
+        const pool = QUESTION_POOLS[entry.cardId];
+        if (!card || !Array.isArray(pool) || !pool[entry.poolIndex]) {
+          delete appState.wrongQuestions[key];
+          cleaned = true;
+          return;
+        }
+        list.push({
+          key,
+          cardId: entry.cardId,
+          poolIndex: entry.poolIndex,
+          wrongCount: entry.wrongCount || 1,
+          streak: entry.streak || 0,
+          lastWrongAt: entry.lastWrongAt || 0
+        });
+      });
+      if (cleaned) scheduleSavePersistedState();
+      list.sort((a, b) => b.lastWrongAt - a.lastWrongAt);
+      return list;
+    }
+
+    function getWrongQuestionsCount() {
+      return getValidWrongQuestionsList().length;
+    }
+
+    function recordWrongQuestion(cardId, poolIndex) {
+      if (!cardId || typeof poolIndex !== 'number' || poolIndex < 0) return;
+      if (!appState.wrongQuestions || typeof appState.wrongQuestions !== 'object') {
+        appState.wrongQuestions = {};
+      }
+      const key = getWrongQuestionKey(cardId, poolIndex);
+      const prev = appState.wrongQuestions[key];
+      appState.wrongQuestions[key] = {
+        cardId,
+        poolIndex,
+        wrongCount: (prev ? prev.wrongCount : 0) + 1,
+        streak: 0,
+        lastWrongAt: Date.now()
+      };
+    }
+
+    function recordMistakeTrainerCorrect(cardId, poolIndex) {
+      if (!cardId || typeof poolIndex !== 'number' || !appState.wrongQuestions) return false;
+      const key = getWrongQuestionKey(cardId, poolIndex);
+      const entry = appState.wrongQuestions[key];
+      if (!entry) return false;
+      entry.streak = (entry.streak || 0) + 1;
+      if (entry.streak >= 2) {
+        delete appState.wrongQuestions[key];
+        return true;
+      }
+      return false;
+    }
+
+    function shuffleQuestionOptions(rawQuestion, meta = {}) {
+      const optionsWithFlag = (rawQuestion.options || []).map((text, origIdx) => ({
+        text,
+        isCorrect: origIdx === rawQuestion.correctIndex
+      }));
+      for (let i = optionsWithFlag.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [optionsWithFlag[i], optionsWithFlag[j]] = [optionsWithFlag[j], optionsWithFlag[i]];
+      }
+      const shuffledCorrectIndex = optionsWithFlag.findIndex(item => item.isCorrect);
+      return {
+        ...rawQuestion,
+        ...meta,
+        options: optionsWithFlag.map(item => item.text),
+        correctIndex: shuffledCorrectIndex >= 0 ? shuffledCorrectIndex : 0
+      };
+    }
+
+    // =========================================================================
+    // 1E. SPACED REPETITION (LEITNER) & CUSTOM FLASHCARD HELPERS
+    // =========================================================================
+
+    function isFlashcardDueToday(fc) {
+      if (!fc) return false;
+      if (!fc.dueDate) return true;
+      return fc.dueDate <= getTodayIsoKey();
+    }
+
+    function getDueFlashcardsCount() {
+      return appState.flashcards.filter(fc => isFlashcardDueToday(fc)).length;
+    }
+
+    function getFilteredFlashcardsList() {
+      let list = appState.flashcards;
+      if (appState.flashcardDueFilterOnly) {
+        list = list.filter(fc => isFlashcardDueToday(fc));
+      } else if (appState.selectedFlashcardSubject !== 'ALL') {
+        list = list.filter(fc => fc.subject === appState.selectedFlashcardSubject);
+      }
+      return list;
+    }
+
+    function rateFlashcard(cardId, rating) {
+      const card = appState.flashcards.find(c => c.id === cardId);
+      if (!card) return;
+
+      const wasMastered = !!card.mastered;
+      let nextInterval = 1;
+      let labelText = '';
+
+      if (rating === 'again') {
+        card.box = 1;
+        nextInterval = 1;
+        card.dueDate = getOffsetIsoKey(1);
+        card.mastered = false;
+        labelText = 'Nochmal • Fällig in 1 Tag';
+      } else if (rating === 'hard') {
+        card.box = 2;
+        nextInterval = 2;
+        card.dueDate = getOffsetIsoKey(2);
+        card.mastered = false;
+        labelText = 'Unsicher • Fällig in 2 Tagen';
+      } else {
+        const prevInt = card.intervalDays || 0;
+        nextInterval = prevInt < 4 ? 4 : Math.min(64, prevInt * 2);
+        card.box = Math.min(6, (card.box || 2) + 1);
+        card.dueDate = getOffsetIsoKey(nextInterval);
+        card.mastered = true;
+        labelText = `Gewusst • Nächste Wiederholung in ${nextInterval} Tagen`;
+        recordLessonCompletion(1);
+        if (!wasMastered) {
+          awardXp(5, 'Karteikarte gemeistert');
+        } else {
+          updateLearningStreakOnActivity();
+        }
+      }
+
+      card.intervalDays = nextInterval;
+      appState.flippedFlashcardIds[card.id] = false;
+
+      const filteredAfter = getFilteredFlashcardsList();
+      if (filteredAfter.length > 0) {
+        appState.flashcardPage = ((appState.flashcardPage || 0) + (appState.flashcardDueFilterOnly ? 0 : 1)) % filteredAfter.length;
+        appState.flashcardSlideDir = 'next';
+      } else {
+        appState.flashcardPage = 0;
+      }
+
+      playStudySound(rating === 'good' ? 'correct' : 'flip');
+      savePersistedState();
+      triggerAutoSync();
+      renderWorkspace();
+      showToast(labelText);
+    }
+
+    function openFlashcardEditorModal(editCardId = null) {
+      const existing = editCardId ? appState.flashcards.find(f => f.id === editCardId) : null;
+      const defaultSubject = existing
+        ? existing.subject
+        : (appState.selectedFlashcardSubject !== 'ALL' ? appState.selectedFlashcardSubject : COURSES[0].title);
+
+      openModal(`
+        <div class="p-5 sm:p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-[10px] bg-[#3B82F6]/15 border border-[#3B82F6]/30 flex items-center justify-center text-[#60A5FA]">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M4.2 6.8C4.2 4.98 5.68 3.5 7.5 3.5H14.5C16.32 3.5 17.8 4.98 17.8 6.8V16.2C17.8 18.02 16.32 19.5 14.5 19.5H7.5C5.68 19.5 4.2 18.02 4.2 16.2V6.8ZM12 8.2C12.55 8.2 13 8.65 13 9.2V11H14.8C15.35 11 15.8 11.45 15.8 12C15.8 12.55 15.35 13 14.8 13H13V14.8C13 15.35 12.55 15.8 12 15.8C11.45 15.8 11 15.35 11 14.8V13H9.2C8.65 13 8.2 12.55 8.2 12C8.2 11.45 8.65 11 9.2 11H11V9.2C11 8.65 11.45 8.2 12 8.2Z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-[16.5px] font-bold text-[#F4F4F6]">${existing ? 'Karteikarte bearbeiten' : 'Neue Karteikarte erstellen'}</h3>
+                <p class="text-[11.5px] text-[#8E8E93]">Wird direkt in dein Leitner-Deck aufgenommen</p>
+              </div>
+            </div>
+            <button onclick="closeModal()" class="w-7 h-7 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-[#8E8E93] hover:text-white flex items-center justify-center transition">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6.22 6.22a.75.75 0 011.06 0L12 10.94l4.72-4.72a.75.75 0 111.06 1.06L13.06 12l4.72 4.72a.75.75 0 11-1.06 1.06L12 13.06l-4.72 4.72a.75.75 0 01-1.06-1.06L10.94 12 6.22 7.28a.75.75 0 010-1.06z"/>
+              </svg>
+            </button>
+          </div>
+
+          <form onsubmit="saveFlashcardEditor(event, ${existing ? `'${existing.id}'` : 'null'})" class="space-y-3.5">
+            <div>
+              <label class="block text-[12px] font-semibold text-[#D4D4D8] mb-1.5">Lernfach</label>
+              <select id="fc-editor-subject" class="w-full bg-[#111113] border border-[#2C2C35] rounded-[10px] px-3.5 py-2.5 text-[13.5px] text-[#F4F4F6] focus:outline-none focus:border-[#3B82F6]">
+                ${COURSES.map(c => `
+                  <option value="${escapeHtml(c.title)}" ${c.title === defaultSubject ? 'selected' : ''}>${escapeHtml(c.title)}</option>
+                `).join('')}
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[12px] font-semibold text-[#D4D4D8] mb-1.5">Vorderseite (Frage / Begriff)</label>
+              <textarea id="fc-editor-question" rows="3" required placeholder="z. B. Welche drei Prinzipien regelt Art. 65 GG?"
+                        class="w-full bg-[#111113] border border-[#2C2C35] rounded-[10px] px-3.5 py-2.5 text-[13.5px] text-[#F4F4F6] placeholder-[#686870] focus:outline-none focus:border-[#3B82F6]">${existing ? escapeHtml(existing.question) : ''}</textarea>
+            </div>
+
+            <div>
+              <label class="block text-[12px] font-semibold text-[#D4D4D8] mb-1.5">Rückseite (Antwort &amp; Erklärung)</label>
+              <textarea id="fc-editor-answer" rows="3" required placeholder="z. B. 1. Kanzlerprinzip • 2. Ressortprinzip • 3. Kollegialprinzip"
+                        class="w-full bg-[#111113] border border-[#2C2C35] rounded-[10px] px-3.5 py-2.5 text-[13.5px] text-[#F4F4F6] placeholder-[#686870] focus:outline-none focus:border-[#3B82F6]">${existing ? escapeHtml(existing.answer) : ''}</textarea>
+            </div>
+
+            <div class="flex justify-end gap-2.5 pt-2">
+              <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-[9px] text-[13px] text-[#9A9AA0] hover:text-white transition">Abbrechen</button>
+              <button type="submit" class="dash-cta-pill px-5 py-2.5 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[13px] font-semibold shadow-lg shadow-[#3B82F6]/25 transition">
+                ${existing ? 'Änderungen speichern' : 'Karteikarte speichern'}
+              </button>
+            </div>
+          </form>
+        </div>
+      `);
+      setTimeout(() => document.getElementById('fc-editor-question')?.focus(), 50);
+    }
+
+    function saveFlashcardEditor(event, editCardId = null) {
+      event.preventDefault();
+      const subject = document.getElementById('fc-editor-subject')?.value || COURSES[0].title;
+      const question = document.getElementById('fc-editor-question')?.value.trim();
+      const answer = document.getElementById('fc-editor-answer')?.value.trim();
+      if (!question || !answer) return;
+
+      if (editCardId) {
+        const card = appState.flashcards.find(f => f.id === editCardId);
+        if (card) {
+          card.subject = subject;
+          card.question = question;
+          card.answer = answer;
+        }
+        showToast('Karteikarte aktualisiert');
+      } else {
+        const newCard = {
+          id: 'fc-custom-' + Date.now(),
+          subject,
+          topic: 'Eigene Karte',
+          question,
+          answer,
+          mastered: false,
+          box: 0,
+          intervalDays: 0,
+          dueDate: getTodayIsoKey(),
+          isCustom: true
+        };
+        appState.flashcards.unshift(newCard);
+        appState.flashcardDueFilterOnly = false;
+        if (appState.selectedFlashcardSubject !== 'ALL' && appState.selectedFlashcardSubject !== subject) {
+          appState.selectedFlashcardSubject = subject;
+        }
+        appState.flashcardPage = 0;
+        appState.flippedFlashcardIds = {};
+        showToast('Neue Karteikarte erstellt');
+      }
+
+      savePersistedState();
+      triggerAutoSync();
+      closeModal();
+      renderWorkspace();
+    }
+
+    function openDeleteFlashcardModal(cardId) {
+      const card = appState.flashcards.find(f => f.id === cardId);
+      if (!card) return;
+      openModal(`
+        <div class="p-5">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-[16px] font-bold text-[#F4F4F6]">Karteikarte wirklich löschen?</h3>
+            <button onclick="closeModal()" class="text-[#78787F] hover:text-white p-1">✕</button>
+          </div>
+          <p class="text-[13px] text-[#9A9AA0] leading-relaxed mb-5">
+            Möchtest du die Karteikarte <strong class="text-[#F4F4F6]">„${escapeHtml(card.question)}“</strong> dauerhaft aus deinem Deck entfernen?
+          </p>
+          <div class="flex justify-end gap-2.5">
+            <button onclick="closeModal()" class="px-3.5 py-2 rounded-[8px] text-[13px] text-[#9A9AA0] hover:text-white">Abbrechen</button>
+            <button onclick="confirmDeleteFlashcard('${card.id}')" class="px-4 py-2 rounded-[8px] bg-[#EF4444] hover:bg-[#DC2626] text-white text-[13px] font-semibold transition">
+              Ja, löschen
+            </button>
+          </div>
+        </div>
+      `);
+    }
+
+    function confirmDeleteFlashcard(cardId) {
+      appState.flashcards = appState.flashcards.filter(f => f.id !== cardId);
+      delete appState.flippedFlashcardIds[cardId];
+      appState.flashcardPage = 0;
+      savePersistedState();
+      triggerAutoSync();
+      closeModal();
+      renderWorkspace();
+      showToast('Karteikarte gelöscht');
     }
 
     // =========================================================================
@@ -5719,6 +6623,9 @@
       });
 
       const isLight = appState.appTheme === 'daylight';
+      const wrongCount = getWrongQuestionsCount();
+      const lvl = getLevelInfo(appState.xp || 0);
+      const streak = getEffectiveStreakInfo();
 
       return `
         <div class="flex-1 overflow-y-auto px-6 sm:px-9 py-7">
@@ -5731,10 +6638,46 @@
                 <p class="text-[12.5px] text-[#7E7E87] mt-0.5">StudyV • Lernfortschritt &amp; Prüfungsübersicht</p>
               </div>
 
-              <div class="flex items-center gap-3 flex-wrap">
+              <div class="flex items-center gap-2.5 flex-wrap">
+                <!-- Streak & XP Level Pill -->
+                <div class="dash-xp-pill inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-[#161619] border border-[#24242A]">
+                  <div class="inline-flex items-center gap-1.5 text-[12px] font-bold ${streak.days > 0 ? 'text-[#FBBF24]' : 'text-[#8E8E93]'}"
+                       title="${streak.freezeAvailable ? 'Wöchentlicher Streak-Schutz aktiv' : 'Wöchentlicher Streak-Schutz bereits genutzt'}">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12.9 2.6C13.3 5.2 11.8 7.3 10.3 9C8.9 10.6 7.8 12.2 8.2 14.4C8.5 16.1 9.9 17.4 11.6 17.6C10.7 16.5 10.5 15 11.3 13.7C12 12.6 13.2 11.8 13.4 10.3C15.4 11.8 16.6 14.3 16.1 16.9C15.6 19.6 13.2 21.5 10.5 21.5C6.8 21.5 4 18.5 4.4 14.7C4.8 10.8 8.3 7.5 11.4 4.1C11.9 3.5 12.4 3 12.9 2.6Z" />
+                    </svg>
+                    <span>${streak.days} Tage</span>
+                    ${streak.freezeAvailable ? `
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-[#60A5FA]">
+                        <path d="M12 2.5L19 5.5V11.5C19 16.2 16 20.3 12 21.8C8 20.3 5 16.2 5 11.5V5.5L12 2.5Z" />
+                      </svg>
+                    ` : ''}
+                  </div>
+
+                  <span class="w-px h-4 bg-[#2A2A32]"></span>
+
+                  <div class="flex items-center gap-2">
+                    <span class="text-[11.5px] font-bold text-[#60A5FA]">Lvl ${lvl.level}</span>
+                    <div class="w-16 h-1.5 bg-[#101014] rounded-full overflow-hidden">
+                      <div class="h-full bg-[#3B82F6] rounded-full transition-all duration-300" style="width: ${lvl.pct}%;"></div>
+                    </div>
+                    <span class="text-[10.5px] font-semibold text-[#8E8E93]">${lvl.totalXp} XP</span>
+                  </div>
+                </div>
+
+                <button onclick="openMistakeTrainerQuiz()"
+                        class="mistake-trainer-pill inline-flex items-center gap-2 px-3.5 py-2 rounded-full border text-[12.5px] font-semibold transition ${wrongCount > 0 ? 'bg-[#EF4444]/15 hover:bg-[#EF4444]/25 border-[#EF4444]/35 text-[#FCA5A5] shadow-md shadow-[#EF4444]/10' : 'bg-[#161619] hover:bg-[#1C1C22] border-[#26262F] text-[#8E8E93]'}">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" class="${wrongCount > 0 ? 'text-[#F87171]' : 'text-[#7E7E87]'} shrink-0">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM6.5 12C6.5 8.96243 8.96243 6.5 12 6.5C15.0376 6.5 17.5 8.96243 17.5 12C17.5 15.0376 15.0376 17.5 12 17.5C8.96243 17.5 6.5 15.0376 6.5 12ZM12 9.2C10.4536 9.2 9.2 10.4536 9.2 12C9.2 13.5464 10.4536 14.8 12 14.8C13.5464 14.8 14.8 13.5464 14.8 12C14.8 10.4536 13.5464 9.2 12 9.2Z" />
+                  </svg>
+                  <span>Fehler trainieren (${wrongCount})</span>
+                </button>
+
                 <button onclick="openAddExamModal()"
                         class="dash-cta-pill inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[12.5px] font-semibold shadow-lg shadow-[#3B82F6]/20 transition">
-                  <span class="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center text-[12px] font-bold text-white">+</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-white shrink-0">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 3C12.8284 3 13.5 3.67157 13.5 4.5V10.5H19.5C20.3284 10.5 21 11.1716 21 12C21 12.8284 20.3284 13.5 19.5 13.5H13.5V19.5C13.5 20.3284 12.8284 21 12 21C11.1716 21 10.5 20.3284 10.5 19.5V13.5H4.5C3.67157 13.5 3 12.8284 3 12C3 11.1716 3.67157 10.5 4.5 10.5H10.5V4.5C10.5 3.67157 11.1716 3 12 3Z" />
+                  </svg>
                   <span class="text-white">Klausur eintragen</span>
                 </button>
 
@@ -6056,12 +6999,34 @@
         </svg>
       `;
 
+      const wrongCount = getWrongQuestionsCount();
+
       return `
         <div class="flex-1 overflow-y-auto px-6 sm:px-9 py-8">
           <div class="max-w-[1060px]">
-            <div class="mb-7">
-              <p class="text-[13px] text-[#7E7E87] mb-1.5">Wähle einen übergeordneten Lernordner aus</p>
-              <h1 class="text-[26px] font-bold text-[#F4F4F6] tracking-[-0.02em]">Project</h1>
+            <div class="flex items-end justify-between flex-wrap gap-4 mb-7">
+              <div>
+                <p class="text-[13px] text-[#7E7E87] mb-1.5">Wähle einen übergeordneten Lernordner aus</p>
+                <h1 class="text-[26px] font-bold text-[#F4F4F6] tracking-[-0.02em]">Project</h1>
+              </div>
+
+              <div class="flex items-center gap-2.5 flex-wrap">
+                <button onclick="openMistakeTrainerQuiz()"
+                        class="mistake-trainer-pill inline-flex items-center gap-2 px-3.5 py-2 rounded-full border text-[12.5px] font-semibold transition ${wrongCount > 0 ? 'bg-[#EF4444]/15 hover:bg-[#EF4444]/25 border-[#EF4444]/35 text-[#FCA5A5]' : 'bg-[#161619] hover:bg-[#1C1C22] border-[#26262F] text-[#8E8E93]'}">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" class="${wrongCount > 0 ? 'text-[#F87171]' : 'text-[#7E7E87]'} shrink-0">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM6.5 12C6.5 8.96243 8.96243 6.5 12 6.5C15.0376 6.5 17.5 8.96243 17.5 12C17.5 15.0376 15.0376 17.5 12 17.5C8.96243 17.5 6.5 15.0376 6.5 12ZM12 9.2C10.4536 9.2 9.2 10.4536 9.2 12C9.2 13.5464 10.4536 14.8 12 14.8C13.5464 14.8 14.8 13.5464 14.8 12C14.8 10.4536 13.5464 9.2 12 9.2Z" />
+                  </svg>
+                  <span>Fehler trainieren (${wrongCount})</span>
+                </button>
+
+                <button onclick="openExamSimSetupModal('ALL')"
+                        class="exam-sim-pill inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#19191F] hover:bg-[#22222A] border border-[#2E2E38] text-[12.5px] font-semibold text-[#F4F4F6] shadow-md transition">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" class="text-[#60A5FA] shrink-0">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM12.9 7.25C12.9 6.75294 12.4971 6.35 12 6.35C11.5029 6.35 11.1 6.75294 11.1 7.25V12C11.1 12.26 11.21 12.51 11.41 12.68L14.51 15.38C14.88 15.7 15.45 15.66 15.78 15.29C16.1 14.92 16.06 14.35 15.69 14.02L12.9 11.59V7.25Z" />
+                  </svg>
+                  <span>Prüfung simulieren</span>
+                </button>
+              </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -6697,8 +7662,37 @@
                 </div>
               </div>
 
+              <!-- 3B. Optional Web Audio Sound Feedback Toggle -->
+              <div style="--stagger: 3;" class="settings-studio-card p-5 flex items-center justify-between flex-wrap gap-4">
+                <div class="flex items-center gap-3.5">
+                  <div class="w-10 h-10 rounded-[11px] bg-[#3B82F6]/15 border border-[#3B82F6]/30 flex items-center justify-center text-[#60A5FA] shrink-0">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M11 4.5C11 3.7 10.1 3.2 9.4 3.7L5.2 6.8H3C2.45 6.8 2 7.25 2 7.8V16.2C2 16.75 2.45 17.2 3 17.2H5.2L9.4 20.3C10.1 20.8 11 20.3 11 19.5V4.5ZM15.5 7.5C15.1 7.1 14.5 7.1 14.1 7.5C13.7 7.9 13.7 8.5 14.1 8.9C15.8 10.6 15.8 13.4 14.1 15.1C13.7 15.5 13.7 16.1 14.1 16.5C14.5 16.9 15.1 16.9 15.5 16.5C18 14 18 10 15.5 7.5ZM18.4 4.6C18 4.2 17.4 4.2 17 4.6C16.6 5 16.6 5.6 17 6C20.3 9.3 20.3 14.7 17 18C16.6 18.4 16.6 19 17 19.4C17.4 19.8 18 19.8 18.4 19.4C22.5 15.3 22.5 8.7 18.4 4.6Z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <h2 class="text-[15px] font-bold text-[#F4F4F6]">Sound-Effekte &amp; App-Status</h2>
+                      <span class="px-2.5 py-0.5 rounded-full bg-[#10B981]/15 border border-[#10B981]/35 text-[10.5px] font-semibold text-[#34D399]">
+                        ● PWA &amp; Offline-Support bereit
+                      </span>
+                    </div>
+                    <p class="text-[12px] text-[#8E8E93] mt-0.5">Dezente Web-Audio-Signale bei Quiz-Antworten, Karten-Umdrehen und Level-Ups</p>
+                  </div>
+                </div>
+
+                <button type="button" onclick="toggleSoundEffects()"
+                        aria-pressed="${appState.soundEnabled ? 'true' : 'false'}"
+                        class="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full border transition ${appState.soundEnabled ? 'bg-[#3B82F6]/15 border-[#3B82F6]/45 text-[#60A5FA]' : 'settings-sub-dock bg-[#111114] border-[#2C2C35] text-[#8E8E93]'}">
+                  <span class="text-[12px] font-semibold">${appState.soundEnabled ? 'Aktiviert' : 'Aus'}</span>
+                  <span class="relative inline-flex items-center w-10 h-5 rounded-full transition-colors ${appState.soundEnabled ? 'bg-[#3B82F6]' : 'bg-[#2C2C36]'}">
+                    <span class="w-4 h-4 rounded-full bg-white shadow transform transition-transform ${appState.soundEnabled ? 'translate-x-5' : 'translate-x-0.5'}"></span>
+                  </span>
+                </button>
+              </div>
+
               <!-- 4. Tactile Danger Zone / Reset Dock with Animated Dashed Lines -->
-              <div style="--stagger: 3;" class="settings-studio-card danger-caution-strip p-5 flex items-center justify-between flex-wrap gap-4 relative">
+              <div style="--stagger: 4;" class="settings-studio-card danger-caution-strip p-5 flex items-center justify-between flex-wrap gap-4 relative">
                 <svg class="absolute inset-0 w-full h-full pointer-events-none" preserveAspectRatio="none">
                   <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="19" ry="19"
                         fill="none" stroke="rgba(239, 68, 68, 0.55)" stroke-width="1.5" stroke-dasharray="8 6"
@@ -6706,7 +7700,7 @@
                 </svg>
                 <div class="relative z-10">
                   <h2 class="text-[15px] font-bold text-[#F4F4F6]">Lernstand verwalten</h2>
-                  <p class="text-[12px] text-[#8E8E93] mt-0.5">Setzt alle Lernmodule auf 0 / 30 Fragen und alle Karteikarten zurück.</p>
+                  <p class="text-[12px] text-[#8E8E93] mt-0.5">Setzt alle Lernmodule auf 0 / 30 Fragen, Fehler-Pool, XP, Streak und Karteikarten zurück.</p>
                 </div>
                 <button type="button" onclick="openResetAllModal()"
                         class="relative z-10 px-4 py-2 rounded-[10px] bg-[#EF4444] hover:bg-[#DC2626] text-white text-[13px] font-semibold shadow-md shadow-[#EF4444]/20 transition">
@@ -6766,6 +7760,10 @@
         activeBoardHtml = renderTableView(course);
       }
 
+      const subjectWrongCount = getValidWrongQuestionsList().filter(w =>
+        course.cards.some(m => m.id === w.cardId)
+      ).length;
+
       return `
         <div class="flex-1 flex flex-col overflow-hidden">
           <div class="px-6 sm:px-9 pt-6 pb-4 shrink-0">
@@ -6780,6 +7778,26 @@
                 </button>
                 <span class="text-[#52525B]">/</span>
                 <span class="font-medium text-[#E4E4E7]">${escapeHtml(course.title)}</span>
+              </div>
+
+              <div class="flex items-center gap-2 flex-wrap">
+                ${subjectWrongCount > 0 ? `
+                  <button onclick="openMistakeTrainerQuiz('${course.id}')"
+                          class="mistake-trainer-pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#EF4444]/15 hover:bg-[#EF4444]/25 border border-[#EF4444]/35 text-[12px] font-semibold text-[#FCA5A5] transition">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" class="text-[#F87171]">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM6.5 12C6.5 8.96243 8.96243 6.5 12 6.5C15.0376 6.5 17.5 8.96243 17.5 12C17.5 15.0376 15.0376 17.5 12 17.5C8.96243 17.5 6.5 15.0376 6.5 12ZM12 9.2C10.4536 9.2 9.2 10.4536 9.2 12C9.2 13.5464 10.4536 14.8 12 14.8C13.5464 14.8 14.8 13.5464 14.8 12C14.8 10.4536 13.5464 9.2 12 9.2Z" />
+                    </svg>
+                    <span>Fehler (${subjectWrongCount})</span>
+                  </button>
+                ` : ''}
+
+                <button onclick="openExamSimSetupModal('${course.id}')"
+                        class="exam-sim-pill inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#19191F] hover:bg-[#22222A] border border-[#2E2E38] text-[12px] font-semibold text-[#F4F4F6] transition">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-[#60A5FA]">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM12.9 7.25C12.9 6.75294 12.4971 6.35 12 6.35C11.5029 6.35 11.1 6.75294 11.1 7.25V12C11.1 12.26 11.21 12.51 11.41 12.68L14.51 15.38C14.88 15.7 15.45 15.66 15.78 15.29C16.1 14.92 16.06 14.35 15.69 14.02L12.9 11.59V7.25Z" />
+                  </svg>
+                  <span>Prüfung simulieren</span>
+                </button>
               </div>
             </div>
 
@@ -6946,20 +7964,32 @@
     }
 
     // =========================================================================
-    // 3C. KARTEN VIEW (Single Large 3D Flip Card + Subject Filter + Extra Button)
+    // 3C. KARTEN VIEW (Spaced Repetition Leitner + Custom Cards + 3D Flip Card)
     // =========================================================================
 
     function renderInboxView() {
       const subjects = ['ALL', 'Rechnungswesen', 'Gesprächsgestaltung', 'Sozialkunde', 'Englisch', 'Kunden akquirieren und binden'];
-      const filtered = appState.selectedFlashcardSubject === 'ALL'
-        ? appState.flashcards
-        : appState.flashcards.filter(c => c.subject === appState.selectedFlashcardSubject);
+      const filtered = getFilteredFlashcardsList();
 
       const totalCount = filtered.length;
       const safeIdx = totalCount > 0 ? ((appState.flashcardPage || 0) % totalCount + totalCount) % totalCount : 0;
       const activeCard = totalCount > 0 ? filtered[safeIdx] : null;
       const isFlipped = activeCard ? !!appState.flippedFlashcardIds[activeCard.id] : false;
-      const masteredCount = filtered.filter(c => c.mastered).length;
+      const totalMastered = appState.flashcards.filter(c => c.mastered).length;
+      const dueCount = getDueFlashcardsCount();
+
+      const getCardDueLabel = (fc) => {
+        if (!fc || !fc.dueDate || fc.dueDate <= getTodayIsoKey()) {
+          return { text: 'Heute fällig', isDue: true };
+        }
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const target = new Date(fc.dueDate + 'T00:00:00');
+        const diff = Math.max(1, Math.round((target - today) / (1000 * 60 * 60 * 24)));
+        return { text: `In ${diff}d fällig (${fc.intervalDays || diff}d)`, isDue: false };
+      };
+
+      const activeDueMeta = activeCard ? getCardDueLabel(activeCard) : { text: '', isDue: false };
 
       const framePalettes = {
         Rechnungswesen: {
@@ -7006,17 +8036,34 @@
             <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
               <div>
                 <h1 class="text-[26px] font-bold text-[#F4F4F6] tracking-[-0.02em]">Karten</h1>
-                <p class="text-[13px] text-[#8E8E93] mt-0.5">Klicke auf die Karteikarte zum Umdrehen • Markiere gewusste Karten über den Button darunter</p>
+                <p class="text-[13px] text-[#8E8E93] mt-0.5">Spaced-Repetition-Deck • Umdrehen mit Leertaste, Bewerten mit Tasten 1–3</p>
               </div>
-              <span class="px-3.5 py-1.5 rounded-full bg-[#161619] border border-[#26262E] text-[12px] font-semibold text-[#60A5FA]">
-                ${masteredCount} / ${totalCount} Gewusst
-              </span>
+              <div class="flex items-center gap-2.5 flex-wrap">
+                <span class="px-3.5 py-1.5 rounded-full bg-[#161619] border border-[#26262E] text-[12px] font-semibold text-[#60A5FA]">
+                  ${totalMastered} / ${appState.flashcards.length} Gemeistert
+                </span>
+                <button onclick="openFlashcardEditorModal()"
+                        class="dash-cta-pill inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[12.5px] font-semibold shadow-lg shadow-[#3B82F6]/20 transition">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="text-white shrink-0">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 3C12.8284 3 13.5 3.67157 13.5 4.5V10.5H19.5C20.3284 10.5 21 11.1716 21 12C21 12.8284 20.3284 13.5 19.5 13.5H13.5V19.5C13.5 20.3284 12.8284 21 12 21C11.1716 21 10.5 20.3284 10.5 19.5V13.5H4.5C3.67157 13.5 3 12.8284 3 12C3 11.1716 3.67157 10.5 4.5 10.5H10.5V4.5C10.5 3.67157 11.1716 3 12 3Z" />
+                  </svg>
+                  <span class="text-white">Neue Karteikarte</span>
+                </button>
+              </div>
             </div>
 
-            <!-- Subject Filter Pills (Only Subject, no Thema filter) -->
+            <!-- Due Today + Subject Filter Pills -->
             <div class="flex items-center gap-2 flex-wrap mb-6">
+              <button onclick="toggleFlashcardDueFilter()"
+                      class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[12.5px] font-semibold transition ${appState.flashcardDueFilterOnly ? 'bg-[#F59E0B] text-white shadow-md shadow-[#F59E0B]/25' : 'bg-[#161619] border border-[#24242B] text-[#FBBF24] hover:border-[#F59E0B]/40'}">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM12.9 7.25C12.9 6.75294 12.4971 6.35 12 6.35C11.5029 6.35 11.1 6.75294 11.1 7.25V12C11.1 12.26 11.21 12.51 11.41 12.68L14.51 15.38C14.88 15.7 15.45 15.66 15.78 15.29C16.1 14.92 16.06 14.35 15.69 14.02L12.9 11.59V7.25Z" />
+                </svg>
+                <span>Heute fällig (${dueCount})</span>
+              </button>
+
               ${subjects.map(subj => {
-                const active = appState.selectedFlashcardSubject === subj;
+                const active = !appState.flashcardDueFilterOnly && appState.selectedFlashcardSubject === subj;
                 const label = subj === 'ALL' ? 'Alle Fächer' : subj;
                 return `
                   <button onclick="selectFlashcardSubject('${subj}')"
@@ -7053,20 +8100,43 @@
                         <div class="neon-frame-inner p-7 sm:p-9 flex flex-col justify-between">
                           <div class="neon-frame-shimmer pointer-events-none"></div>
 
-                          <!-- Top Row: Solid Icon + Subject + Card Counter -->
-                          <div class="relative z-10 flex items-center justify-between gap-3">
+                          <!-- Top Row: Solid Icon + Subject + Leitner Due Badge + Custom Actions -->
+                          <div class="relative z-10 flex items-center justify-between gap-2 flex-wrap">
                             <div class="flex items-center gap-3">
                               <div class="card-glyph-badge w-10 h-10 rounded-[12px] bg-white/[0.06] border border-white/[0.1] flex items-center justify-center text-white">
                                 ${pal.glyphSvg}
                               </div>
                               <div>
-                                <div class="text-[13px] font-semibold text-[#F4F4F6]">${escapeHtml(activeCard.subject)}</div>
+                                <div class="flex items-center gap-2">
+                                  <span class="text-[13px] font-semibold text-[#F4F4F6]">${escapeHtml(activeCard.subject)}</span>
+                                  ${activeCard.isCustom ? `<span class="px-2 py-0.5 rounded-full bg-[#3B82F6]/15 text-[10px] font-semibold text-[#60A5FA]">Eigene Karte</span>` : ''}
+                                </div>
                                 <div class="text-[11px] text-[#8E8E93]">Vorderseite • Frage</div>
                               </div>
                             </div>
-                            <span class="px-3 py-1 rounded-full bg-white/[0.05] border border-white/[0.08] text-[11.5px] font-semibold text-[#A1A1AA]">
-                              Karte ${safeIdx + 1} von ${totalCount}
-                            </span>
+
+                            <div class="flex items-center gap-2">
+                              <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold ${activeDueMeta.isDue ? 'bg-[#F59E0B]/15 border border-[#F59E0B]/30 text-[#FBBF24]' : 'bg-[#10B981]/15 border border-[#10B981]/30 text-[#34D399]'}">
+                                ${activeDueMeta.text}
+                              </span>
+                              <span class="px-3 py-1 rounded-full bg-white/[0.05] border border-white/[0.08] text-[11.5px] font-semibold text-[#A1A1AA]">
+                                ${safeIdx + 1} / ${totalCount}
+                              </span>
+                              ${activeCard.isCustom ? `
+                                <button type="button" onclick="event.stopPropagation(); openFlashcardEditorModal('${activeCard.id}')" title="Karte bearbeiten"
+                                        class="w-7 h-7 rounded-[8px] bg-white/[0.06] hover:bg-white/[0.14] text-[#A1A1AA] hover:text-white flex items-center justify-center transition">
+                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M16.862 3.487a2.25 2.25 0 013.182 3.182L8.25 18.463 3.75 19.5l1.037-4.5L16.862 3.487z" />
+                                  </svg>
+                                </button>
+                                <button type="button" onclick="event.stopPropagation(); openDeleteFlashcardModal('${activeCard.id}')" title="Karte löschen"
+                                        class="w-7 h-7 rounded-[8px] bg-white/[0.06] hover:bg-[#EF4444]/25 text-[#A1A1AA] hover:text-[#FCA5A5] flex items-center justify-center transition">
+                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9 3.5C9 2.95 9.45 2.5 10 2.5H14C14.55 2.5 15 2.95 15 3.5V4.5H19C19.55 4.5 20 4.95 20 5.5C20 6.05 19.55 6.5 19 6.5H5C4.45 6.5 4 6.05 4 5.5C4 4.95 4.45 4.5 5 4.5H9V3.5ZM6.5 8H17.5L16.7 19.2C16.62 20.22 15.77 21 14.75 21H9.25C8.23 21 7.38 20.22 7.3 19.2L6.5 8Z" />
+                                  </svg>
+                                </button>
+                              ` : ''}
+                            </div>
                           </div>
 
                           <!-- Center Question -->
@@ -7078,21 +8148,21 @@
 
                           <!-- Bottom Flip Hint -->
                           <div class="relative z-10 flex items-center justify-between text-[12px] text-[#8E8E93] pt-3 border-t border-white/[0.06]">
-                            <span>Klicken zum Umdrehen</span>
+                            <span>Klicken oder Leertaste zum Umdrehen</span>
                             <span class="text-[#60A5FA] font-medium">Lösung anzeigen ↻</span>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <!-- BACK FACE (Antwort & Lösung — Front text completely hidden!) -->
+                    <!-- BACK FACE (Antwort & Lösung) -->
                     <div class="flashcard-face flashcard-face-back">
                       <div class="neon-frame-outer">
                         <div class="neon-frame-inner is-back p-7 sm:p-9 flex flex-col justify-between">
                           <div class="neon-frame-shimmer pointer-events-none"></div>
 
                           <!-- Top Row -->
-                          <div class="relative z-10 flex items-center justify-between gap-3">
+                          <div class="relative z-10 flex items-center justify-between gap-2 flex-wrap">
                             <div class="flex items-center gap-3">
                               <div class="card-glyph-badge w-10 h-10 rounded-[12px] bg-[#10B981]/15 border border-[#10B981]/30 flex items-center justify-center text-[#34D399]">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -7118,7 +8188,7 @@
 
                           <!-- Bottom Flip Back Hint -->
                           <div class="relative z-10 flex items-center justify-between text-[12px] text-[#8E8E93] pt-3 border-t border-white/[0.06]">
-                            <span>Klicken für die Frage</span>
+                            <span>Bewerte dein Wissen unten mit 1, 2 oder 3</span>
                             <span class="text-[#34D399] font-medium">Zurück zur Frage ↺</span>
                           </div>
                         </div>
@@ -7129,29 +8199,51 @@
                 </div>
               </div>
 
-              <!-- Controls Row Below Card (Navigation + Dedicated "Gewusst" Button) -->
+              <!-- Controls Row Below Card (Navigation + Leitner Spaced Repetition Rating Buttons) -->
               <div class="mt-5 flex items-center justify-between flex-wrap gap-3">
                 <div class="flex items-center gap-2">
-                  <button onclick="prevFlashcard()" class="px-4 py-2.5 rounded-[11px] bg-[#161619] hover:bg-[#1E1E24] border border-[#26262F] text-[13px] font-medium text-[#E4E4E7] transition">
+                  <button onclick="prevFlashcard()" class="px-3.5 py-2.5 rounded-[11px] bg-[#161619] hover:bg-[#1E1E24] border border-[#26262F] text-[13px] font-medium text-[#E4E4E7] transition">
                     ← Vorherige
                   </button>
-                  <button onclick="flipFlashcard('${activeCard.id}')" class="px-4 py-2.5 rounded-[11px] bg-[#161619] hover:bg-[#1E1E24] border border-[#26262F] text-[13px] font-medium text-[#E4E4E7] transition">
-                    Karte umdrehen
+                  <button onclick="flipFlashcard('${activeCard.id}')" class="px-3.5 py-2.5 rounded-[11px] bg-[#161619] hover:bg-[#1E1E24] border border-[#26262F] text-[13px] font-medium text-[#E4E4E7] transition">
+                    Umdrehen [Space]
                   </button>
-                  <button onclick="nextFlashcard()" class="px-4 py-2.5 rounded-[11px] bg-[#161619] hover:bg-[#1E1E24] border border-[#26262F] text-[13px] font-medium text-[#E4E4E7] transition">
+                  <button onclick="nextFlashcard()" class="px-3.5 py-2.5 rounded-[11px] bg-[#161619] hover:bg-[#1E1E24] border border-[#26262F] text-[13px] font-medium text-[#E4E4E7] transition">
                     Nächste →
                   </button>
                 </div>
 
-                <!-- Separate Explicit Button for Marking "Gewusst" -->
-                <button onclick="markFlashcard('${activeCard.id}', ${!activeCard.mastered})"
-                        class="px-5 py-2.5 rounded-[11px] text-[13px] font-semibold transition flex items-center gap-2 ${activeCard.mastered ? 'bg-[#10B981]/20 border border-[#10B981]/45 text-[#34D399]' : 'bg-[#3B82F6] hover:bg-[#2563EB] text-white shadow-lg shadow-[#3B82F6]/20'}">
-                  <span>${activeCard.mastered ? '✓ Gewusst (Rückgängig)' : '✓ Als gewusst markieren'}</span>
-                </button>
+                <!-- 3 Leitner Spaced Repetition Rating Buttons (Revealed after flipping) -->
+                <div id="flashcard-rating-controls" class="flex items-center gap-2 flex-wrap ${isFlipped ? '' : 'hidden'}">
+                  <button onclick="rateFlashcard('${activeCard.id}', 'again')"
+                          class="px-3.5 py-2.5 rounded-[11px] bg-[#EF4444]/15 hover:bg-[#EF4444]/25 border border-[#EF4444]/40 text-[12.5px] font-semibold text-[#FCA5A5] transition">
+                    1 • Nochmal (1d)
+                  </button>
+                  <button onclick="rateFlashcard('${activeCard.id}', 'hard')"
+                          class="px-3.5 py-2.5 rounded-[11px] bg-[#F59E0B]/15 hover:bg-[#F59E0B]/25 border border-[#F59E0B]/40 text-[12.5px] font-semibold text-[#FCD34D] transition">
+                    2 • Unsicher (+2d)
+                  </button>
+                  <button onclick="rateFlashcard('${activeCard.id}', 'good')"
+                          class="px-4 py-2.5 rounded-[11px] bg-[#10B981]/20 hover:bg-[#10B981]/30 border border-[#10B981]/45 text-[12.5px] font-semibold text-[#34D399] shadow-md shadow-[#10B981]/10 transition">
+                    3 • Gewusst (${(activeCard.intervalDays || 0) < 4 ? '4d' : `${Math.min(64, (activeCard.intervalDays || 4) * 2)}d`})
+                  </button>
+                </div>
               </div>
             ` : `
-              <div class="bg-[#161619] border border-[#25252D] rounded-[18px] p-10 text-center text-[13.5px] text-[#8E8E93]">
-                Für dieses Fach sind noch keine Karteikarten vorhanden.
+              <div class="bg-[#161619] border border-[#25252D] rounded-[18px] p-10 text-center space-y-3">
+                <p class="text-[14px] font-semibold text-[#F4F4F6]">
+                  ${appState.flashcardDueFilterOnly ? 'Alle fälligen Karteikarten für heute sind erledigt!' : 'Für dieses Fach sind noch keine Karteikarten vorhanden.'}
+                </p>
+                <div class="flex items-center justify-center gap-2.5">
+                  ${appState.flashcardDueFilterOnly ? `
+                    <button onclick="selectFlashcardSubject('ALL')" class="px-4 py-2 rounded-full bg-[#242429] text-[12.5px] font-semibold text-[#E4E4E7] transition">
+                      Alle Karten anzeigen
+                    </button>
+                  ` : ''}
+                  <button onclick="openFlashcardEditorModal()" class="px-4 py-2 rounded-full bg-[#3B82F6] text-white text-[12.5px] font-semibold transition">
+                    + Neue Karteikarte erstellen
+                  </button>
+                </div>
               </div>
             `}
 
@@ -7374,11 +8466,20 @@
                     </div>
 
                     ${targetCourse ? `
-                      <button onclick="openSubjectBoard('${targetCourse.id}')"
-                              style="color: ${acc.hex};"
-                              class="text-[12px] font-semibold hover:underline inline-flex items-center gap-1">
-                        Fach jetzt üben →
-                      </button>
+                      <div class="flex items-center justify-between gap-2 flex-wrap pt-1">
+                        <button onclick="openSubjectBoard('${targetCourse.id}')"
+                                style="color: ${acc.hex};"
+                                class="text-[12px] font-semibold hover:underline inline-flex items-center gap-1">
+                          Fach jetzt üben →
+                        </button>
+                        <button onclick="openExamSimSetupModal('${targetCourse.id}')"
+                                class="exam-sim-pill inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-[11px] font-semibold text-[#E4E4E7] transition">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-[#60A5FA]">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM12.9 7.25C12.9 6.75294 12.4971 6.35 12 6.35C11.5029 6.35 11.1 6.75294 11.1 7.25V12C11.1 12.26 11.21 12.51 11.41 12.68L14.51 15.38C14.88 15.7 15.45 15.66 15.78 15.29C16.1 14.92 16.06 14.35 15.69 14.02L12.9 11.59V7.25Z" />
+                          </svg>
+                          <span>Prüfung simulieren</span>
+                        </button>
+                      </div>
                     ` : ''}
                   </div>
                 `;
@@ -7390,8 +8491,49 @@
     }
 
     // =========================================================================
-    // 4. INTERACTIVE 6-QUESTION QUIZ POP-UP (30 Correct Answers = Done!)
+    // 4. INTERACTIVE QUIZ, MISTAKE TRAINER & IHK EXAM SIMULATION ENGINE
     // =========================================================================
+
+    let examTimerInterval = null;
+
+    function clearExamTimer() {
+      if (examTimerInterval) {
+        clearInterval(examTimerInterval);
+        examTimerInterval = null;
+      }
+    }
+
+    function formatTimerMmSs(totalSeconds) {
+      const safe = Math.max(0, Math.floor(totalSeconds));
+      const mins = Math.floor(safe / 60);
+      const secs = safe % 60;
+      return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function startExamCountdownTimer() {
+      clearExamTimer();
+      examTimerInterval = setInterval(() => {
+        const session = appState.activeQuizSession;
+        if (!session || session.mode !== 'exam' || session.finished) {
+          clearExamTimer();
+          return;
+        }
+        session.remainingSeconds = Math.max(0, (session.remainingSeconds || 0) - 1);
+        const badgeEl = document.getElementById('exam-timer-badge');
+        if (badgeEl) {
+          badgeEl.textContent = formatTimerMmSs(session.remainingSeconds);
+          if (session.remainingSeconds <= 30) {
+            badgeEl.className = 'px-3 py-1 rounded-full bg-[#EF4444]/25 border border-[#EF4444]/60 text-[12px] font-mono font-bold text-[#FCA5A5] animate-pulse';
+          } else if (session.remainingSeconds <= 120) {
+            badgeEl.className = 'px-3 py-1 rounded-full bg-[#F59E0B]/20 border border-[#F59E0B]/45 text-[12px] font-mono font-bold text-[#FCD34D]';
+          }
+        }
+        if (session.remainingSeconds <= 0) {
+          clearExamTimer();
+          finishExamSimulation(true);
+        }
+      }, 1000);
+    }
 
     function buildQuizRound(cardId) {
       const pool = QUESTION_POOLS[cardId] || [];
@@ -7410,7 +8552,7 @@
       const updatedSeen = new Set(appState.seenQuestionIds[cardId] || []);
       selected.forEach(q => updatedSeen.add(q.poolIndex));
       appState.seenQuestionIds[cardId] = Array.from(updatedSeen);
-      return selected;
+      return selected.map(q => shuffleQuestionOptions(q, { cardId, poolIndex: q.poolIndex }));
     }
 
     function openQuizPopup(cardId) {
@@ -7422,18 +8564,23 @@
         return;
       }
 
+      clearExamTimer();
       appState.activeQuizSession = {
+        mode: 'normal',
         cardId,
         questions,
         currentIndex: 0,
         selectedOption: null,
         showTip: false,
         correctCount: 0,
+        resolvedMistakesCount: 0,
         finished: false
       };
 
       document.body.classList.add('quiz-open');
       const overlay = document.getElementById('quiz-popup-overlay');
+      const box = document.getElementById('quiz-popup-box');
+      if (box) box.className = 'w-full max-w-[440px]';
       if (overlay) {
         overlay.classList.remove('hidden');
         overlay.classList.add('flex');
@@ -7441,7 +8588,322 @@
       renderQuizPopup(true);
     }
 
+    function openMistakeTrainerQuiz(filterCourseId = null) {
+      let validList = getValidWrongQuestionsList();
+      if (filterCourseId) {
+        const targetCourse = COURSES.find(c => c.id === filterCourseId);
+        if (targetCourse) {
+          const allowedIds = new Set(targetCourse.cards.map(m => m.id));
+          validList = validList.filter(item => allowedIds.has(item.cardId));
+        }
+      }
+
+      if (validList.length === 0) {
+        showToast('Keine offenen Fehlerfragen vorhanden – starke Leistung!');
+        return;
+      }
+
+      const shuffledEntries = [...validList];
+      for (let i = shuffledEntries.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledEntries[i], shuffledEntries[j]] = [shuffledEntries[j], shuffledEntries[i]];
+      }
+
+      const questions = shuffledEntries.map(entry => {
+        const rawQ = QUESTION_POOLS[entry.cardId][entry.poolIndex];
+        const card = getCardById(entry.cardId);
+        const course = COURSES.find(c => c.cards.some(m => m.id === entry.cardId));
+        return shuffleQuestionOptions(rawQ, {
+          cardId: entry.cardId,
+          poolIndex: entry.poolIndex,
+          moduleTitle: card ? card.title : '',
+          courseTitle: course ? course.title : '',
+          streak: entry.streak || 0
+        });
+      });
+
+      clearExamTimer();
+      appState.activeQuizSession = {
+        mode: 'mistakes',
+        cardId: questions[0]?.cardId || null,
+        questions,
+        currentIndex: 0,
+        selectedOption: null,
+        showTip: false,
+        correctCount: 0,
+        resolvedMistakesCount: 0,
+        finished: false
+      };
+
+      document.body.classList.add('quiz-open');
+      const overlay = document.getElementById('quiz-popup-overlay');
+      const box = document.getElementById('quiz-popup-box');
+      if (box) box.className = 'w-full max-w-[440px]';
+      if (overlay) {
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+      }
+      renderQuizPopup(true);
+    }
+
+    function openExamSimSetupModal(preselectedCourseId = 'ALL') {
+      openModal(`
+        <div class="p-5 sm:p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-[10px] bg-[#3B82F6]/15 border border-[#3B82F6]/30 flex items-center justify-center text-[#60A5FA]">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM12.9 7.25C12.9 6.75294 12.4971 6.35 12 6.35C11.5029 6.35 11.1 6.75294 11.1 7.25V12C11.1 12.26 11.21 12.51 11.41 12.68L14.51 15.38C14.88 15.7 15.45 15.66 15.78 15.29C16.1 14.92 16.06 14.35 15.69 14.02L12.9 11.59V7.25Z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-[16.5px] font-bold text-[#F4F4F6]">Prüfungs-Simulation (IHK-Modus)</h3>
+                <p class="text-[11.5px] text-[#8E8E93]">Echte Klausurbedingungen ohne Tipps &amp; Sofort-Lösung</p>
+              </div>
+            </div>
+            <button onclick="closeModal()" class="w-7 h-7 rounded-full bg-white/[0.05] hover:bg-white/[0.1] text-[#8E8E93] hover:text-white flex items-center justify-center transition">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6.22 6.22a.75.75 0 011.06 0L12 10.94l4.72-4.72a.75.75 0 111.06 1.06L13.06 12l4.72 4.72a.75.75 0 11-1.06 1.06L12 13.06l-4.72 4.72a.75.75 0 01-1.06-1.06L10.94 12 6.22 7.28a.75.75 0 010-1.06z"/>
+              </svg>
+            </button>
+          </div>
+
+          <form onsubmit="submitExamSimulationSetup(event)" class="space-y-4">
+            <div>
+              <label class="block text-[12px] font-semibold text-[#D4D4D8] mb-1.5">Prüfungsfach auswählen</label>
+              <select id="sim-course-select" class="w-full bg-[#111113] border border-[#2C2C35] rounded-[10px] px-3.5 py-2.5 text-[13.5px] text-[#F4F4F6] focus:outline-none focus:border-[#3B82F6]">
+                <option value="ALL" ${preselectedCourseId === 'ALL' ? 'selected' : ''}>Alle Fächer gemischt (Gesamtklausur)</option>
+                ${COURSES.map(c => `
+                  <option value="${c.id}" ${preselectedCourseId === c.id ? 'selected' : ''}>${escapeHtml(c.title)}</option>
+                `).join('')}
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3.5">
+              <div>
+                <label class="block text-[12px] font-semibold text-[#D4D4D8] mb-1.5">Fragenanzahl</label>
+                <select id="sim-count-select" class="w-full bg-[#111113] border border-[#2C2C35] rounded-[10px] px-3.5 py-2.5 text-[13.5px] text-[#F4F4F6] focus:outline-none focus:border-[#3B82F6]">
+                  <option value="15">15 Fragen (Kurzprüfung)</option>
+                  <option value="30" selected>30 Fragen (Standardklausur)</option>
+                  <option value="45">45 Fragen (Abschlussprüfung)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-[12px] font-semibold text-[#D4D4D8] mb-1.5">Zeitlimit</label>
+                <select id="sim-time-select" class="w-full bg-[#111113] border border-[#2C2C35] rounded-[10px] px-3.5 py-2.5 text-[13.5px] text-[#F4F4F6] focus:outline-none focus:border-[#3B82F6]">
+                  <option value="15">15 Minuten</option>
+                  <option value="30" selected>30 Minuten</option>
+                  <option value="45">45 Minuten</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="bg-[#111114] border border-[#24242D] rounded-[11px] p-3 text-[12px] text-[#8E8E93] leading-relaxed">
+              Bewertung nach offiziellem <strong class="text-[#E4E4E7]">IHK-Prozentschlüssel</strong> (ab 50 % bestanden). Falsch beantwortete Fragen landen danach automatisch im Fehler-Trainer.
+            </div>
+
+            <div class="flex justify-end gap-2.5 pt-1">
+              <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-[9px] text-[13px] text-[#9A9AA0] hover:text-white transition">Abbrechen</button>
+              <button type="submit" class="dash-cta-pill px-5 py-2.5 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[13px] font-semibold shadow-lg shadow-[#3B82F6]/25 transition">
+                Prüfung starten →
+              </button>
+            </div>
+          </form>
+        </div>
+      `);
+    }
+
+    function submitExamSimulationSetup(event) {
+      event.preventDefault();
+      const courseId = document.getElementById('sim-course-select')?.value || 'ALL';
+      const questionCount = parseInt(document.getElementById('sim-count-select')?.value || '30', 10);
+      const minutes = parseInt(document.getElementById('sim-time-select')?.value || '30', 10);
+      closeModal();
+      startExamSimulation(courseId, questionCount, minutes);
+    }
+
+    function startExamSimulation(courseId = 'ALL', questionCount = 30, minutes = 30) {
+      const targetCourses = courseId === 'ALL'
+        ? COURSES
+        : COURSES.filter(c => c.id === courseId);
+
+      const allRawEntries = [];
+      targetCourses.forEach(course => {
+        course.cards.forEach(card => {
+          const pool = QUESTION_POOLS[card.id] || [];
+          pool.forEach((q, poolIndex) => {
+            allRawEntries.push({
+              rawQ: q,
+              cardId: card.id,
+              poolIndex,
+              moduleTitle: card.title,
+              courseTitle: course.title
+            });
+          });
+        });
+      });
+
+      if (allRawEntries.length === 0) {
+        showToast('Keine Fragen für dieses Fach verfügbar');
+        return;
+      }
+
+      const shuffleArr = (arr) => {
+        const copy = [...arr];
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      };
+
+      let picked = shuffleArr(allRawEntries);
+      while (picked.length < questionCount) {
+        picked = picked.concat(shuffleArr(allRawEntries));
+      }
+      picked = picked.slice(0, questionCount);
+
+      const questions = picked.map(item =>
+        shuffleQuestionOptions(item.rawQ, {
+          cardId: item.cardId,
+          poolIndex: item.poolIndex,
+          moduleTitle: item.moduleTitle,
+          courseTitle: item.courseTitle
+        })
+      );
+
+      const courseTitle = courseId === 'ALL'
+        ? 'Alle Fächer'
+        : (targetCourses[0]?.title || 'Prüfung');
+
+      clearExamTimer();
+      appState.activeQuizSession = {
+        mode: 'exam',
+        examCourseId: courseId,
+        examCourseTitle: courseTitle,
+        totalSeconds: minutes * 60,
+        remainingSeconds: minutes * 60,
+        timeExpired: false,
+        questions,
+        examAnswers: new Array(questions.length).fill(null),
+        currentIndex: 0,
+        selectedOption: null,
+        showTip: false,
+        correctCount: 0,
+        examResults: null,
+        finished: false
+      };
+
+      document.body.classList.add('quiz-open');
+      const overlay = document.getElementById('quiz-popup-overlay');
+      const box = document.getElementById('quiz-popup-box');
+      if (box) box.className = 'w-full max-w-[460px]';
+      if (overlay) {
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+      }
+      renderQuizPopup(true);
+      startExamCountdownTimer();
+    }
+
+    function calculateIhkGrade(correctCount, totalCount) {
+      const pct = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0;
+      if (pct >= 92) return { pct, grade: 1, label: 'Sehr gut', passed: true };
+      if (pct >= 81) return { pct, grade: 2, label: 'Gut', passed: true };
+      if (pct >= 67) return { pct, grade: 3, label: 'Befriedigend', passed: true };
+      if (pct >= 50) return { pct, grade: 4, label: 'Ausreichend', passed: true };
+      if (pct >= 30) return { pct, grade: 5, label: 'Mangelhaft', passed: false };
+      return { pct, grade: 6, label: 'Ungenügend', passed: false };
+    }
+
+    function finishExamSimulation(timeExpired = false) {
+      const session = appState.activeQuizSession;
+      if (!session || session.mode !== 'exam' || session.finished) return;
+      clearExamTimer();
+
+      if (session.selectedOption !== null) {
+        session.examAnswers[session.currentIndex] = session.selectedOption;
+      }
+
+      let correctCount = 0;
+      let moduleBonusXp = 0;
+      const wrongList = [];
+
+      session.questions.forEach((q, idx) => {
+        const chosenIdx = session.examAnswers[idx];
+        const isCorrect = chosenIdx === q.correctIndex;
+        if (isCorrect) {
+          correctCount += 1;
+          const card = getCardById(q.cardId);
+          if (card) {
+            const wasDone = card.completedSteps >= card.totalSteps;
+            card.completedSteps = Math.min(card.totalSteps, card.completedSteps + 1);
+            if (card.completedSteps >= card.totalSteps) {
+              card.column = 'completed';
+              if (!wasDone) {
+                moduleBonusXp += 100;
+              }
+            }
+          }
+        } else {
+          recordWrongQuestion(q.cardId, q.poolIndex);
+          wrongList.push({
+            index: idx + 1,
+            question: q.question,
+            chosenText: chosenIdx !== null && q.options[chosenIdx] !== undefined ? q.options[chosenIdx] : 'Keine Antwort gewählt',
+            correctText: q.options[q.correctIndex],
+            explanation: q.explanation,
+            courseTitle: q.courseTitle,
+            moduleTitle: q.moduleTitle
+          });
+        }
+      });
+
+      const elapsedSeconds = Math.max(1, (session.totalSeconds || 0) - (session.remainingSeconds || 0));
+      const ihk = calculateIhkGrade(correctCount, session.questions.length);
+
+      if (correctCount > 0) {
+        recordLessonCompletion(correctCount);
+        const totalEarnedXp = (correctCount * 10) + moduleBonusXp;
+        const leveledUp = awardXp(totalEarnedXp, 'Prüfungssimulation');
+        if (!leveledUp && ihk.passed) {
+          playStudySound('complete');
+        }
+      } else {
+        playStudySound('wrong');
+      }
+
+      session.correctCount = correctCount;
+      session.timeExpired = timeExpired;
+      session.examResults = {
+        ...ihk,
+        correctCount,
+        totalCount: session.questions.length,
+        elapsedFormatted: formatTimerMmSs(elapsedSeconds),
+        wrongList
+      };
+      session.finished = true;
+
+      quizWorkspaceDirty = true;
+      scheduleSavePersistedState();
+      triggerAutoSync();
+
+      const box = document.getElementById('quiz-popup-box');
+      if (box) box.className = 'w-full max-w-[560px]';
+      renderQuizPopup(false);
+    }
+
+    function handleQuizBackdropClick() {
+      const session = appState.activeQuizSession;
+      if (session && session.mode === 'exam' && !session.finished) {
+        return;
+      }
+      closeQuizPopup();
+    }
+
     function closeQuizPopup() {
+      clearExamTimer();
       appState.activeQuizSession = null;
       document.body.classList.remove('quiz-open');
       const overlay = document.getElementById('quiz-popup-overlay');
@@ -7462,21 +8924,59 @@
 
     function selectQuizOption(optionIdx) {
       const session = appState.activeQuizSession;
-      if (!session || session.selectedOption !== null) return;
+      if (!session || session.finished) return;
+
+      if (session.mode === 'exam') {
+        session.selectedOption = optionIdx;
+        session.examAnswers[session.currentIndex] = optionIdx;
+        playStudySound('flip');
+        renderQuizPopup(false);
+        return;
+      }
+
+      if (session.selectedOption !== null) return;
       session.selectedOption = optionIdx;
       const currentQ = session.questions[session.currentIndex];
       const isCorrect = optionIdx === currentQ.correctIndex;
 
       if (isCorrect) {
         session.correctCount += 1;
-        const card = getCardById(session.cardId);
+        let earnedXp = 10;
+        let completedModuleNow = false;
+
+        const card = getCardById(currentQ.cardId || session.cardId);
         if (card) {
+          const wasDone = card.completedSteps >= card.totalSteps;
           card.completedSteps = Math.min(card.totalSteps, card.completedSteps + 1);
           if (card.completedSteps >= card.totalSteps) {
             card.column = 'completed';
+            if (!wasDone) {
+              earnedXp += 100;
+              completedModuleNow = true;
+            }
+          }
+        }
+        if (session.mode === 'mistakes') {
+          const resolved = recordMistakeTrainerCorrect(currentQ.cardId, currentQ.poolIndex);
+          if (resolved) {
+            session.resolvedMistakesCount = (session.resolvedMistakesCount || 0) + 1;
+            earnedXp += 15;
           }
         }
         recordLessonCompletion(1);
+        const leveledUp = awardXp(earnedXp, 'Richtige Quiz-Antwort');
+        if (!leveledUp) {
+          playStudySound(completedModuleNow ? 'complete' : 'correct');
+        }
+        if (completedModuleNow) {
+          showToast(`Modul „${card.title}“ abgeschlossen! +100 XP Bonus`);
+        }
+        quizWorkspaceDirty = true;
+        scheduleSavePersistedState();
+        triggerAutoSync();
+      } else {
+        playStudySound('wrong');
+        recordWrongQuestion(currentQ.cardId || session.cardId, currentQ.poolIndex);
         quizWorkspaceDirty = true;
         scheduleSavePersistedState();
         triggerAutoSync();
@@ -7486,14 +8986,14 @@
 
     function toggleQuizTip() {
       const session = appState.activeQuizSession;
-      if (!session) return;
+      if (!session || session.mode === 'exam') return;
       session.showTip = !session.showTip;
       renderQuizPopup(false);
     }
 
     function skipQuizQuestion() {
       const session = appState.activeQuizSession;
-      if (!session) return;
+      if (!session || session.mode === 'exam') return;
       if (session.currentIndex + 1 < session.questions.length) {
         session.currentIndex += 1;
         session.selectedOption = null;
@@ -7507,6 +9007,20 @@
     function nextQuizQuestion() {
       const session = appState.activeQuizSession;
       if (!session) return;
+
+      if (session.mode === 'exam') {
+        if (session.selectedOption === null) return;
+        session.examAnswers[session.currentIndex] = session.selectedOption;
+        if (session.currentIndex + 1 < session.questions.length) {
+          session.currentIndex += 1;
+          session.selectedOption = session.examAnswers[session.currentIndex];
+          renderQuizPopup(false);
+        } else {
+          finishExamSimulation(false);
+        }
+        return;
+      }
+
       if (session.currentIndex + 1 < session.questions.length) {
         session.currentIndex += 1;
         session.selectedOption = null;
@@ -7522,28 +9036,145 @@
       const session = appState.activeQuizSession;
       if (!box || !session) return;
 
-      const card = getCardById(session.cardId);
       const totalQ = session.questions.length;
       const entryAnim = isInitialOpen ? 'animate-scale-in' : '';
 
       if (session.finished) {
+        if (session.mode === 'exam' && session.examResults) {
+          const res = session.examResults;
+          const remainingWrong = getWrongQuestionsCount();
+          box.innerHTML = `
+            <div class="quiz-glass-card p-6 sm:p-7 max-h-[88vh] overflow-y-auto"
+                 style="--quiz-ambient-glow: radial-gradient(95% 65% at 50% 0%, ${res.passed ? 'rgba(16, 185, 129, 0.28)' : 'rgba(239, 68, 68, 0.28)'} 0%, rgba(19, 21, 20, 0) 72%);">
+              
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span class="px-3 py-1 rounded-full text-[11.5px] font-bold tracking-wide uppercase ${res.passed ? 'bg-[#10B981]/20 border border-[#10B981]/45 text-[#6EE7B7]' : 'bg-[#EF4444]/20 border border-[#EF4444]/45 text-[#FCA5A5]'}">
+                  ${res.passed ? '✓ Bestanden (IHK)' : '✕ Nicht bestanden (IHK)'}
+                </span>
+                <span class="text-[11.5px] text-[#9A9AA4]">
+                  ${session.timeExpired ? 'Zeit abgelaufen' : `Zeit: ${res.elapsedFormatted}`}
+                </span>
+              </div>
+
+              <h3 class="text-[20px] font-bold text-[#F4F4F6] mb-1">
+                Prüfungsauswertung • ${escapeHtml(session.examCourseTitle)}
+              </h3>
+              <p class="text-[12.5px] text-[#8E8E93] mb-4">
+                Bewertung nach dem offiziellen 100-Punkte-IHK-Schlüssel (+${res.correctCount * 10} XP)
+              </p>
+
+              <div class="grid grid-cols-3 gap-2.5 mb-5">
+                <div class="bg-white/[0.04] border border-white/[0.08] rounded-[14px] p-3 text-center">
+                  <div class="text-[11px] text-[#8E8E93]">IHK-Note</div>
+                  <div class="text-[22px] font-extrabold ${res.passed ? 'text-[#34D399]' : 'text-[#F87171]'} leading-tight mt-0.5">
+                    Note ${res.grade}
+                  </div>
+                  <div class="text-[11px] font-semibold text-[#D4D4D8]">${res.label}</div>
+                </div>
+
+                <div class="bg-white/[0.04] border border-white/[0.08] rounded-[14px] p-3 text-center">
+                  <div class="text-[11px] text-[#8E8E93]">Ergebnis</div>
+                  <div class="text-[22px] font-extrabold text-[#60A5FA] leading-tight mt-0.5">
+                    ${res.pct}%
+                  </div>
+                  <div class="text-[11px] text-[#9A9AA4]">ab 50% bestanden</div>
+                </div>
+
+                <div class="bg-white/[0.04] border border-white/[0.08] rounded-[14px] p-3 text-center">
+                  <div class="text-[11px] text-[#8E8E93]">Punkte</div>
+                  <div class="text-[22px] font-extrabold text-[#F4F4F6] leading-tight mt-0.5">
+                    ${res.correctCount}/${res.totalCount}
+                  </div>
+                  <div class="text-[11px] text-[#9A9AA4]">Richtig</div>
+                </div>
+              </div>
+
+              ${res.wrongList.length === 0 ? `
+                <div class="p-4 rounded-[14px] bg-[#10B981]/15 border border-[#10B981]/35 text-[#A7F3D0] text-[13px] font-medium text-center mb-5">
+                  Perfektes Ergebnis! Du hast alle ${res.totalCount} Prüfungsfragen fehlerfrei beantwortet.
+                </div>
+              ` : `
+                <div class="mb-5">
+                  <div class="text-[12px] font-semibold uppercase tracking-wider text-[#FCA5A5] mb-2.5">
+                    Falsch beantwortete Fragen (${res.wrongList.length})
+                  </div>
+                  <div class="space-y-2.5 max-h-[240px] overflow-y-auto pr-1">
+                    ${res.wrongList.map(w => `
+                      <div class="p-3.5 rounded-[13px] bg-white/[0.03] border border-white/[0.08] text-left space-y-1.5">
+                        <div class="text-[10.5px] font-semibold text-[#60A5FA]">
+                          Frage ${w.index} • ${escapeHtml(w.courseTitle)} (${escapeHtml(w.moduleTitle)})
+                        </div>
+                        <div class="text-[12.5px] font-semibold text-[#F4F4F6] leading-snug">
+                          ${escapeHtml(w.question)}
+                        </div>
+                        <div class="text-[11.5px] text-[#FCA5A5]">
+                          Deine Antwort: <span class="line-through">${escapeHtml(w.chosenText)}</span>
+                        </div>
+                        <div class="text-[11.5px] text-[#6EE7B7] font-medium">
+                          Richtige Lösung: ${escapeHtml(w.correctText)}
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              `}
+
+              <div class="flex items-center justify-end gap-2.5 flex-wrap pt-2 border-t border-white/[0.08]">
+                ${remainingWrong > 0 ? `
+                  <button onclick="openMistakeTrainerQuiz()"
+                          class="px-4 py-2 rounded-full bg-[#EF4444]/20 hover:bg-[#EF4444]/30 border border-[#EF4444]/40 text-[#FCA5A5] text-[12.5px] font-semibold transition">
+                    Fehler trainieren (${remainingWrong})
+                  </button>
+                ` : ''}
+                <button onclick="closeQuizPopup(); openExamSimSetupModal('${session.examCourseId}');"
+                        class="px-4 py-2 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[12.5px] font-semibold transition">
+                  Neue Prüfung
+                </button>
+                <button onclick="closeQuizPopup()"
+                        class="px-4 py-2 rounded-full bg-[#222228] hover:bg-[#2B2B33] text-[#E4E4E7] text-[12.5px] font-medium transition">
+                  Schließen
+                </button>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        const card = getCardById(session.cardId);
         const isDone = card && card.completedSteps >= card.totalSteps;
+        const remainingWrongCount = getWrongQuestionsCount();
+
         box.innerHTML = `
           <div class="quiz-glass-card p-6 sm:p-7 text-center"
                style="--quiz-ambient-glow: radial-gradient(95% 65% at 50% 0%, rgba(16, 185, 129, 0.28) 0%, rgba(19, 21, 20, 0) 72%);">
-            <div class="w-12 h-12 rounded-full bg-[#10B981]/20 border border-[#10B981]/40 text-[#34D399] flex items-center justify-center mx-auto mb-3 text-[20px] font-bold">
-              ✓
+            <div class="w-12 h-12 rounded-full bg-[#10B981]/20 border border-[#10B981]/40 text-[#34D399] flex items-center justify-center mx-auto mb-3">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5ZM16.3 9.7C16.69 9.31 16.69 8.68 16.3 8.29C15.91 7.9 15.28 7.9 14.89 8.29L10.75 12.43L9.11 10.79C8.72 10.4 8.09 10.4 7.7 10.79C7.31 11.18 7.31 11.81 7.7 12.2L10.05 14.55C10.44 14.94 11.07 14.94 11.46 14.55L16.3 9.7Z" />
+              </svg>
             </div>
-            <h3 class="text-[20px] font-bold text-[#F4F4F6] mb-1">Runde abgeschlossen!</h3>
+            <h3 class="text-[20px] font-bold text-[#F4F4F6] mb-1">
+              ${session.mode === 'mistakes' ? 'Fehler-Training beendet!' : 'Runde abgeschlossen!'}
+            </h3>
             <p class="text-[13.5px] text-[#9A9AA4] mb-4">
-              Du hast <strong class="text-[#F4F4F6]">${session.correctCount} von ${totalQ}</strong> Fragen richtig beantwortet.
-              ${card ? `<br/>Gesamtstand in diesem Modul: <strong class="text-[#60A5FA]">${card.completedSteps} / ${card.totalSteps}</strong> ${isDone ? '— 🎉 Modul abgeschlossen (Done)!' : ''}` : ''}
+              Du hast <strong class="text-[#F4F4F6]">${session.correctCount} von ${totalQ}</strong> Fragen richtig beantwortet (+${session.correctCount * 10} XP).
+              ${session.mode === 'mistakes'
+                ? `<br/><strong class="text-[#34D399]">${session.resolvedMistakesCount || 0} Fehler</strong> wurden nach 2x richtiger Antwort behoben. Offen: <strong class="text-[#FCA5A5]">${remainingWrongCount}</strong>.`
+                : (card ? `<br/>Gesamtstand in diesem Modul: <strong class="text-[#60A5FA]">${card.completedSteps} / ${card.totalSteps}</strong> ${isDone ? '— Modul abgeschlossen (Done)!' : ''}` : '')}
             </p>
             <div class="flex items-center justify-center gap-2.5 flex-wrap">
-              <button onclick="openQuizPopup('${session.cardId}')"
-                      class="px-4 py-2.5 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[13px] font-semibold transition">
-                Nächste 6 Fragen
-              </button>
+              ${session.mode === 'mistakes' ? `
+                ${remainingWrongCount > 0 ? `
+                  <button onclick="openMistakeTrainerQuiz()"
+                          class="px-4 py-2.5 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[13px] font-semibold transition">
+                    Weiter Fehler trainieren (${remainingWrongCount})
+                  </button>
+                ` : ''}
+              ` : `
+                <button onclick="openQuizPopup('${session.cardId}')"
+                        class="px-4 py-2.5 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[13px] font-semibold transition">
+                  Nächste 6 Fragen
+                </button>
+              `}
               <button onclick="closeQuizPopup()"
                       class="px-4 py-2.5 rounded-full bg-[#222228] hover:bg-[#2B2B33] text-[#E4E4E7] text-[13px] font-medium transition">
                 Schließen
@@ -7555,39 +9186,78 @@
       }
 
       const q = session.questions[session.currentIndex];
+      const isExam = session.mode === 'exam';
+      const isMistakes = session.mode === 'mistakes';
+      const card = getCardById(q.cardId || session.cardId);
       const hasAnswered = session.selectedOption !== null;
       const isCorrect = session.selectedOption === q.correctIndex;
-      const ambientGlow = !hasAnswered
-        ? 'radial-gradient(95% 65% at 50% 0%, rgba(59, 130, 246, 0.22) 0%, rgba(19, 21, 20, 0) 72%)'
-        : isCorrect
-          ? 'radial-gradient(95% 65% at 50% 0%, rgba(16, 185, 129, 0.28) 0%, rgba(19, 21, 20, 0) 72%)'
-          : 'radial-gradient(95% 65% at 50% 0%, rgba(239, 68, 68, 0.28) 0%, rgba(19, 21, 20, 0) 72%)';
+
+      const ambientGlow = isExam
+        ? 'radial-gradient(95% 65% at 50% 0%, rgba(99, 102, 241, 0.24) 0%, rgba(19, 21, 20, 0) 72%)'
+        : !hasAnswered
+          ? (isMistakes
+              ? 'radial-gradient(95% 65% at 50% 0%, rgba(239, 68, 68, 0.22) 0%, rgba(19, 21, 20, 0) 72%)'
+              : 'radial-gradient(95% 65% at 50% 0%, rgba(59, 130, 246, 0.22) 0%, rgba(19, 21, 20, 0) 72%)')
+          : isCorrect
+            ? 'radial-gradient(95% 65% at 50% 0%, rgba(16, 185, 129, 0.28) 0%, rgba(19, 21, 20, 0) 72%)'
+            : 'radial-gradient(95% 65% at 50% 0%, rgba(239, 68, 68, 0.28) 0%, rgba(19, 21, 20, 0) 72%)';
+
+      const timerClass = (session.remainingSeconds || 0) <= 30
+        ? 'bg-[#EF4444]/25 border-[#EF4444]/60 text-[#FCA5A5] animate-pulse'
+        : (session.remainingSeconds || 0) <= 120
+          ? 'bg-[#F59E0B]/20 border-[#F59E0B]/45 text-[#FCD34D]'
+          : 'bg-[#3B82F6]/15 border-[#3B82F6]/35 text-[#93C5FD]';
 
       box.innerHTML = `
         <div class="quiz-glass-card p-6 sm:p-7 ${entryAnim}" style="--quiz-ambient-glow: ${ambientGlow};">
           <!-- Top Bar -->
-          <div class="flex items-center justify-between gap-2 mb-4">
-            <span class="px-3 py-1 rounded-full bg-white/[0.06] border border-white/[0.1] text-[11.5px] font-semibold text-[#E4E4E7]">
-              Frage ${session.currentIndex + 1} / ${totalQ}
-            </span>
+          <div class="flex items-center justify-between gap-2 mb-3.5">
             <div class="flex items-center gap-2">
-              ${card ? `<span class="text-[11.5px] font-semibold text-[#60A5FA]">${card.completedSteps}/${card.totalSteps}</span>` : ''}
-              <button onclick="closeQuizPopup(); openModuleDrawer('${session.cardId}')"
-                      title="Lernstoff &amp; Theorie öffnen"
-                      class="px-2.5 py-1 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-[11px] font-medium text-[#D4D4D8] transition">
-                Lernstoff
-              </button>
-              <button onclick="closeQuizPopup()" class="w-7 h-7 rounded-full bg-white/[0.06] hover:bg-white/[0.14] text-[#9A9AA4] hover:text-white flex items-center justify-center text-[13px] transition">
-                ✕
+              <span class="px-3 py-1 rounded-full bg-white/[0.06] border border-white/[0.1] text-[11.5px] font-semibold text-[#E4E4E7]">
+                Frage ${session.currentIndex + 1} / ${totalQ}
+              </span>
+              ${isMistakes ? `
+                <span class="px-2.5 py-1 rounded-full bg-[#EF4444]/15 border border-[#EF4444]/35 text-[11px] font-semibold text-[#FCA5A5]">
+                  Fehler-Trainer (${Math.min(2, (q.streak || 0))}/2)
+                </span>
+              ` : ''}
+            </div>
+
+            <div class="flex items-center gap-2">
+              ${isExam ? `
+                <span id="exam-timer-badge" class="px-3 py-1 rounded-full border text-[12px] font-mono font-bold ${timerClass}">
+                  ${formatTimerMmSs(session.remainingSeconds)}
+                </span>
+              ` : `
+                ${card ? `<span class="text-[11.5px] font-semibold text-[#60A5FA]">${card.completedSteps}/${card.totalSteps}</span>` : ''}
+                <button onclick="closeQuizPopup(); openModuleDrawer('${q.cardId || session.cardId}')"
+                        title="Lernstoff &amp; Theorie öffnen"
+                        class="px-2.5 py-1 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-[11px] font-medium text-[#D4D4D8] transition">
+                  Lernstoff
+                </button>
+              `}
+              <button onclick="closeQuizPopup()" title="Schließen (Esc)" class="w-7 h-7 rounded-full bg-white/[0.06] hover:bg-white/[0.14] text-[#9A9AA4] hover:text-white flex items-center justify-center transition">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6.22 6.22a.75.75 0 011.06 0L12 10.94l4.72-4.72a.75.75 0 111.06 1.06L13.06 12l4.72 4.72a.75.75 0 11-1.06 1.06L12 13.06l-4.72 4.72a.75.75 0 01-1.06-1.06L10.94 12 6.22 7.28a.75.75 0 010-1.06z"/>
+                </svg>
               </button>
             </div>
           </div>
 
+          ${(isExam || isMistakes) && q.courseTitle ? `
+            <div class="text-[11px] font-semibold text-[#8E8E93] mb-2">
+              ${escapeHtml(q.courseTitle)} • ${escapeHtml(q.moduleTitle || '')}
+            </div>
+          ` : ''}
+
           <!-- Progress Pills -->
-          <div class="flex items-center gap-1.5 mb-5">
-            ${session.questions.map((_, idx) => `
-              <div class="h-1 flex-1 rounded-full ${idx < session.currentIndex ? 'bg-[#10B981]' : idx === session.currentIndex ? 'bg-[#3B82F6]' : 'bg-white/[0.12]'}"></div>
-            `).join('')}
+          <div class="flex items-center gap-1 mb-5">
+            ${session.questions.map((_, idx) => {
+              const barColor = isExam
+                ? (idx === session.currentIndex ? 'bg-[#6366F1]' : session.examAnswers[idx] !== null ? 'bg-[#3B82F6]/70' : 'bg-white/[0.12]')
+                : (idx < session.currentIndex ? 'bg-[#10B981]' : idx === session.currentIndex ? 'bg-[#3B82F6]' : 'bg-white/[0.12]');
+              return `<div class="h-1 flex-1 rounded-full ${barColor}"></div>`;
+            }).join('')}
           </div>
 
           <!-- Question Text -->
@@ -7595,13 +9265,18 @@
             ${escapeHtml(q.question)}
           </h3>
 
-          <!-- Answer Options (Shows BOTH wrong red ✕ and correct green ✓ when wrong!) -->
+          <!-- Shuffled Answer Options (1-4 / A-D) -->
           <div class="space-y-2.5 mb-4">
             ${q.options.map((opt, idx) => {
               let rowClass = 'bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.09] text-[#E4E4E7]';
-              let iconHtml = `<span class="w-5 h-5 rounded-full border border-white/20 text-[11px] flex items-center justify-center shrink-0 text-[#9A9AA4]">${String.fromCharCode(65 + idx)}</span>`;
+              let iconHtml = `<span class="w-5 h-5 rounded-full border border-white/20 text-[11px] font-semibold flex items-center justify-center shrink-0 text-[#9A9AA4]">${idx + 1}</span>`;
 
-              if (hasAnswered) {
+              if (isExam) {
+                if (session.selectedOption === idx) {
+                  rowClass = 'bg-[#3B82F6]/22 border-[#3B82F6]/70 text-[#F4F4F6] font-semibold';
+                  iconHtml = `<span class="w-5 h-5 rounded-full bg-[#3B82F6] text-white text-[11px] font-bold flex items-center justify-center shrink-0">${idx + 1}</span>`;
+                }
+              } else if (hasAnswered) {
                 if (idx === q.correctIndex) {
                   rowClass = 'bg-[#10B981]/20 border-[#10B981]/60 text-[#6EE7B7] font-semibold';
                   iconHtml = `<span class="w-5 h-5 rounded-full bg-[#10B981] text-[#052E16] text-[11px] font-bold flex items-center justify-center shrink-0">✓</span>`;
@@ -7615,7 +9290,7 @@
 
               return `
                 <button onclick="selectQuizOption(${idx})"
-                        ${hasAnswered ? 'disabled' : ''}
+                        ${!isExam && hasAnswered ? 'disabled' : ''}
                         class="quiz-option-btn w-full text-left p-3.5 rounded-[14px] border text-[13.5px] leading-snug flex items-center gap-3 ${rowClass}">
                   ${iconHtml}
                   <span class="flex-1">${escapeHtml(opt)}</span>
@@ -7624,38 +9299,56 @@
             }).join('')}
           </div>
 
-          <!-- Optional Tip Box -->
-          ${session.showTip && !hasAnswered ? `
-            <div class="mb-4 p-3 rounded-[12px] bg-[#F59E0B]/12 border border-[#F59E0B]/30 text-[12.5px] text-[#FDE68A] leading-relaxed">
-              💡 <strong>Tipp:</strong> ${escapeHtml(q.tip || 'Achte auf die Schlüsselbegriffe aus dem Unterricht.')}
+          <!-- Optional Tip Box (Disabled in Exam Mode) -->
+          ${!isExam && session.showTip && !hasAnswered ? `
+            <div class="mb-4 p-3 rounded-[12px] bg-[#F59E0B]/12 border border-[#F59E0B]/30 text-[12.5px] text-[#FDE68A] leading-relaxed flex items-start gap-2.5">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="text-[#FBBF24] shrink-0 mt-0.5">
+                <path d="M12 2.5C8.41 2.5 5.5 5.41 5.5 9C5.5 11.38 6.78 13.46 8.7 14.6C9.1 14.84 9.35 15.27 9.35 15.73V16.5C9.35 17.33 10.02 18 10.85 18H13.15C13.98 18 14.65 17.33 14.65 16.5V15.73C14.65 15.27 14.9 14.84 15.3 14.6C17.22 13.46 18.5 11.38 18.5 9C18.5 5.41 15.59 2.5 12 2.5ZM9.75 19.5C9.34 19.5 9 19.84 9 20.25C9 20.66 9.34 21 9.75 21H14.25C14.66 21 15 20.66 15 20.25C15 19.84 14.66 19.5 14.25 19.5H9.75Z"/>
+              </svg>
+              <span><strong>Tipp:</strong> ${escapeHtml(q.tip || 'Achte auf die Schlüsselbegriffe aus dem Unterricht.')}</span>
             </div>
           ` : ''}
 
-          <!-- Explanation Feedback after Answer -->
-          ${hasAnswered ? `
+          <!-- Immediate Explanation Feedback (Hidden during Exam Mode!) -->
+          ${!isExam && hasAnswered ? `
             <div class="mb-4 p-3.5 rounded-[13px] border text-[12.5px] leading-relaxed ${isCorrect ? 'bg-[#10B981]/12 border-[#10B981]/30 text-[#A7F3D0]' : 'bg-[#EF4444]/12 border-[#EF4444]/30 text-[#FECACA]'}">
-              <strong>${isCorrect ? 'Richtig (+1 Punkt)!' : 'Leider falsch — die grüne Antwort ist richtig:'}</strong><br/>
+              <strong>${isCorrect ? 'Richtig (+1 Punkt • +10 XP)!' : 'Leider falsch — im Fehler-Trainer gespeichert:'}</strong><br/>
               ${escapeHtml(q.explanation)}
             </div>
           ` : ''}
 
-          <!-- Bottom Actions: "Tipp" instead of "Back" on bottom-left -->
-          <div class="flex items-center justify-between pt-2 border-t border-white/[0.08]">
-            <button type="button" onclick="toggleQuizTip()"
-                    class="px-3.5 py-2 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-[12.5px] font-medium text-[#FBBF24] transition">
-              💡 Tipp
-            </button>
-
-            ${hasAnswered ? `
+          <!-- Bottom Actions + Desktop Keyboard Hints -->
+          <div class="flex items-center justify-between gap-2 pt-2.5 border-t border-white/[0.08]">
+            ${isExam ? `
+              <span class="text-[11px] text-[#8E8E93]">Tasten <kbd class="quiz-kbd-chip px-1.5 py-0.5 rounded bg-white/[0.08] text-[#D4D4D8] font-mono">1–4</kbd> &amp; <kbd class="quiz-kbd-chip px-1.5 py-0.5 rounded bg-white/[0.08] text-[#D4D4D8] font-mono">Enter</kbd></span>
               <button type="button" onclick="nextQuizQuestion()"
-                      class="px-5 py-2 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[13px] font-semibold transition">
-                ${session.currentIndex + 1 < totalQ ? 'Weiter →' : 'Auswertung →'}
+                      ${session.selectedOption === null ? 'disabled' : ''}
+                      class="px-5 py-2 rounded-full text-[13px] font-semibold transition ${session.selectedOption !== null ? 'bg-[#3B82F6] hover:bg-[#2563EB] text-white' : 'bg-white/[0.05] text-[#6E6E77] cursor-not-allowed'}">
+                ${session.currentIndex + 1 < totalQ ? 'Nächste Frage →' : 'Prüfung abgeben →'}
               </button>
             ` : `
-              <button type="button" onclick="skipQuizQuestion()"
-                      class="px-4 py-2 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-[12.5px] font-medium text-[#A1A1AA] hover:text-white transition">
-                Überspringen →
-              </button>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="toggleQuizTip()"
+                        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-[12.5px] font-medium text-[#FBBF24] transition">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.5C8.41 2.5 5.5 5.41 5.5 9C5.5 11.38 6.78 13.46 8.7 14.6C9.1 14.84 9.35 15.27 9.35 15.73V16.5C9.35 17.33 10.02 18 10.85 18H13.15C13.98 18 14.65 17.33 14.65 16.5V15.73C14.65 15.27 14.9 14.84 15.3 14.6C17.22 13.46 18.5 11.38 18.5 9C18.5 5.41 15.59 2.5 12 2.5ZM9.75 19.5C9.34 19.5 9 19.84 9 20.25C9 20.66 9.34 21 9.75 21H14.25C14.66 21 15 20.66 15 20.25C15 19.84 14.66 19.5 14.25 19.5H9.75Z"/>
+                  </svg>
+                  <span>Tipp [T]</span>
+                </button>
+                <span class="hidden sm:inline text-[10.5px] text-[#7E7E87]">1–4 • Space</span>
+              </div>
+
+              ${hasAnswered ? `
+                <button type="button" onclick="nextQuizQuestion()"
+                        class="px-5 py-2 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[13px] font-semibold transition">
+                  ${session.currentIndex + 1 < totalQ ? 'Weiter →' : 'Auswertung →'}
+                </button>
+              ` : `
+                <button type="button" onclick="skipQuizQuestion()"
+                        class="px-4 py-2 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-[12.5px] font-medium text-[#A1A1AA] hover:text-white transition">
+                  Überspringen →
+                </button>
+              `}
             `}
           </div>
         </div>
@@ -7849,6 +9542,7 @@
     function openExamDetailModal(examId) {
       const ex = appState.exams.find(e => e.id === examId);
       if (!ex) return;
+      const targetCourse = COURSES.find(c => c.title === ex.subject);
       openModal(`
         <div class="p-5">
           <div class="flex items-center justify-between mb-3">
@@ -7864,32 +9558,207 @@
             <div class="text-[11.5px] font-semibold uppercase tracking-wider text-[#60A5FA] mb-1.5">Was kommt dran?</div>
             <p class="text-[13px] text-[#D4D4D8] leading-relaxed whitespace-pre-line">${escapeHtml(ex.topics)}</p>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex justify-between items-center gap-2 flex-wrap">
             <button onclick="deleteExam('${ex.id}'); closeModal();" class="text-[12.5px] text-[#F87171] hover:underline">Termin löschen</button>
-            <button onclick="closeModal()" class="px-4 py-2 rounded-[8px] bg-[#252529] hover:bg-[#303036] text-[#F4F4F6] text-[13px] font-medium">Schließen</button>
+            <div class="flex items-center gap-2">
+              ${targetCourse ? `
+                <button onclick="closeModal(); openExamSimSetupModal('${targetCourse.id}');"
+                        class="px-3.5 py-2 rounded-[8px] bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[12.5px] font-semibold transition">
+                  Prüfung simulieren
+                </button>
+              ` : ''}
+              <button onclick="closeModal()" class="px-4 py-2 rounded-[8px] bg-[#252529] hover:bg-[#303036] text-[#F4F4F6] text-[13px] font-medium">Schließen</button>
+            </div>
           </div>
         </div>
       `);
     }
 
     function openSearchModal() {
+      const box = document.getElementById('modal-box');
+      if (box) {
+        box.className = 'search-palette-shell w-full max-w-[620px] bg-[#18181B] border border-[#2A2A30] rounded-[16px] shadow-2xl overflow-hidden animate-scale-in';
+      }
       openModal(`
-        <div class="p-4">
-          <div class="flex items-center gap-2.5 border-b border-[#26262B] pb-3">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-[#8E8E93]">
-              <circle cx="11" cy="11" r="7.5" />
-              <path d="M20.5 20.5L16.65 16.65" />
+        <div class="p-4 sm:p-5">
+          <div class="flex items-center gap-3 border-b border-[#26262B] pb-3.5">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="text-[#60A5FA] shrink-0">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M10.75 2.75C6.33172 2.75 2.75 6.33172 2.75 10.75C2.75 15.1683 6.33172 18.75 10.75 18.75C12.3935 18.75 13.9212 18.2543 15.1912 17.4043L18.1464 20.3596C18.83 21.0431 19.9382 21.0431 20.6217 20.3596C21.3053 19.676 21.3053 18.5678 20.6217 17.8843L17.6665 14.929C18.5165 13.659 19.0122 12.1313 19.0122 10.4878C19.0122 6.0695 15.1683 2.75 10.75 2.75ZM6.75 10.75C6.75 8.54086 8.54086 6.75 10.75 6.75C12.9591 6.75 14.75 8.54086 14.75 10.75C14.75 12.9591 12.9591 14.75 10.75 14.75C8.54086 14.75 6.75 12.9591 6.75 10.75Z" />
             </svg>
-            <input id="global-search-input" oninput="filterSearchResults(this.value)" type="text" placeholder="Rechnungswesen, Mikroexpressionen, Bundesrat, Englisch suchen..."
-                   class="flex-1 bg-transparent text-[14px] text-[#F4F4F6] placeholder-[#6E6E77] focus:outline-none" />
-            <button onclick="closeModal()" class="text-[11px] text-[#78787F] bg-[#222226] px-2 py-0.5 rounded">ESC</button>
+            <input id="global-search-input" oninput="filterSearchResults(this.value)" type="text"
+                   placeholder="Suche nach Fächern, Modulen, Quizfragen, Karten oder Klausuren..."
+                   class="flex-1 bg-transparent text-[14.5px] text-[#F4F4F6] placeholder-[#6E6E77] focus:outline-none" />
+            <button onclick="closeModal()" class="quiz-kbd-chip text-[11px] font-mono text-[#8E8E93] bg-[#222226] px-2 py-0.5 rounded hover:text-white transition">ESC</button>
           </div>
-          <div id="search-results-list" class="mt-3 max-h-[320px] overflow-y-auto space-y-1.5">
+          <div id="search-results-list" class="mt-3 max-h-[380px] overflow-y-auto space-y-1.5 pr-1">
             ${renderSearchResults('')}
           </div>
         </div>
       `);
-      setTimeout(() => document.getElementById('global-search-input')?.focus(), 50);
+      setTimeout(() => document.getElementById('global-search-input')?.focus(), 40);
+    }
+
+    function highlightSearchMatch(text, rawQuery) {
+      const safeText = escapeHtml(text || '');
+      const cleanQ = (rawQuery || '').trim();
+      if (!cleanQ) return safeText;
+      const escapedRegex = cleanQ.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      try {
+        const re = new RegExp(`(${escapedRegex})`, 'gi');
+        return safeText.replace(re, '<mark class="search-hl bg-[#3B82F6]/25 text-[#93C5FD] px-0.5 rounded">$1</mark>');
+      } catch (e) {
+        return safeText;
+      }
+    }
+
+    function renderSearchResults(query) {
+      const q = (query || '').trim().toLowerCase();
+      const results = [];
+
+      // 1. Fächer (5 Subjects)
+      COURSES.forEach(course => {
+        if (!q || course.title.toLowerCase().includes(q) || course.description.toLowerCase().includes(q)) {
+          results.push({
+            type: 'Fach',
+            badgeColor: 'text-[#60A5FA] bg-[#3B82F6]/15',
+            title: course.title,
+            subtitle: course.description,
+            meta: `${course.cards.length} Module`,
+            action: `executeSearchJump('course', '${course.id}', '')`
+          });
+        }
+      });
+
+      // 2. Lernmodule (20 Modules)
+      COURSES.forEach(course => {
+        course.cards.forEach(card => {
+          if (!q || card.title.toLowerCase().includes(q) || card.summary.toLowerCase().includes(q) || course.title.toLowerCase().includes(q)) {
+            results.push({
+              type: 'Modul',
+              badgeColor: 'text-[#34D399] bg-[#10B981]/15',
+              title: card.title,
+              subtitle: `${course.title} • ${card.summary}`,
+              meta: `${card.completedSteps}/${card.totalSteps}`,
+              action: `executeSearchJump('module', '${course.id}', '${card.id}')`
+            });
+          }
+        });
+      });
+
+      // 3. Quizfragen (All Question Pools)
+      if (q.length >= 2) {
+        COURSES.forEach(course => {
+          course.cards.forEach(card => {
+            const pool = QUESTION_POOLS[card.id] || [];
+            pool.forEach((pq, idx) => {
+              const hay = `${pq.question} ${(pq.options || []).join(' ')} ${pq.explanation || ''}`.toLowerCase();
+              if (hay.includes(q)) {
+                results.push({
+                  type: 'Quizfrage',
+                  badgeColor: 'text-[#C084FC] bg-[#A855F7]/15',
+                  title: pq.question,
+                  subtitle: `${course.title} • ${card.title}`,
+                  meta: `Frage #${idx + 1}`,
+                  action: `executeSearchJump('module', '${course.id}', '${card.id}')`
+                });
+              }
+            });
+          });
+        });
+      }
+
+      // 4. Karteikarten (Built-in + Custom Flashcards)
+      appState.flashcards.forEach((fc, idx) => {
+        if (!q || fc.question.toLowerCase().includes(q) || fc.answer.toLowerCase().includes(q) || fc.subject.toLowerCase().includes(q)) {
+          results.push({
+            type: 'Karte',
+            badgeColor: 'text-[#FBBF24] bg-[#F59E0B]/15',
+            title: fc.question,
+            subtitle: `${fc.subject} • ${fc.answer}`,
+            meta: fc.mastered ? 'Gemeistert' : `Karte #${idx + 1}`,
+            action: `executeSearchJump('flashcard', '${fc.id}', '')`
+          });
+        }
+      });
+
+      // 5. Eingetragene Klausuren & Tests
+      appState.exams.forEach(ex => {
+        if (!q || ex.title.toLowerCase().includes(q) || ex.subject.toLowerCase().includes(q) || (ex.topics || '').toLowerCase().includes(q)) {
+          results.push({
+            type: 'Klausur',
+            badgeColor: 'text-[#FCA5A5] bg-[#EF4444]/15',
+            title: ex.title,
+            subtitle: `${ex.subject} (${ex.type}) • ${ex.topics || ''}`,
+            meta: formatGermanDate(ex.date),
+            action: `executeSearchJump('exam', '${ex.id}', '')`
+          });
+        }
+      });
+
+      const capped = results.slice(0, 28);
+      if (capped.length === 0) {
+        return `<div class="py-10 text-center text-[13px] text-[#78787F]">Keine passenden Fächer, Module, Fragen, Karten oder Klausuren gefunden.</div>`;
+      }
+
+      return capped.map(item => `
+        <button onclick="${item.action}"
+                class="search-result-item w-full text-left p-3 rounded-[10px] hover:bg-[#222227] flex items-center justify-between gap-3 transition">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2 mb-0.5">
+              <span class="px-2 py-0.5 rounded-[5px] text-[10px] font-bold uppercase tracking-wider shrink-0 ${item.badgeColor}">${item.type}</span>
+              <span class="text-[13px] font-semibold text-[#F4F4F6] truncate">${highlightSearchMatch(item.title, query)}</span>
+            </div>
+            <div class="text-[11.5px] text-[#8E8E93] truncate">${highlightSearchMatch(item.subtitle, query)}</div>
+          </div>
+          <span class="text-[11.5px] text-[#60A5FA] font-semibold shrink-0">${escapeHtml(item.meta)}</span>
+        </button>
+      `).join('');
+    }
+
+    function filterSearchResults(val) {
+      const list = document.getElementById('search-results-list');
+      if (list) list.innerHTML = renderSearchResults(val);
+    }
+
+    function executeSearchJump(kind, id1, id2) {
+      const box = document.getElementById('modal-box');
+      if (box) {
+        box.className = 'w-full max-w-[520px] bg-[#18181B] border border-[#2A2A30] rounded-[14px] shadow-2xl overflow-hidden animate-scale-in';
+      }
+      closeModal();
+
+      if (kind === 'course') {
+        openSubjectBoard(id1);
+      } else if (kind === 'module') {
+        appState.activeCourseId = id1;
+        appState.showSubjectOverview = false;
+        appState.activeNav = 'projects';
+        syncNavHighlight('projects');
+        renderWorkspace();
+        openQuizPopup(id2);
+      } else if (kind === 'flashcard') {
+        appState.flashcardDueFilterOnly = false;
+        appState.selectedFlashcardSubject = 'ALL';
+        const idx = appState.flashcards.findIndex(f => f.id === id1);
+        appState.flashcardPage = idx >= 0 ? idx : 0;
+        appState.flippedFlashcardIds = {};
+        navigateSection('inbox');
+      } else if (kind === 'exam') {
+        const ex = appState.exams.find(e => e.id === id1);
+        if (ex && ex.date && ex.date.includes('-')) {
+          const [y, m] = ex.date.split('-');
+          appState.calendarYear = parseInt(y, 10);
+          appState.calendarMonth = parseInt(m, 10) - 1;
+        }
+        navigateSection('calendar');
+        if (ex) {
+          setTimeout(() => openExamDetailModal(ex.id), 60);
+        }
+      }
+    }
+
+    function selectSearchResult(courseId, cardId) {
+      executeSearchJump('module', courseId, cardId);
     }
 
     function renderSearchResults(query) {
@@ -7972,6 +9841,13 @@
       if (appState.seenQuestionIds && appState.seenQuestionIds[cardId]) {
         delete appState.seenQuestionIds[cardId];
       }
+      if (appState.wrongQuestions && typeof appState.wrongQuestions === 'object') {
+        Object.keys(appState.wrongQuestions).forEach(k => {
+          if (k.startsWith(`${cardId}::`)) {
+            delete appState.wrongQuestions[k];
+          }
+        });
+      }
       savePersistedState();
       if (appState.selectedCardId === cardId) {
         renderModuleDrawerContent();
@@ -8015,17 +9891,29 @@
         });
       });
       appState.seenQuestionIds = {};
+      appState.wrongQuestions = {};
       appState.completedToday = 0;
       appState.dailyHistory = {};
+      appState.xp = 0;
+      appState.streakDays = 0;
+      appState.lastActiveDate = null;
+      appState.streakFreezeUsedThisWeek = false;
+      appState.streakShieldSavedToday = false;
       if (Array.isArray(appState.flashcards)) {
-        appState.flashcards.forEach(fc => { fc.mastered = false; });
+        appState.flashcards.forEach(fc => {
+          fc.mastered = false;
+          fc.box = 0;
+          fc.intervalDays = 0;
+          fc.dueDate = null;
+        });
       }
       appState.flippedFlashcardIds = {};
       savePersistedState();
+      updateSidebarGamification();
       triggerAutoSync();
       closeModal();
       renderWorkspace();
-      showToast('Gesamter Lernstand auf 0/30 zurückgesetzt');
+      showToast('Gesamter Lernstand, XP & Streak auf 0 zurückgesetzt');
     }
 
     // =========================================================================
@@ -8292,7 +10180,16 @@
     }
 
     // Karten (Flashcards) & Quick Notes handlers
+    function toggleFlashcardDueFilter() {
+      appState.flashcardDueFilterOnly = !appState.flashcardDueFilterOnly;
+      appState.flashcardPage = 0;
+      appState.flippedFlashcardIds = {};
+      savePersistedState();
+      renderWorkspace();
+    }
+
     function selectFlashcardSubject(subj) {
+      appState.flashcardDueFilterOnly = false;
       appState.selectedFlashcardSubject = subj;
       appState.flashcardPage = 0;
       appState.flippedFlashcardIds = {};
@@ -8303,18 +10200,22 @@
     function flipFlashcard(cardId) {
       if (!cardId) return;
       appState.flippedFlashcardIds[cardId] = !appState.flippedFlashcardIds[cardId];
+      const isNowFlipped = !!appState.flippedFlashcardIds[cardId];
+      playStudySound('flip');
       const flipper = document.getElementById(`flipper-${cardId}`);
+      const ratingControls = document.getElementById('flashcard-rating-controls');
       if (flipper) {
-        flipper.classList.toggle('is-flipped', !!appState.flippedFlashcardIds[cardId]);
+        flipper.classList.toggle('is-flipped', isNowFlipped);
+        if (ratingControls) {
+          ratingControls.classList.toggle('hidden', !isNowFlipped);
+        }
       } else {
         renderWorkspace();
       }
     }
 
     function nextFlashcard() {
-      const filtered = appState.selectedFlashcardSubject === 'ALL'
-        ? appState.flashcards
-        : appState.flashcards.filter(c => c.subject === appState.selectedFlashcardSubject);
+      const filtered = getFilteredFlashcardsList();
       if (filtered.length === 0) return;
       appState.flashcardPage = ((appState.flashcardPage || 0) + 1) % filtered.length;
       appState.flashcardSlideDir = 'next';
@@ -8324,9 +10225,7 @@
     }
 
     function prevFlashcard() {
-      const filtered = appState.selectedFlashcardSubject === 'ALL'
-        ? appState.flashcards
-        : appState.flashcards.filter(c => c.subject === appState.selectedFlashcardSubject);
+      const filtered = getFilteredFlashcardsList();
       if (filtered.length === 0) return;
       appState.flashcardPage = ((appState.flashcardPage || 0) - 1 + filtered.length) % filtered.length;
       appState.flashcardSlideDir = 'prev';
@@ -8341,16 +10240,6 @@
       appState.flippedFlashcardIds = {};
       savePersistedState();
       renderWorkspace();
-    }
-
-    function markFlashcard(cardId, mastered) {
-      const card = appState.flashcards.find(c => c.id === cardId);
-      if (card) card.mastered = mastered;
-      if (mastered) recordLessonCompletion(1);
-      savePersistedState();
-      triggerAutoSync();
-      renderWorkspace();
-      showToast(mastered ? 'Als gewusst markiert' : 'Markierung „Gewusst“ aufgehoben');
     }
 
     function addQuickNote(event) {
@@ -8480,17 +10369,35 @@
 
     function buildSyncPayload() {
       return {
-        v: 1,
+        v: 2,
         ts: Date.now(),
         userName: appState.userName,
         appTheme: appState.appTheme || 'obsidian',
+        soundEnabled: !!appState.soundEnabled,
         dailyGoal: appState.dailyGoal,
         completedToday: appState.completedToday,
         dailyHistory: appState.dailyHistory,
         seenQuestionIds: appState.seenQuestionIds,
+        wrongQuestions: appState.wrongQuestions || {},
+        xp: appState.xp || 0,
+        streakDays: appState.streakDays || 0,
+        lastActiveDate: appState.lastActiveDate || null,
+        streakFreezeWeekKey: appState.streakFreezeWeekKey || '',
+        streakFreezeUsedThisWeek: !!appState.streakFreezeUsedThisWeek,
         exams: appState.exams,
         quickNotes: appState.quickNotes,
-        flashcards: appState.flashcards.map(f => ({ id: f.id, mastered: !!f.mastered })),
+        flashcards: appState.flashcards.map(f => ({
+          id: f.id,
+          subject: f.subject,
+          topic: f.topic || '',
+          question: f.question,
+          answer: f.answer,
+          mastered: !!f.mastered,
+          box: f.box || 0,
+          intervalDays: f.intervalDays || 0,
+          dueDate: f.dueDate || null,
+          isCustom: !!f.isCustom
+        })),
         modules: COURSES.flatMap(c => c.cards.map(m => ({
           id: m.id,
           column: m.column,
@@ -8508,17 +10415,45 @@
         appState.appTheme = payload.appTheme;
         applyAppTheme(payload.appTheme);
       }
+      if (typeof payload.soundEnabled === 'boolean') appState.soundEnabled = payload.soundEnabled;
       if (typeof payload.dailyGoal === 'number') appState.dailyGoal = payload.dailyGoal;
       if (typeof payload.completedToday === 'number') appState.completedToday = payload.completedToday;
       if (payload.dailyHistory && typeof payload.dailyHistory === 'object') appState.dailyHistory = payload.dailyHistory;
       if (payload.seenQuestionIds && typeof payload.seenQuestionIds === 'object') appState.seenQuestionIds = payload.seenQuestionIds;
+      if (payload.wrongQuestions && typeof payload.wrongQuestions === 'object') appState.wrongQuestions = payload.wrongQuestions;
+      if (typeof payload.xp === 'number') appState.xp = payload.xp;
+      if (typeof payload.streakDays === 'number') appState.streakDays = payload.streakDays;
+      if ('lastActiveDate' in payload) appState.lastActiveDate = payload.lastActiveDate;
+      if (typeof payload.streakFreezeWeekKey === 'string') appState.streakFreezeWeekKey = payload.streakFreezeWeekKey;
+      if (typeof payload.streakFreezeUsedThisWeek === 'boolean') appState.streakFreezeUsedThisWeek = payload.streakFreezeUsedThisWeek;
       if (Array.isArray(payload.exams)) appState.exams = payload.exams;
       if (Array.isArray(payload.quickNotes)) appState.quickNotes = payload.quickNotes;
 
       if (Array.isArray(payload.flashcards)) {
         payload.flashcards.forEach(item => {
           const fc = appState.flashcards.find(f => f.id === item.id);
-          if (fc) fc.mastered = !!item.mastered;
+          if (fc) {
+            if (item.subject) fc.subject = item.subject;
+            if (item.question) fc.question = item.question;
+            if (item.answer) fc.answer = item.answer;
+            fc.mastered = !!item.mastered;
+            if (typeof item.box === 'number') fc.box = item.box;
+            if (typeof item.intervalDays === 'number') fc.intervalDays = item.intervalDays;
+            if ('dueDate' in item) fc.dueDate = item.dueDate;
+          } else if (item.isCustom && item.question && item.answer) {
+            appState.flashcards.push({
+              id: item.id,
+              subject: item.subject || COURSES[0].title,
+              topic: item.topic || 'Eigene Karte',
+              question: item.question,
+              answer: item.answer,
+              mastered: !!item.mastered,
+              box: item.box || 0,
+              intervalDays: item.intervalDays || 0,
+              dueDate: item.dueDate || null,
+              isCustom: true
+            });
+          }
         });
       }
 
@@ -8542,6 +10477,7 @@
 
       appState.lastSyncTime = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
       savePersistedState();
+      updateSidebarGamification();
       renderWorkspace();
       return true;
     }
@@ -8700,15 +10636,101 @@
         .replace(/"/g, '&quot;');
     }
 
-    // Keyboard shortcuts (Cmd/Ctrl+K for Search, Escape to close overlays)
+    // Keyboard shortcuts:
+    // - Esc closes active quiz/modal/drawer
+    // - Disabled automatically whenever focus is inside <input>, <textarea>, <select> or contentEditable
+    // - In Quiz/Exam: 1-4 select Options A-D, Enter/Space advances to next question, T toggles Tip
+    // - In Karten (Flashcards): Space flips card, Left/Right arrows navigate, 1/2/3 rates Leitner interval
     document.addEventListener('keydown', (e) => {
+      const activeEl = document.activeElement;
+      const tag = activeEl ? activeEl.tagName.toUpperCase() : '';
+      const isTypingField = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (activeEl && activeEl.isContentEditable);
+
+      if (e.key === 'Escape') {
+        if (appState.activeQuizSession) {
+          closeQuizPopup();
+          return;
+        }
+        closeModal();
+        closeModuleDrawer();
+        return;
+      }
+
+      if (isTypingField) return;
+
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         openSearchModal();
-      } else if (e.key === 'Escape') {
-        closeQuizPopup();
-        closeModal();
-        closeModuleDrawer();
+        return;
+      }
+
+      const session = appState.activeQuizSession;
+      if (session && !session.finished) {
+        const q = session.questions[session.currentIndex];
+        if (!q) return;
+
+        if (['1', '2', '3', '4'].includes(e.key)) {
+          const optIndex = parseInt(e.key, 10) - 1;
+          if (optIndex >= 0 && optIndex < q.options.length) {
+            e.preventDefault();
+            selectQuizOption(optIndex);
+          }
+          return;
+        }
+
+        if (e.key.toLowerCase() === 't' && session.mode !== 'exam') {
+          e.preventDefault();
+          toggleQuizTip();
+          return;
+        }
+
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (session.mode === 'exam') {
+            if (session.selectedOption !== null) {
+              nextQuizQuestion();
+            }
+          } else {
+            if (session.selectedOption !== null) {
+              nextQuizQuestion();
+            } else {
+              skipQuizQuestion();
+            }
+          }
+        }
+        return;
+      }
+
+      const modalOpen = !document.getElementById('modal-overlay')?.classList.contains('hidden');
+      const drawerOpen = !document.getElementById('module-drawer-overlay')?.classList.contains('hidden');
+      if (!modalOpen && !drawerOpen && appState.activeNav === 'inbox') {
+        const filtered = getFilteredFlashcardsList();
+        const totalCount = filtered.length;
+        if (totalCount === 0) return;
+        const safeIdx = ((appState.flashcardPage || 0) % totalCount + totalCount) % totalCount;
+        const activeCard = filtered[safeIdx];
+        if (!activeCard) return;
+
+        if (e.key === ' ') {
+          e.preventDefault();
+          flipFlashcard(activeCard.id);
+          return;
+        }
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          prevFlashcard();
+          return;
+        }
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          nextFlashcard();
+          return;
+        }
+        if (['1', '2', '3'].includes(e.key)) {
+          e.preventDefault();
+          const ratingMap = { '1': 'again', '2': 'hard', '3': 'good' };
+          rateFlashcard(activeCard.id, ratingMap[e.key]);
+        }
       }
     });
 
@@ -8747,48 +10769,10 @@
 
     function setupMobileAppManifest() {
       try {
-        const fallbackDataUrl = buildSolidAppIconDataUrl(512);
         const manifestLink = document.getElementById('studyv-manifest');
-        const applyManifest = (iconHref) => {
-          if (!manifestLink) return;
-          const manifestData = {
-            name: 'StudyV',
-            short_name: 'StudyV',
-            start_url: './',
-            display: 'standalone',
-            background_color: '#111113',
-            theme_color: '#111113',
-            icons: [
-              { src: iconHref, sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
-              { src: iconHref, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
-            ]
-          };
-          const encoded = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifestData));
-          manifestLink.setAttribute('href', encoded);
-        };
-
-        applyManifest(fallbackDataUrl);
-
-        const img = new Image();
-        img.onload = function () {
-          try {
-            const size = 512;
-            const canvas = document.createElement('canvas');
-            canvas.width = size;
-            canvas.height = size;
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#111113';
-            ctx.fillRect(0, 0, size, size);
-            const pad = Math.round(size * 0.16);
-            ctx.drawImage(img, pad, pad, size - pad * 2, size - pad * 2);
-            const renderedIcon = canvas.toDataURL('image/png');
-            document.getElementById('studyv-apple-icon')?.setAttribute('href', renderedIcon);
-            document.getElementById('studyv-apple-icon-180')?.setAttribute('href', renderedIcon);
-            document.getElementById('studyv-favicon')?.setAttribute('href', renderedIcon);
-            applyManifest(renderedIcon);
-          } catch (err) {}
-        };
-        img.src = resolveAssetUrl('IconV.png');
+        if (manifestLink && !manifestLink.getAttribute('href')) {
+          manifestLink.setAttribute('href', './manifest.json');
+        }
       } catch (e) {}
     }
 
@@ -8804,6 +10788,8 @@
       if (!appState.syncRoomCode) appState.syncRoomCode = generateRoomCode();
       applyAppTheme(appState.appTheme);
       updateSidebarAvatar();
+      updateSidebarGamification();
+      updateSidebarPomodoro();
       syncNavHighlight(appState.activeNav);
       const hasUnread = Array.isArray(appState.notifications) && appState.notifications.some(n => n.unread);
       const badge = document.getElementById('notif-badge');
@@ -8815,6 +10801,10 @@
       document.addEventListener('DOMContentLoaded', initStudyV);
     } else {
       initStudyV();
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
   </script>
 </body>
