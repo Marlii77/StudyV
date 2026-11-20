@@ -12,13 +12,15 @@
 
 <br />
 
-[![Live Demo](https://img.shields.io/badge/LIVE_APP-GITHUB_PAGES-3B82F6?style=for-the-badge&logo=githubpages&logoColor=white)](#)
+[![Live Demo](https://img.shields.io/badge/LIVE_APP-JETZT_STARTEN-3B82F6?style=for-the-badge&logo=githubpages&logoColor=white)](https://marlii77.github.io/StudyV/)
+[![GitHub Repo](https://img.shields.io/badge/GITHUB-REPOSITORY-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Marlii77/StudyV)
 [![Single File](https://img.shields.io/badge/ARCHITEKTUR-SINGLE_FILE_SPA-10B981?style=for-the-badge&logo=html5&logoColor=white)](#architektur--tech-stack)
 [![Themes](https://img.shields.io/badge/APP_DESIGNS-5_THEMES-8B5CF6?style=for-the-badge&logo=tailwindcss&logoColor=white)](#5-app-designs)
 [![PWA Ready](https://img.shields.io/badge/MOBILE-PWA_READY-F59E0B?style=for-the-badge&logo=pwa&logoColor=white)](#installation--github-pages)
 
 <br />
 
+[🌐 Live Demo](https://marlii77.github.io/StudyV/) •
 [✨ Features](#-highlight-features) •
 [📚 Lernfächer](#-integrierte-lernfächer--module) •
 [🎨 App-Designs](#-5-app-designs) •
@@ -32,7 +34,7 @@
 ---
 
 > [!TIP]
-> **Zero-Build & 100 % Browser-nativ:** StudyV läuft komplett ohne Backend-Zwang oder Build-Prozess in einer einzigen `index.html` — perfekt für **GitHub Pages**, lokalen Offline-Einsatz und als **Web-App auf dem Smartphone-Homescreen**.
+> **Direkt ausprobieren:** Öffne die **[StudyV Live-App](https://marlii77.github.io/StudyV/)** ohne Installation direkt im Browser — oder installiere sie als **Web-App auf deinem Smartphone-Homescreen**. Zero-Build & 100 % Browser-nativ in einer einzigen `index.html`.
 
 ---
 
@@ -46,7 +48,7 @@
       <ul>
         <li><strong>Live-Lernquote Gesamt</strong> inkl. animiertem Spitzenreiter-Balken</li>
         <li><strong>Interaktiver SVG-Lernverlauf</strong> (<code>1T</code> / <code>1W</code> / <code>1M</code>) mit Hover-Tagespunkten</li>
-        <li><strong>Tagesziel-Tracker</strong> mit <code>+</code>/<code>−</code> Direktsteuerung & Schimmer-Balken</li>
+        <li><strong>Tagesziel-Tracker</strong> mit <code>+</code>/<code>−</code> Direktsteuerung &amp; Schimmer-Balken</li>
         <li><strong>Prüfungs-Countdown</strong> zur nächsten Klassenarbeit</li>
       </ul>
     </td>
@@ -180,22 +182,21 @@ StudyV setzt bewusst auf maximale Geschwindigkeit, Übersichtlichkeit und Wartun
 
 ## 🚀 Installation & GitHub Pages
 
-### 1. Lokal starten
+### 1. Direkt online nutzen (Live Demo)
+Die aktuelle Version ist direkt über GitHub Pages erreichbar:
+👉 **[https://marlii77.github.io/StudyV/](https://marlii77.github.io/StudyV/)**
+
+### 2. Lokal starten
 Kein `npm install` nötig — einfach Repository klonen und `index.html` im Browser öffnen:
 
 ```bash
-git clone https://github.com/<DEIN-USERNAME>/StudyV.git
+git clone https://github.com/Marlii77/StudyV.git
 cd StudyV
 # index.html direkt im Browser öffnen
 ```
 
-### 2. Kostenlos über GitHub Pages hosten
-1. Lade `index.html` und `IconV.png` in dein GitHub-Repository hoch.
-2. Gehe zu **Settings → Pages**.
-3. Wähle unter **Source** den Branch `main` und den Ordner `/ (root)` aus und klicke auf **Save**.
-4. Nach ca. 1 Minute ist deine App live unter `https://<DEIN-USERNAME>.github.io/<REPO-NAME>/`.
-
 ### 3. Als App auf dem Handy installieren (iOS & Android)
+Öffne **[https://marlii77.github.io/StudyV/](https://marlii77.github.io/StudyV/)** auf deinem Smartphone:
 - **iPhone (Safari):** Teilen-Symbol antippen → **„Zum Home-Bildschirm“** → fertig (inkl. eigenem `StudyV`-App-Icon!).
 - **Android (Chrome):** Menü (`⋮`) → **„App installieren“** bzw. **„Zum Startbildschirm hinzufügen“**.
 
@@ -212,6 +213,6 @@ cd StudyV
 
 <div align="center">
 
-<sub>Gebaut mit Fokus auf klares Design, flüssige Animationen und echte Prüfungssicherheit • <strong>StudyV</strong></sub>
+<sub>Gebaut mit Fokus auf klares Design, flüssige Animationen und echte Prüfungssicherheit • <a href="https://github.com/Marlii77/StudyV"><strong>GitHub Repository</strong></a> • <a href="https://marlii77.github.io/StudyV/"><strong>Live Demo</strong></a></sub>
 
 </div>
