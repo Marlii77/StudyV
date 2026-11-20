@@ -1,0 +1,25 @@
+{
+  "name": "StudyV — Lernplattform",
+  "short_name": "StudyV",
+  "description": "Interaktive Lernplattform für Berufsschule, Karteikarten und Prüfungsvorbereitung.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#101013",
+  "theme_color": "#101013",
+  "icons": [
+    {
+      "src": "./IconV.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./IconV.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
