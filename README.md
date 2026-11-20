@@ -1,34 +1,13 @@
-# StudyV 🚀
-
-Eine moderne, interaktive Lernplattform im edlen Dark UI-Design, speziell entwickelt für die Berufsschule und das effiziente Lernen von Fächern wie Rechnungswesen, Gesprächsgestaltung und Sozialkunde.
-
-✨ Features & Funktionen
-
-🗂️ Übergeordnete Lernordner im Bento-Design: Direkter Einstieg in Rechnungswesen, Gesprächsgestaltung und Sozialkunde mit interaktivem 3D-Tilt, Cursor-Spotlight und sanften Licht-Animationen.
-
-🧠 Interaktiver 6-Fragen-Quizmodus: Jedes Lernmodul bietet einen umfangreichen Fragenpool aus echten Unterrichtsmaterialien. Bei jedem Start werden 6 neue Fragen und gemischte Antworten ausgewählt (mit dynamischem Farbwechsel Grün → Rot → Grün, Tipp-Funktion und ausführlichen Erklärungen).
-
-📊 Next-Level Dashboard: Live-Kollaboration, wöchentlicher Lernverlauf (der tagesgenau aufsteigt, sobald Lektionen erledigt werden), SVG-Fortschrittsring und interaktiver Tagesziel-Stepper.
-
-📅 Klausuren- & Test-Kalender: Trage deine Klassenarbeiten mit dem Feld „Was kommt dran?“ ein und behalte alle Termine im Blick.
-
-📥 Inbox & Active Recall: Eingebauter Karteikarten-Trainer und schnelle Merkzettel für wichtige Formeln und Paragrafen.
-
-⚙️ Profil & Personalisierung: Lade dein eigenes Profilbild hoch und passe dein tägliches Lernziel direkt in den Einstellungen an (alles wird sicher im Browser gespeichert).
-
-🛠️ Tech Stack
-
-HTML5 & CSS3 (mit Vanilla JavaScript)
-
-Tailwind CSS (via CDN für schnelle Ladezeiten)
-
-Google Fonts (Inter)
-
-🌐 Online ansehen
-
-Teste die Plattform direkt im Browser:
-👉 https://marlii77.github.io/StudyV/
-
-Lizenz & Autor
-
-Entwickelt von Marlii (Marlii77).
+StudyVDeine All-in-One Lernplattform für Berufsschule, Klausuren & PrüfungsvorbereitungInteraktives Bento-Dashboard • 3D-Karteikarten • 6-Fragen-Quiz-Engine • 5-Achsen-Kompetenz-Radar • Handy & PC Sync✨ Features •
+📚 Lernfächer •
+🎨 App-Designs •
+🔄 Handy & PC Sync •
+🚀 Setup[!TIP]
+Zero-Build & 100 % Browser-nativ: StudyV läuft komplett ohne Backend-Zwang oder Build-Prozess in einer einzigen index.html — perfekt für GitHub Pages, lokalen Offline-Einsatz und als Web-App auf dem Smartphone-Homescreen.✨ Highlight-Features📚 Integrierte Lernfächer & ModuleStudyV umfasst 5 Hauptfächer mit insgesamt 20 liebevoll illustrierten Lernmodulen und hunderten prüfungsnahen Fragen:FarbeFachModuleSchwerpunkteRechnungswesen4 ModuleJahresabschluss & AfA, Umsatzsteuer & Vorsteuer, Bestandskonten & Buchungssätze, Inventur & BilanzGesprächsgestaltung4 ModuleGrundlagen der Kommunikation, Mikroexpressionen & Mimik, Sprachanruf, Videokonferenz & Interkultur (120 einzigartige Fragen)Sozialkunde4 ModuleBundeskanzler & Regierung, Grundrechte (Art. 1–19 GG), Bundesverfassungsgericht, Bundesrat (120 einzigartige Fragen)Englisch4 ModuleBusiness Correspondence & E-Mails, Telephoning & Meetings, Complaints & Customer Service, Vocabulary & GrammarKunden akquirieren & binden4 ModuleKundenakquise & AIDA, Zielgruppen & ABC-Analyse, Kundenbindung & CRM, Servicequalität & Cross-SellingRechnungswesen: Jahresabschluss & AfA • Umsatzsteuer & Vorsteuer • Bestandskonten & Buchungssätze • Inventur & BilanzGesprächsgestaltung (LF 7): Grundlagen der Kommunikation • Mikroexpressionen & Mimik • Gespräche per Sprachanruf • Videokonferenz & InterkulturSozialkunde: Bundeskanzler & Regierung • Grundrechte im Grundgesetz • Bundesverfassungsgericht • BundesratEnglisch: Business Correspondence & E-Mails • Telephoning & Meetings • Complaints & Customer Service • Business Vocabulary & GrammarKunden akquirieren & binden: Kundenakquise & Neukundengewinnung • Zielgruppenanalyse & Kundenbedürfnisse • Kundenbindung & CRM-Systeme • Servicequalität & Cross-Selling🎨 5 App-DesignsIm Studio Control Deck (Settings) lässt sich das komplette Farbschema der App live per Klick wechseln — inklusive Mini-UI-Vorschaukarten:DesignStil & AtmosphäreFarbweltObsidian Dark (Standard)Tiefschwarzes Fokus-Design mit Kobaltblau#111113 • #1A1A1D • #3B82F6Midnight IndigoSattes Nachtblau mit modernem Indigo-Glow#0B0F1A • #141C30 • #6366F1Forest EmeraldRuhiges Dunkelgrün mit Smaragd-Akzenten#0A110F • #13211D • #10B981Sunset AmberWarmes Espresso-Dark mit goldenem Bernstein#14100E • #221B17 • #F59E0BDaylight CleanKontrastreiches, klares Tageslicht-Design#F3F4F8 • #FFFFFF • #2563EB🔄 Handy & PC SynchronisationDein Lernstand gehört dir — und bleibt auf jedem Gerät synchron:flowchart LR
+    A["💻 PC / Mac\n(StudyV Browser)"] -->|Sync-Schlüssel / JSON / Live-Raum| B(("🔄 StudyV Sync-Brücke"))
+    B -->|Sofort-Abgleich| C["📱 Smartphone\n(iOS / Android PWA)"]
+    C -->|Fortschritt, Klausuren & Karten| B
+Sofort-Transfer per Sync-Schlüssel: In den Einstellungen auf „Sync-Schlüssel kopieren“ klicken (STUDY-V1:...) und auf dem zweiten Gerät einfügen.Sync-Datei (.json): Komplettes Backup aller Modulstände, Karteikarten, Termine und Merkzettel mit einem Klick speichern oder importieren.Live Sync-Raum (SV-XXXX): Automatischer Echtzeit-Abgleich über gemeinsamen Raum-Code (sobald eine Cloud-Konfiguration hinterlegt ist).🛠️ Architektur & Tech StackStudyV setzt bewusst auf maximale Geschwindigkeit, Übersichtlichkeit und Wartungsfreiheit:Frontend: Semantisches HTML5, Modern Vanilla JavaScript (ES6+), Tailwind CSSDesign System: Eigene Plump Solid SVG-Ikonografie, GPU-beschleunigte CSS-Keyframes, CSS Custom Properties für Live-ThemingVisualisierungen: 100 % native Inline-SVG-Charts (Lernverlauf-Kurve, 5-Achsen-Kompetenz-Radar, Ring-Gauges, 24-Tick-Segmentbalken & 20 individuelle Modul-Illustrationen)Persistenz: Automatisches localStorage-Debouncing + optionaler Firebase Firestore Live-SyncPerformance: Entkoppeltes Quiz-Rendering, requestAnimationFrame-Hover-Throttling & automatisches Pausieren von Hintergrund-Animationen im Quiz-Modus🚀 Installation & GitHub Pages1. Lokal startenKein npm install nötig — einfach Repository klonen und index.html im Browser öffnen:git clone https://github.com/<DEIN-USERNAME>/StudyV.git
+cd StudyV
+# index.html direkt im Browser öffnen
+2. Kostenlos über GitHub Pages hostenLade index.html und IconV.png in dein GitHub-Repository hoch.Gehe zu Settings → Pages.Wähle unter Source den Branch main und den Ordner / (root) aus und klicke auf Save.Nach ca. 1 Minute ist deine App live unter https://<DEIN-USERNAME>.github.io/<REPO-NAME>/.3. Als App auf dem Handy installieren (iOS & Android)iPhone (Safari): Teilen-Symbol antippen → „Zum Home-Bildschirm“ → fertig (inkl. eigenem StudyV-App-Icon!).Android (Chrome): Menü (⋮) → „App installieren“ bzw. „Zum Startbildschirm hinzufügen“.⌨️ TastenkürzelShortcutAktionCtrl / ⌘ + KGlobale Schnellsuche über alle Fächer & Lernmodule öffnenESCGeöffnetes Quiz, Modal oder Lernstoff-Drawer schließenGebaut mit Fokus auf klares Design, flüssige Animationen und echte Prüfungssicherheit • StudyV
