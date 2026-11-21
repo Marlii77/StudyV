@@ -51,16 +51,24 @@
 
     @media (max-width: 1023px) {
       #left-sidebar {
-        transform: translateX(-100%);
+        transform: translate3d(-105%, 0, 0);
+        visibility: hidden;
+        pointer-events: none;
+        transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.26s;
       }
       #left-sidebar.is-mobile-open {
-        transform: translateX(0px);
+        transform: translate3d(0, 0, 0);
+        visibility: visible;
+        pointer-events: auto;
+        transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0s;
       }
     }
 
     @media (min-width: 1024px) {
       #left-sidebar {
-        transform: translateX(0px) !important;
+        transform: none !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
       }
     }
 
@@ -1534,10 +1542,10 @@
   <div id="app-root" class="flex w-screen h-screen overflow-hidden bg-[#111113]">
 
     <!-- Mobile Sidebar Backdrop -->
-    <div id="mobile-sidebar-backdrop" onclick="toggleMobileSidebar(false)" class="fixed inset-0 z-30 bg-black/65 hidden lg:hidden transition-opacity duration-200"></div>
+    <div id="mobile-sidebar-backdrop" onclick="toggleMobileSidebar(false)" class="fixed inset-0 z-[90] bg-black/65 hidden lg:hidden transition-opacity duration-200"></div>
 
     <!-- LEFT SIDEBAR -->
-    <aside id="left-sidebar" class="fixed lg:static inset-y-0 left-0 z-40 w-[265px] shrink-0 h-full bg-[#161618] border-r border-[#242427] flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-out" style="padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);">
+    <aside id="left-sidebar" class="fixed lg:static inset-y-0 left-0 z-[100] w-[265px] shrink-0 h-full bg-[#161618] border-r border-[#242427] flex flex-col" style="padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);">
       
       <!-- Scrollable Sidebar Container -->
       <div class="flex-1 flex flex-col overflow-y-auto px-4 pt-5 pb-5">
@@ -1556,7 +1564,12 @@
             <span class="text-[17px] font-semibold tracking-[-0.02em] text-[#F4F4F6]">StudyV</span>
           </button>
 
-          <button id="sidebar-avatar-btn" onclick="navigateSection('settings')" title="Profilbild &amp; Einstellungen" class="w-[30px] h-[30px] rounded-full overflow-hidden border border-[#2F2F35] hover:border-[#4A4A52] transition focus:outline-none shrink-0"></button>
+          <div class="flex items-center gap-2">
+            <button id="sidebar-avatar-btn" onclick="navigateSection('settings')" title="Profilbild &amp; Einstellungen" class="w-[30px] h-[30px] rounded-full overflow-hidden border border-[#2F2F35] hover:border-[#4A4A52] transition focus:outline-none shrink-0"></button>
+            <button type="button" id="mobile-menu-close-btn" aria-label="Menü schließen" onclick="toggleMobileSidebar(false)" class="lg:hidden w-8 h-8 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] text-[#9A9AA0] hover:text-white flex items-center justify-center text-[13px] transition">
+              ✕
+            </button>
+          </div>
         </div>
 
         <div class="h-px bg-[#222225] -mx-4 mb-3.5"></div>
@@ -1645,7 +1658,7 @@
     <!-- MAIN CONTENT WORKSPACE -->
     <main class="flex-1 h-full bg-[#111113] flex flex-col overflow-hidden min-w-0">
       <div class="flex lg:hidden items-center justify-between px-4 pb-3 border-b border-[#222225] bg-[#141416] shrink-0 relative z-20" style="padding-top: max(0.75rem, env(safe-area-inset-top, 0px));">
-        <button type="button" aria-label="Menü öffnen" onclick="toggleMobileSidebar(true)" class="w-11 h-11 -ml-2 rounded-xl flex items-center justify-center text-[#9A9AA0] hover:text-white active:bg-[#232329] hover:bg-[#1E1E22] cursor-pointer transition">
+        <button type="button" id="mobile-menu-open-btn" aria-label="Menü öffnen" onclick="toggleMobileSidebar(true)" class="w-11 h-11 rounded-xl flex items-center justify-center text-[#9A9AA0] hover:text-white active:bg-[#232329] hover:bg-[#1E1E22] cursor-pointer transition">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="pointer-events-none">
             <rect x="3" y="4.5" width="18" height="3.4" rx="1.7" />
             <rect x="3" y="10.3" width="18" height="3.4" rx="1.7" />
@@ -7511,17 +7524,16 @@
       if (!sidebar || !backdrop) return;
       isMobileSidebarOpen = !!open;
       sidebar.style.transition = '';
+      sidebar.style.transform = '';
+      sidebar.style.visibility = '';
+      sidebar.style.pointerEvents = '';
       backdrop.style.opacity = '';
 
       if (open) {
-        sidebar.classList.remove('-translate-x-full');
-        sidebar.classList.add('translate-x-0', 'is-mobile-open');
-        sidebar.style.transform = 'translateX(0px)';
+        sidebar.classList.add('is-mobile-open');
         backdrop.classList.remove('hidden');
       } else {
-        sidebar.classList.add('-translate-x-full');
-        sidebar.classList.remove('translate-x-0', 'is-mobile-open');
-        sidebar.style.transform = window.innerWidth >= 1024 ? '' : 'translateX(-100%)';
+        sidebar.classList.remove('is-mobile-open');
         backdrop.classList.add('hidden');
       }
     }
@@ -7531,80 +7543,136 @@
     function initMobileSidebarGestures() {
       const sidebar = document.getElementById('left-sidebar');
       const backdrop = document.getElementById('mobile-sidebar-backdrop');
+      const openBtn = document.getElementById('mobile-menu-open-btn');
+      const closeBtn = document.getElementById('mobile-menu-close-btn');
       if (!sidebar || !backdrop) return;
+
+      // Instant touch-tap binding for iOS/iPadOS Safari & Standalone PWA
+      const bindFastTap = (el, handler) => {
+        if (!el) return;
+        let tapStartX = 0;
+        let tapStartY = 0;
+        el.addEventListener('touchstart', (e) => {
+          if (e.touches && e.touches.length === 1) {
+            tapStartX = e.touches[0].clientX;
+            tapStartY = e.touches[0].clientY;
+          }
+        }, { passive: true });
+        el.addEventListener('touchend', (e) => {
+          if (e.changedTouches && e.changedTouches.length === 1) {
+            const dx = Math.abs(e.changedTouches[0].clientX - tapStartX);
+            const dy = Math.abs(e.changedTouches[0].clientY - tapStartY);
+            if (dx < 14 && dy < 14) {
+              if (e.cancelable) e.preventDefault();
+              handler();
+            }
+          }
+        }, { passive: false });
+      };
+
+      bindFastTap(openBtn, () => toggleMobileSidebar(true));
+      bindFastTap(closeBtn, () => toggleMobileSidebar(false));
 
       let startX = 0;
       let startY = 0;
       let lastDx = 0;
-      let gestureAxis = null;
+      let gestureMode = null; // 'open-edge' | 'close-open-sidebar' | 'scroll' | null
 
-      const onTouchStart = (e) => {
-        if (window.innerWidth >= 1024 || !isMobileSidebarOpen) return;
+      document.addEventListener('touchstart', (e) => {
+        if (window.innerWidth >= 1024) return;
         if (!e.touches || e.touches.length !== 1) return;
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
+        const x = e.touches[0].clientX;
+        const y = e.touches[0].clientY;
+        startX = x;
+        startY = y;
         lastDx = 0;
-        gestureAxis = null;
-      };
+        gestureMode = null;
 
-      const onTouchMove = (e) => {
-        if (window.innerWidth >= 1024 || !isMobileSidebarOpen) return;
+        if (isMobileSidebarOpen) {
+          gestureMode = 'close-pending';
+        } else if (x <= 34) {
+          gestureMode = 'open-pending';
+        }
+      }, { passive: true });
+
+      document.addEventListener('touchmove', (e) => {
+        if (window.innerWidth >= 1024 || !gestureMode) return;
         if (!e.touches || e.touches.length !== 1) return;
         const dx = e.touches[0].clientX - startX;
         const dy = e.touches[0].clientY - startY;
         lastDx = dx;
 
-        if (gestureAxis === null) {
+        if (gestureMode === 'close-pending' || gestureMode === 'open-pending') {
           if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
-          gestureAxis = Math.abs(dx) > Math.abs(dy) * 1.15 ? 'x' : 'y';
+          if (Math.abs(dy) > Math.abs(dx) * 1.1) {
+            gestureMode = 'scroll';
+            return;
+          }
+          if (gestureMode === 'open-pending' && dx > 0) {
+            gestureMode = 'opening';
+            sidebar.style.visibility = 'visible';
+            sidebar.style.pointerEvents = 'auto';
+            backdrop.classList.remove('hidden');
+          } else if (gestureMode === 'close-pending') {
+            gestureMode = 'closing';
+          } else {
+            gestureMode = null;
+            return;
+          }
         }
 
-        if (gestureAxis === 'x') {
+        if (gestureMode === 'opening') {
+          if (e.cancelable) e.preventDefault();
+          sidebar.style.transition = 'none';
+          const offset = Math.min(0, Math.max(-265, -265 + dx));
+          sidebar.style.transform = `translate3d(${offset}px, 0, 0)`;
+          backdrop.style.opacity = String(Math.max(0, Math.min(1, dx / 265)));
+        } else if (gestureMode === 'closing') {
           if (e.cancelable) e.preventDefault();
           sidebar.style.transition = 'none';
           if (dx < 0) {
             const clampedX = Math.max(-265, dx);
-            sidebar.style.transform = `translateX(${clampedX}px)`;
+            sidebar.style.transform = `translate3d(${clampedX}px, 0, 0)`;
             backdrop.style.opacity = String(Math.max(0, 1 + clampedX / 265));
           } else {
-            const nudgeX = Math.min(32, dx * 0.28);
-            sidebar.style.transform = `translateX(${nudgeX}px)`;
-            backdrop.style.opacity = String(Math.max(0.35, 1 - dx / 360));
+            // Left-to-right swipe to close (user's requested edge-swipe close direction)
+            const slideOut = Math.min(265, dx * 0.65);
+            sidebar.style.transform = `translate3d(${slideOut}px, 0, 0)`;
+            backdrop.style.opacity = String(Math.max(0, 1 - dx / 220));
           }
         }
-      };
+      }, { passive: false });
 
-      const onTouchEnd = () => {
-        if (window.innerWidth >= 1024 || !isMobileSidebarOpen) return;
-        if (gestureAxis === 'x') {
-          if (lastDx > 40 || lastDx < -40) {
+      const finishTouch = () => {
+        if (window.innerWidth >= 1024 || !gestureMode) return;
+        if (gestureMode === 'opening') {
+          toggleMobileSidebar(lastDx > 55);
+        } else if (gestureMode === 'closing') {
+          if (lastDx > 38 || lastDx < -38) {
             toggleMobileSidebar(false);
           } else {
-            sidebar.style.transition = '';
-            sidebar.style.transform = 'translateX(0px)';
-            backdrop.style.opacity = '';
+            toggleMobileSidebar(true);
           }
         }
-        gestureAxis = null;
+        gestureMode = null;
         lastDx = 0;
       };
 
-      [sidebar, backdrop].forEach((el) => {
-        el.addEventListener('touchstart', onTouchStart, { passive: true });
-        el.addEventListener('touchmove', onTouchMove, { passive: false });
-        el.addEventListener('touchend', onTouchEnd, { passive: true });
-        el.addEventListener('touchcancel', onTouchEnd, { passive: true });
-      });
+      document.addEventListener('touchend', finishTouch, { passive: true });
+      document.addEventListener('touchcancel', finishTouch, { passive: true });
 
       window.addEventListener('resize', () => {
         if (window.innerWidth >= 1024) {
+          sidebar.classList.remove('is-mobile-open');
           sidebar.style.transform = '';
           sidebar.style.transition = '';
+          sidebar.style.visibility = '';
+          sidebar.style.pointerEvents = '';
           backdrop.style.opacity = '';
           backdrop.classList.add('hidden');
           isMobileSidebarOpen = false;
         } else if (!isMobileSidebarOpen) {
-          sidebar.style.transform = 'translateX(-100%)';
+          sidebar.classList.remove('is-mobile-open');
         }
       });
     }
