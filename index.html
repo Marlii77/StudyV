@@ -1386,6 +1386,60 @@
     html[data-theme="daylight"] .quiz-glass-card .text-\[\#FDE68A\] {
       color: #B45309 !important;
     }
+
+    html[data-theme="daylight"] .quiz-glass-card .text-\[\#34D399\] {
+      color: #047857 !important;
+    }
+
+    html[data-theme="daylight"] .quiz-glass-card .text-\[\#FBBF24\] {
+      color: #B45309 !important;
+    }
+
+    html[data-theme="daylight"] .quiz-glass-card .bg-black\/45 {
+      background-color: #E2E8F0 !important;
+    }
+
+    /* ===================================================================== */
+    /* VOICE ANSWER MODE (SPEECH RECOGNITION + SCORE SCALE BREAKDOWN)        */
+    /* ===================================================================== */
+    @keyframes micPulseRing {
+      0% { transform: scale(0.95); opacity: 0.75; }
+      70% { transform: scale(1.38); opacity: 0; }
+      100% { transform: scale(1.38); opacity: 0; }
+    }
+
+    @keyframes voiceWaveDance {
+      0%, 100% { transform: scaleY(0.32); }
+      50% { transform: scaleY(1); }
+    }
+
+    .voice-mic-ring {
+      position: absolute;
+      inset: -6px;
+      border-radius: 999px;
+      border: 2px solid rgba(239, 68, 68, 0.7);
+      animation: micPulseRing 1.45s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+      pointer-events: none;
+    }
+
+    .voice-wave-bar {
+      width: 3px;
+      height: 16px;
+      border-radius: 999px;
+      background: #F87171;
+      transform-origin: center;
+      animation: voiceWaveDance 0.75s ease-in-out infinite;
+      animation-delay: calc(var(--wv-idx, 0) * 110ms);
+    }
+
+    .voice-scale-bar {
+      transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html[data-theme="daylight"] .voice-panel-box {
+      background-color: #F8FAFC !important;
+      border-color: #CBD5E1 !important;
+    }
   </style>
 </head>
 <body class="bg-[#111113] text-[#F4F4F6] select-none">
@@ -2241,6 +2295,8 @@
       selectedCardId: null,
       draggedCardId: null,
       activeQuizSession: null,
+      quizAnswerMode: 'mc',
+      voiceMicLang: 'de-DE',
       examTimerId: null,
       seenQuestionIds: {},
       wrongQuestions: {},
@@ -2351,6 +2407,7 @@
             lastSyncTime: appState.lastSyncTime,
             activeCourseId: appState.activeCourseId,
             activeViewTab: appState.activeViewTab,
+            quizAnswerMode: appState.quizAnswerMode || 'mc',
             seenQuestionIds: appState.seenQuestionIds,
             wrongQuestions: appState.wrongQuestions,
             xp: appState.xp,
@@ -2565,11 +2622,8 @@
 
     function renderRankBannerArtwork(tierIndex, variant = 'sidebar') {
       const t = Math.max(0, Math.min(9, tierIndex || 0));
-      const posClass = variant === 'modal'
-        ? 'absolute inset-0 w-full h-full pointer-events-none'
-        : 'absolute inset-0 w-full h-full pointer-events-none';
+      const posClass = 'absolute inset-0 w-full h-full pointer-events-none';
 
-      // Tier 0: Bronze (Lvl 1-9) — Forged Copper Chevrons & Diagonal Brushed Lines
       if (t === 0) {
         return `
           <svg viewBox="0 0 260 110" preserveAspectRatio="xMidYMid slice" fill="none" class="${posClass}">
@@ -2581,8 +2635,6 @@
           </svg>
         `;
       }
-
-      // Tier 1: Silver (Lvl 10-19) — Frost Steel Angular Wing-Blades & Crystal Facets
       if (t === 1) {
         return `
           <svg viewBox="0 0 260 110" preserveAspectRatio="xMidYMid slice" fill="none" class="${posClass}">
@@ -2594,8 +2646,6 @@
           </svg>
         `;
       }
-
-      // Tier 2: Cobalt (Lvl 20-29) — Electric Pulse Circuit & Radar Wave Arcs
       if (t === 2) {
         return `
           <svg viewBox="0 0 260 110" preserveAspectRatio="xMidYMid slice" fill="none" class="${posClass}">
@@ -2608,8 +2658,6 @@
           </svg>
         `;
       }
-
-      // Tier 3: Platinum (Lvl 30-39) — Astral Indigo Astrolabe Rings & Starlight
       if (t === 3) {
         return `
           <svg viewBox="0 0 260 110" preserveAspectRatio="xMidYMid slice" fill="none" class="${posClass}">
@@ -2623,8 +2671,6 @@
           </svg>
         `;
       }
-
-      // Tier 4: Diamond (Lvl 40-49) — Prismatic Crystal Facets & Refraction Beams
       if (t === 4) {
         return `
           <svg viewBox="0 0 260 110" preserveAspectRatio="xMidYMid slice" fill="none" class="${posClass}">
@@ -2636,8 +2682,6 @@
           </svg>
         `;
       }
-
-      // Tier 5: Gem (Lvl 50-59) — Royal Magenta Nebula & Crown-Filigree Arches
       if (t === 5) {
         return `
           <svg viewBox="0 0 260 110" preserveAspectRatio="xMidYMid slice" fill="none" class="${posClass}">
@@ -2649,8 +2693,6 @@
           </svg>
         `;
       }
-
-      // Tier 6: Gold (Lvl 60-69) — Aurelia Imperial Sunbeams & Wing Silhouettes
       if (t === 6) {
         return `
           <svg viewBox="0 0 260 110" preserveAspectRatio="xMidYMid slice" fill="none" class="${posClass}">
@@ -2663,8 +2705,6 @@
           </svg>
         `;
       }
-
-      // Tier 7: Solaris (Lvl 70-79) — Helios Solar Eclipse & Corona Rings
       if (t === 7) {
         return `
           <svg viewBox="0 0 260 110" preserveAspectRatio="xMidYMid slice" fill="none" class="${posClass}">
@@ -2677,8 +2717,6 @@
           </svg>
         `;
       }
-
-      // Tier 8: Grandmaster (Lvl 80-89) — Crimson Sovereign V-Chevrons & Battle Filigree
       if (t === 8) {
         return `
           <svg viewBox="0 0 260 110" preserveAspectRatio="xMidYMid slice" fill="none" class="${posClass}">
@@ -2689,8 +2727,6 @@
           </svg>
         `;
       }
-
-      // Tier 9: Master (Lvl 90-100) — Celestial Apex Royal Crown Lattice & Starburst Rays
       return `
         <svg viewBox="0 0 260 110" preserveAspectRatio="xMidYMid slice" fill="none" class="${posClass}">
           <g class="rank-banner-orbit" style="transform-origin: 214px 55px;">
@@ -2759,7 +2795,6 @@
       const t = Math.max(0, Math.min(9, tierIndex || 0));
       const dimStyle = locked ? 'opacity: 0.42; filter: grayscale(0.75);' : '';
 
-      // 0: BRONZE (Lvl 1-9)
       if (t === 0) {
         return `
           <svg width="${size}" height="${size}" viewBox="0 0 96 88" fill="none" style="${dimStyle}" class="shrink-0">
@@ -2775,8 +2810,6 @@
           </svg>
         `;
       }
-
-      // 1: SILVER (Lvl 10-19)
       if (t === 1) {
         return `
           <svg width="${size}" height="${size}" viewBox="0 0 96 88" fill="none" style="${dimStyle}" class="shrink-0">
@@ -2796,8 +2829,6 @@
           </svg>
         `;
       }
-
-      // 2: COBALT (Lvl 20-29)
       if (t === 2) {
         return `
           <svg width="${size}" height="${size}" viewBox="0 0 96 88" fill="none" style="${dimStyle}" class="shrink-0">
@@ -2817,8 +2848,6 @@
           </svg>
         `;
       }
-
-      // 3: PLATINUM (Lvl 30-39)
       if (t === 3) {
         return `
           <svg width="${size}" height="${size}" viewBox="0 0 96 88" fill="none" style="${dimStyle}" class="shrink-0">
@@ -2841,8 +2870,6 @@
           </svg>
         `;
       }
-
-      // 4: DIAMOND (Lvl 40-49)
       if (t === 4) {
         return `
           <svg width="${size}" height="${size}" viewBox="0 0 96 88" fill="none" style="${dimStyle}" class="shrink-0">
@@ -2867,8 +2894,6 @@
           </svg>
         `;
       }
-
-      // 5: GEM (Lvl 50-59)
       if (t === 5) {
         return `
           <svg width="${size}" height="${size}" viewBox="0 0 96 88" fill="none" style="${dimStyle}" class="shrink-0">
@@ -2894,8 +2919,6 @@
           </svg>
         `;
       }
-
-      // 6: GOLD (Lvl 60-69)
       if (t === 6) {
         return `
           <svg width="${size}" height="${size}" viewBox="0 0 96 88" fill="none" style="${dimStyle}" class="shrink-0">
@@ -2921,8 +2944,6 @@
           </svg>
         `;
       }
-
-      // 7: SOLARIS (Lvl 70-79)
       if (t === 7) {
         return `
           <svg width="${size}" height="${size}" viewBox="0 0 96 88" fill="none" style="${dimStyle}" class="shrink-0">
@@ -2948,8 +2969,6 @@
           </svg>
         `;
       }
-
-      // 8: GRANDMASTER (Lvl 80-89)
       if (t === 8) {
         return `
           <svg width="${size}" height="${size}" viewBox="0 0 96 88" fill="none" style="${dimStyle}" class="shrink-0">
@@ -2975,8 +2994,6 @@
           </svg>
         `;
       }
-
-      // 9: MASTER (Lvl 90-100)
       return `
         <svg width="${size}" height="${size}" viewBox="0 0 96 88" fill="none" style="${dimStyle}" class="shrink-0">
           <defs>
@@ -3303,7 +3320,6 @@
     function getTopicArtwork(card) {
       const id = card.id || '';
 
-      // 1. RECHNUNGSWESEN (4 unique multi-layered illustrations)
       if (id === 'rw-1') {
         return `
           <svg width="176" height="128" viewBox="0 0 176 128" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-90">
@@ -3361,7 +3377,6 @@
         `;
       }
 
-      // 2. GESPRÄCHSGESTALTUNG (4 unique multi-layered illustrations)
       if (id === 'gg-1') {
         return `
           <svg width="176" height="128" viewBox="0 0 176 128" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-90">
@@ -3418,7 +3433,6 @@
         `;
       }
 
-      // 3. SOZIALKUNDE (4 unique multi-layered cosmic & institutional illustrations)
       if (id === 'sk-1') {
         return `
           <svg width="180" height="132" viewBox="0 0 180 132" fill="none" class="nebula-artwork-layer absolute right-1 bottom-1 pointer-events-none opacity-90">
@@ -3473,7 +3487,6 @@
         `;
       }
 
-      // 4. ENGLISCH (4 unique multi-layered illustrations)
       if (id === 'en-1') {
         return `
           <svg width="176" height="128" viewBox="0 0 176 128" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-90">
@@ -3519,7 +3532,6 @@
         `;
       }
 
-      // 5. KUNDEN AKQUIRIEREN UND BINDEN (4 unique multi-layered illustrations)
       if (id === 'kab-1') {
         return `
           <svg width="176" height="128" viewBox="0 0 176 128" fill="none" class="nebula-artwork-layer absolute right-2 bottom-2 pointer-events-none opacity-90">
@@ -3615,16 +3627,10 @@
             class="nebula-study-card group p-6 min-h-[188px] flex flex-col justify-between cursor-pointer"
             style="--card-rgb: ${pal.rgb}; --title-accent: ${pal.accent}; --card-bg-1: ${pal.bg1}; --card-bg-2: ${pal.bg2}; --card-bg-3: ${pal.bg3};"
           >
-            <!-- Ambient Theme Glow -->
             <div class="absolute inset-0 pointer-events-none" style="background: ${topGlow};"></div>
-
-            <!-- Cursor-Following Spotlight -->
             <div class="folder-cursor-spotlight absolute inset-0 pointer-events-none" style="--accent-rgb: ${pal.rgb};"></div>
-
-            <!-- Unique Module SVG Artwork -->
             ${getTopicArtwork(card)}
 
-            <!-- Top Headline + Individual Reset Button -->
             <div class="relative z-10 flex items-start justify-between gap-3">
               <div class="pr-4">
                 <h3 class="nebula-card-title text-[20px] sm:text-[21.5px] font-extrabold leading-[1.25] tracking-[-0.025em] mb-2">
@@ -3644,7 +3650,6 @@
               </button>
             </div>
 
-            <!-- Bottom Progress Bar -->
             <div class="relative z-10 pt-4 mt-4 border-t border-white/[0.07] flex items-center justify-between gap-3">
               <div class="flex items-center gap-2.5">
                 ${renderSegmentedTicks(card.completedSteps, card.totalSteps, pal.accent)}
@@ -3871,7 +3876,6 @@
       const isLight = appState.appTheme === 'daylight';
       const lvl = getLevelInfo(appState.xp || 0);
       const rank = getRankForLevel(lvl.level);
-      const wrongCount = getWrongQuestionsCount();
 
       return `
         <div class="flex-1 overflow-y-auto px-6 sm:px-9 py-7">
@@ -5479,6 +5483,411 @@
     }
 
     // =========================================================================
+    // 3G. VOICE ANSWER ENGINE (WEB SPEECH API + GEMINI / SEMANTIC EVALUATOR)
+    // =========================================================================
+
+    let activeSpeechRecognition = null;
+
+    const voiceUiState = {
+      isListening: false,
+      interimText: '',
+      transcript: '',
+      isEvaluating: false,
+      evaluation: null
+    };
+
+    function resetVoiceUiState() {
+      stopActiveSpeechRecognition();
+      voiceUiState.isListening = false;
+      voiceUiState.interimText = '';
+      voiceUiState.transcript = '';
+      voiceUiState.isEvaluating = false;
+      voiceUiState.evaluation = null;
+    }
+
+    function stopActiveSpeechRecognition() {
+      if (activeSpeechRecognition) {
+        try {
+          activeSpeechRecognition.onresult = null;
+          activeSpeechRecognition.onerror = null;
+          activeSpeechRecognition.onend = null;
+          activeSpeechRecognition.stop();
+        } catch (e) {}
+        activeSpeechRecognition = null;
+      }
+      voiceUiState.isListening = false;
+      voiceUiState.interimText = '';
+    }
+
+    function toggleQuizAnswerMode(mode) {
+      const targetMode = mode === 'voice' ? 'voice' : 'mc';
+      if (appState.quizAnswerMode === targetMode) return;
+      stopActiveSpeechRecognition();
+      appState.quizAnswerMode = targetMode;
+      savePersistedState();
+      renderQuizPopup(false);
+    }
+
+    function toggleVoiceMicLang() {
+      stopActiveSpeechRecognition();
+      appState.voiceMicLang = appState.voiceMicLang === 'en-US' ? 'de-DE' : 'en-US';
+      renderQuizPopup(false);
+    }
+
+    function updateVoiceTranscript(val) {
+      voiceUiState.transcript = val;
+      const submitBtn = document.getElementById('voice-submit-btn');
+      if (submitBtn) {
+        const hasText = val.trim().length > 0;
+        submitBtn.disabled = !hasText || voiceUiState.isEvaluating;
+        submitBtn.classList.toggle('opacity-45', !hasText || voiceUiState.isEvaluating);
+        submitBtn.classList.toggle('cursor-not-allowed', !hasText || voiceUiState.isEvaluating);
+      }
+    }
+
+    function toggleVoiceRecording() {
+      const session = appState.activeQuizSession;
+      if (!session || session.selectedOption !== null || voiceUiState.isEvaluating) return;
+
+      if (voiceUiState.isListening) {
+        stopActiveSpeechRecognition();
+        renderQuizPopup(false);
+        return;
+      }
+
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) {
+        showToast('Spracherkennung wird von diesem Browser nicht unterstützt — bitte tippe deine Antwort ein.');
+        setTimeout(() => document.getElementById('voice-transcript-input')?.focus(), 50);
+        return;
+      }
+
+      try {
+        const recognition = new SpeechRec();
+        recognition.lang = appState.voiceMicLang || 'de-DE';
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = () => {
+          voiceUiState.isListening = true;
+          voiceUiState.interimText = '';
+          renderQuizPopup(false);
+        };
+
+        recognition.onresult = (event) => {
+          let finalChunk = '';
+          let interimChunk = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const res = event.results[i];
+            if (res.isFinal) {
+              finalChunk += res[0].transcript;
+            } else {
+              interimChunk += res[0].transcript;
+            }
+          }
+          if (finalChunk) {
+            const prev = voiceUiState.transcript.trim();
+            voiceUiState.transcript = prev ? `${prev} ${finalChunk.trim()}` : finalChunk.trim();
+          }
+          voiceUiState.interimText = interimChunk.trim();
+          const textarea = document.getElementById('voice-transcript-input');
+          if (textarea) {
+            const combined = [voiceUiState.transcript, voiceUiState.interimText].filter(Boolean).join(' ');
+            textarea.value = combined;
+            updateVoiceTranscript(combined);
+          }
+        };
+
+        recognition.onerror = (event) => {
+          voiceUiState.isListening = false;
+          voiceUiState.interimText = '';
+          activeSpeechRecognition = null;
+          if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+            showToast('Mikrofon-Zugriff blockiert — du kannst deine Antwort auch direkt eintippen.');
+          } else if (event.error !== 'aborted') {
+            showToast('Sprachaufnahme beendet.');
+          }
+          renderQuizPopup(false);
+        };
+
+        recognition.onend = () => {
+          if (voiceUiState.interimText) {
+            const prev = voiceUiState.transcript.trim();
+            voiceUiState.transcript = prev ? `${prev} ${voiceUiState.interimText}` : voiceUiState.interimText;
+            voiceUiState.interimText = '';
+          }
+          voiceUiState.isListening = false;
+          activeSpeechRecognition = null;
+          renderQuizPopup(false);
+        };
+
+        activeSpeechRecognition = recognition;
+        recognition.start();
+      } catch (err) {
+        voiceUiState.isListening = false;
+        activeSpeechRecognition = null;
+        showToast('Mikrofon konnte nicht gestartet werden.');
+        renderQuizPopup(false);
+      }
+    }
+
+    function normalizeGermanSpokenText(raw) {
+      let text = String(raw || '').toLowerCase()
+        .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
+
+      const numWords = [
+        ['dreitausend', '3000'], ['zweitausendvierhundert', '2400'], ['viertausend', '4000'],
+        ['eintausendfuenfhundert', '1500'], ['eintausend', '1000'], ['achthundert', '800'],
+        ['fuenfhundert', '500'], ['achtundvierzig', '48'], ['achtundsechzig', '68'],
+        ['fuenfundsiebzig', '75'], ['fuenfzig', '50'], ['vierzig', '40'],
+        ['dreissig', '30'], ['zwanzig', '20'], ['neunzehn', '19'], ['sechzehn', '16'],
+        ['zwoelf', '12'], ['zehn', '10'], ['sieben', '7'], ['sechs', '6'],
+        ['fuenf', '5'], ['vier', '4'], ['drei', '3'], ['zwei', '2'], ['eins', '1'],
+        ['prozent', '%'], ['euro', '€'], ['paragraph', '§'], ['artikel', 'art']
+      ];
+      numWords.forEach(([word, digit]) => {
+        text = text.replace(new RegExp(`\\b${word}\\b`, 'g'), digit);
+      });
+      return text.replace(/[^\w§%€\s/-]/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    function extractKeyConcepts(text) {
+      const stopWords = new Set([
+        'der', 'die', 'das', 'den', 'dem', 'des', 'ein', 'eine', 'einer', 'eines', 'einem', 'einen',
+        'und', 'oder', 'aber', 'weil', 'dass', 'wenn', 'dann', 'als', 'wie', 'bei', 'von', 'vom',
+        'mit', 'nach', 'fuer', 'ueber', 'unter', 'durch', 'gegen', 'ohne', 'bis', 'aus', 'auf',
+        'ist', 'sind', 'war', 'wird', 'werden', 'hat', 'haben', 'kann', 'koennen', 'muss', 'muessen',
+        'darf', 'soll', 'sich', 'nicht', 'nur', 'auch', 'noch', 'immer', 'meist', 'sehr', 'alle',
+        'alles', 'diese', 'dieser', 'dieses', 'zum', 'zur', 'im', 'in', 'am', 'an', 'es', 'man',
+        'richtig', 'genau', 'perfekt', 'korrekt', 'somit', 'daher', 'dabei', 'zwar', 'the', 'and', 'for', 'with'
+      ]);
+      const norm = normalizeGermanSpokenText(text);
+      const tokens = norm.split(' ').filter(t => t.length >= 2 && !stopWords.has(t));
+      return Array.from(new Set(tokens));
+    }
+
+    function evaluateSpokenAnswerLocally(q, spokenText) {
+      const expectedAnswer = q.options[q.correctIndex] || '';
+      const explanation = q.explanation || '';
+      const userNorm = normalizeGermanSpokenText(spokenText);
+      const userTokens = new Set(extractKeyConcepts(spokenText));
+
+      const expectedNorm = normalizeGermanSpokenText(expectedAnswer);
+      const criticalMatches = expectedNorm.match(/(?:§\s*\d+[a-z]?|art\.?\s*\d+[a-z]?|\d+(?:[.,]\d+)?\s*(?:%|€|jahre|monate|stunden|tage)?)/g) || [];
+      const coreKeywords = extractKeyConcepts(expectedAnswer);
+      const secondaryKeywords = extractKeyConcepts(explanation).filter(k => !coreKeywords.includes(k));
+
+      let coreHits = 0;
+      coreKeywords.forEach(kw => {
+        const stem = kw.length > 5 ? kw.slice(0, kw.length - 2) : kw;
+        if (userTokens.has(kw) || userNorm.includes(stem)) {
+          coreHits += 1;
+        }
+      });
+
+      let secondaryHits = 0;
+      secondaryKeywords.slice(0, 6).forEach(kw => {
+        const stem = kw.length > 5 ? kw.slice(0, kw.length - 2) : kw;
+        if (userTokens.has(kw) || userNorm.includes(stem)) {
+          secondaryHits += 1;
+        }
+      });
+
+      let criticalPenalty = 0;
+      criticalMatches.forEach(crit => {
+        const cleanCrit = crit.replace(/\s+/g, '');
+        const cleanUser = userNorm.replace(/\s+/g, '');
+        if (!cleanUser.includes(cleanCrit)) {
+          criticalPenalty += 18;
+        }
+      });
+
+      const coreRatio = coreKeywords.length > 0 ? (coreHits / coreKeywords.length) : 0;
+      const secRatio = secondaryKeywords.length > 0 ? (secondaryHits / Math.min(6, secondaryKeywords.length)) : 0;
+      let rawScore = Math.round(coreRatio * 82 + secRatio * 18 - criticalPenalty);
+
+      const expectedHasNegation = /\b(nicht|kein|keine|niemals|verboten|unwirksam|nichtig|ausgeschlossen)\b/.test(expectedNorm);
+      const userHasNegation = /\b(nicht|kein|keine|niemals|verboten|unwirksam|nichtig|ausgeschlossen)\b/.test(userNorm);
+      if (expectedHasNegation !== userHasNegation && coreRatio > 0.3) {
+        rawScore = Math.min(rawScore, 35);
+      }
+
+      const score = Math.max(0, Math.min(100, rawScore));
+      const isCorrect = score >= 55;
+
+      const readableWords = expectedAnswer.split(/[\s,;()•–—-]+/).filter(w => w.length >= 3);
+      const readableMatched = [];
+      const readableMissing = [];
+
+      readableWords.forEach(origWord => {
+        const normW = normalizeGermanSpokenText(origWord);
+        if (!normW || normW.length < 2) return;
+        const stem = normW.length > 5 ? normW.slice(0, normW.length - 2) : normW;
+        if (userNorm.includes(stem)) {
+          if (!readableMatched.includes(origWord)) readableMatched.push(origWord);
+        } else if (coreKeywords.some(ck => normW.includes(ck) || ck.includes(normW))) {
+          if (!readableMissing.includes(origWord)) readableMissing.push(origWord);
+        }
+      });
+
+      const verdict = score >= 90
+        ? 'Exzellent & vollständig'
+        : score >= 75
+          ? 'Sehr gut getroffen'
+          : score >= 55
+            ? 'Richtig – kleine Details fehlen'
+            : score >= 30
+              ? 'Teilweise richtig – wichtige Punkte fehlen'
+              : 'Noch unvollständig';
+
+      const feedback = score >= 85
+        ? 'Starke mündliche Erklärung! Du hast alle wesentlichen Fachbegriffe und Zusammenhänge sicher genannt.'
+        : score >= 55
+          ? 'Der Kern deiner Antwort stimmt! Schau dir unten noch die fehlenden Details für volle 100 % an.'
+          : 'Ein erster Ansatz ist erkennbar, aber zentrale Schlüsselbegriffe oder Zahlen aus der Musterlösung haben noch gefehlt.';
+
+      return {
+        score,
+        isCorrect,
+        verdict,
+        strengths: readableMatched.slice(0, 5),
+        missing: readableMissing.slice(0, 5),
+        feedback
+      };
+    }
+
+    async function callGeminiVoiceEvaluator(q, spokenText) {
+      const apiKey = "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const systemInstruction = "Du bist ein präziser, motivierender IHK-Prüfer und Lern-Coach. Bewerte die mündlich eingesprochene Antwort eines Auszubildenden anhand der Frage und Musterlösung. Vergib eine faire Skala von 0 bis 100 Prozent (ab 55% gilt die Antwort als bestanden/richtig). Liste konkret auf, was schon richtig genannt wurde und was genau noch gefehlt hat.";
+      const userPrompt = `Frage: ${q.question}\nMusterlösung: ${q.options[q.correctIndex]}\nHintergrund/Erklärung: ${q.explanation}\nGesprochene Antwort des Lernenden: "${spokenText}"`;
+
+      const payload = {
+        contents: [{ parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemInstruction }] },
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "OBJECT",
+            properties: {
+              score: { type: "INTEGER" },
+              isCorrect: { type: "BOOLEAN" },
+              verdict: { type: "STRING" },
+              strengths: { type: "ARRAY", items: { type: "STRING" } },
+              missing: { type: "ARRAY", items: { type: "STRING" } },
+              feedback: { type: "STRING" }
+            },
+            required: ["score", "isCorrect", "verdict", "strengths", "missing", "feedback"]
+          }
+        }
+      };
+
+      const delays = [1000, 2000];
+      for (let attempt = 0; attempt <= delays.length; attempt++) {
+        try {
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (!response.ok) {
+            if (response.status === 429 && attempt < delays.length) {
+              await new Promise(r => setTimeout(r, delays[attempt]));
+              continue;
+            }
+            return null;
+          }
+          const result = await response.json();
+          const rawJson = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (!rawJson) return null;
+          const parsed = JSON.parse(rawJson);
+          const safeScore = Math.max(0, Math.min(100, Number(parsed.score) || 0));
+          return {
+            score: safeScore,
+            isCorrect: safeScore >= 55,
+            verdict: parsed.verdict || (safeScore >= 55 ? 'Richtig beantwortet' : 'Noch unvollständig'),
+            strengths: Array.isArray(parsed.strengths) ? parsed.strengths.slice(0, 4) : [],
+            missing: Array.isArray(parsed.missing) ? parsed.missing.slice(0, 4) : [],
+            feedback: parsed.feedback || ''
+          };
+        } catch (err) {
+          if (attempt < delays.length) {
+            await new Promise(r => setTimeout(r, delays[attempt]));
+            continue;
+          }
+          return null;
+        }
+      }
+      return null;
+    }
+
+    async function submitVoiceAnswer() {
+      const session = appState.activeQuizSession;
+      if (!session || session.selectedOption !== null || voiceUiState.isEvaluating) return;
+
+      stopActiveSpeechRecognition();
+      const inputEl = document.getElementById('voice-transcript-input');
+      const spokenText = (inputEl ? inputEl.value : voiceUiState.transcript).trim();
+      if (!spokenText) {
+        showToast('Bitte sprich oder schreibe zuerst deine Antwort.');
+        return;
+      }
+
+      voiceUiState.transcript = spokenText;
+      voiceUiState.isEvaluating = true;
+      renderQuizPopup(false);
+
+      const currentQ = session.questions[session.currentIndex];
+      const qCardId = currentQ.cardId || session.cardId;
+
+      let evalResult = await callGeminiVoiceEvaluator(currentQ, spokenText);
+      if (!evalResult) {
+        evalResult = evaluateSpokenAnswerLocally(currentQ, spokenText);
+      }
+
+      voiceUiState.isEvaluating = false;
+      voiceUiState.evaluation = evalResult;
+      session.selectedOption = evalResult.isCorrect ? currentQ.correctIndex : -1;
+
+      if (evalResult.isCorrect) {
+        session.correctCount += 1;
+        playStudySound('correct');
+        const card = getCardById(qCardId);
+        let moduleCompletedNow = false;
+        if (card) {
+          const wasCompleted = card.completedSteps >= card.totalSteps;
+          card.completedSteps = Math.min(card.totalSteps, card.completedSteps + 1);
+          if (card.completedSteps >= card.totalSteps) {
+            card.column = 'completed';
+            if (!wasCompleted) moduleCompletedNow = true;
+          }
+        }
+        const bonusXp = evalResult.score >= 90 ? 5 : 0;
+        if (session.mode === 'mistakes') {
+          const resolved = resolveMistakeQuestionHit(qCardId, currentQ.poolIndex);
+          if (resolved) session.resolvedCount = (session.resolvedCount || 0) + 1;
+          awardXp((resolved ? 25 : 15) + bonusXp);
+        } else {
+          awardXp((moduleCompletedNow ? 110 : 10) + bonusXp);
+        }
+        recordLessonCompletion(1);
+        quizWorkspaceDirty = true;
+        scheduleSavePersistedState();
+        triggerAutoSync();
+      } else {
+        playStudySound('wrong');
+        recordMistakeQuestion(qCardId, currentQ.poolIndex);
+        quizWorkspaceDirty = true;
+        scheduleSavePersistedState();
+        triggerAutoSync();
+      }
+
+      renderQuizPopup(false);
+    }
+
+    // =========================================================================
     // 4. INTERACTIVE QUIZ, FISHER-YATES SHUFFLE, MISTAKE TRAINER & IHK EXAM
     // =========================================================================
 
@@ -5534,6 +5943,8 @@
         appState.examTimerId = null;
       }
 
+      resetVoiceUiState();
+
       appState.activeQuizSession = {
         mode: 'module',
         cardId,
@@ -5547,7 +5958,7 @@
 
       document.body.classList.add('quiz-open');
       const box = document.getElementById('quiz-popup-box');
-      if (box) box.className = 'w-full max-w-[440px]';
+      if (box) box.className = appState.quizAnswerMode === 'voice' ? 'w-full max-w-[500px]' : 'w-full max-w-[440px]';
       const overlay = document.getElementById('quiz-popup-overlay');
       if (overlay) {
         overlay.classList.remove('hidden');
@@ -5589,6 +6000,8 @@
         appState.examTimerId = null;
       }
 
+      resetVoiceUiState();
+
       appState.activeQuizSession = {
         mode: 'mistakes',
         cardId: questions[0].cardId,
@@ -5603,7 +6016,7 @@
 
       document.body.classList.add('quiz-open');
       const box = document.getElementById('quiz-popup-box');
-      if (box) box.className = 'w-full max-w-[440px]';
+      if (box) box.className = appState.quizAnswerMode === 'voice' ? 'w-full max-w-[500px]' : 'w-full max-w-[440px]';
       const overlay = document.getElementById('quiz-popup-overlay');
       if (overlay) {
         overlay.classList.remove('hidden');
@@ -5771,6 +6184,7 @@
     }
 
     function closeQuizPopup() {
+      resetVoiceUiState();
       if (appState.examTimerId) {
         clearInterval(appState.examTimerId);
         appState.examTimerId = null;
@@ -5876,6 +6290,7 @@
     function skipQuizQuestion() {
       const session = appState.activeQuizSession;
       if (!session) return;
+      resetVoiceUiState();
       if (session.mode === 'exam') {
         const currentQ = session.questions[session.currentIndex];
         session.examAnswers[session.currentIndex] = {
@@ -5903,6 +6318,7 @@
     function nextQuizQuestion() {
       const session = appState.activeQuizSession;
       if (!session) return;
+      resetVoiceUiState();
       if (session.currentIndex + 1 < session.questions.length) {
         session.currentIndex += 1;
         session.selectedOption = null;
@@ -5921,6 +6337,12 @@
       const card = getCardById(session.cardId);
       const totalQ = session.questions.length;
       const entryAnim = isInitialOpen ? 'animate-scale-in' : '';
+      const isExam = session.mode === 'exam';
+      const isVoiceMode = !isExam && appState.quizAnswerMode === 'voice';
+
+      if (!isExam) {
+        box.className = isVoiceMode ? 'w-full max-w-[500px]' : 'w-full max-w-[440px]';
+      }
 
       if (session.finished) {
         if (session.mode === 'exam') {
@@ -6014,9 +6436,10 @@
       }
 
       const q = session.questions[session.currentIndex];
-      const isExam = session.mode === 'exam';
       const hasAnswered = !isExam && session.selectedOption !== null;
-      const isCorrect = session.selectedOption === q.correctIndex;
+      const isCorrect = isVoiceMode && voiceUiState.evaluation
+        ? voiceUiState.evaluation.isCorrect
+        : session.selectedOption === q.correctIndex;
       const ambientGlow = isExam
         ? 'radial-gradient(95% 65% at 50% 0%, rgba(245, 158, 11, 0.2) 0%, rgba(19, 21, 20, 0) 72%)'
         : !hasAnswered
@@ -6025,9 +6448,15 @@
             ? 'radial-gradient(95% 65% at 50% 0%, rgba(16, 185, 129, 0.28) 0%, rgba(19, 21, 20, 0) 72%)'
             : 'radial-gradient(95% 65% at 50% 0%, rgba(239, 68, 68, 0.28) 0%, rgba(19, 21, 20, 0) 72%)';
 
+      const evalData = voiceUiState.evaluation;
+      const scoreVal = evalData ? evalData.score : 0;
+      const scaleColor = scoreVal >= 75 ? '#10B981' : scoreVal >= 55 ? '#F59E0B' : '#EF4444';
+      const scaleTextClass = scoreVal >= 75 ? 'text-[#34D399]' : scoreVal >= 55 ? 'text-[#FBBF24]' : 'text-[#FCA5A5]';
+      const isEnglishModule = String(q.cardId || session.cardId || '').startsWith('en-');
+
       box.innerHTML = `
         <div class="quiz-glass-card p-6 sm:p-7 ${entryAnim}" style="--quiz-ambient-glow: ${ambientGlow};">
-          <div class="flex items-center justify-between gap-2 mb-4">
+          <div class="flex items-center justify-between gap-2 mb-4 flex-wrap">
             <div class="flex items-center gap-2">
               <span class="px-3 py-1 rounded-full bg-white/[0.06] border border-white/[0.1] text-[11.5px] font-semibold text-[#E4E4E7]">
                 Frage ${session.currentIndex + 1} / ${totalQ}
@@ -6052,6 +6481,30 @@
             </div>
           </div>
 
+          ${!isExam ? `
+            <!-- Answer Mode Switcher: 4 Optionen vs. Sprach-Antwort -->
+            <div class="flex items-center justify-between gap-2 mb-4 p-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
+              <button type="button" onclick="toggleQuizAnswerMode('mc')"
+                      class="flex-1 py-1.5 px-3 rounded-full text-[11.5px] font-semibold transition flex items-center justify-center gap-1.5 ${!isVoiceMode ? 'bg-[#3B82F6] text-white shadow-sm' : 'text-[#8E8E93] hover:text-white'}">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="3" y="4" width="7" height="7" rx="2" />
+                  <rect x="14" y="4" width="7" height="7" rx="2" />
+                  <rect x="3" y="13" width="7" height="7" rx="2" />
+                  <rect x="14" y="13" width="7" height="7" rx="2" />
+                </svg>
+                <span>4 Optionen</span>
+              </button>
+              <button type="button" onclick="toggleQuizAnswerMode('voice')"
+                      class="flex-1 py-1.5 px-3 rounded-full text-[11.5px] font-semibold transition flex items-center justify-center gap-1.5 ${isVoiceMode ? 'bg-[#3B82F6] text-white shadow-sm' : 'text-[#8E8E93] hover:text-white'}">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.5C9.92893 2.5 8.25 4.17893 8.25 6.25V11.75C8.25 13.8211 9.92893 15.5 12 15.5C14.0711 15.5 15.75 13.8211 15.75 11.75V6.25C15.75 4.17893 14.0711 2.5 12 2.5Z" />
+                  <path d="M5.75 10.75C6.30228 10.75 6.75 11.1977 6.75 11.75C6.75 14.6495 9.10051 17 12 17C14.8995 17 17.25 14.6495 17.25 11.75C17.25 11.1977 17.6977 10.75 18.25 10.75C18.8023 10.75 19.25 11.1977 19.25 11.75C19.25 15.4126 16.535 18.4422 13 18.9306V20.75H15.5C16.0523 20.75 16.5 21.1977 16.5 21.75C16.5 22.3023 16.0523 22.75 15.5 22.75H8.5C7.94772 22.75 7.5 22.3023 7.5 21.75C7.5 21.1977 7.94772 20.75 8.5 20.75H11V18.9306C7.46501 18.4422 4.75 15.4126 4.75 11.75C4.75 11.1977 5.19772 10.75 5.75 10.75Z" />
+                </svg>
+                <span>Sprach-Antwort</span>
+              </button>
+            </div>
+          ` : ''}
+
           <div class="flex items-center gap-1.5 mb-5">
             ${session.questions.map((_, idx) => `
               <div class="h-1 flex-1 rounded-full ${idx < session.currentIndex ? 'bg-[#10B981]' : idx === session.currentIndex ? 'bg-[#3B82F6]' : 'bg-white/[0.12]'}"></div>
@@ -6062,45 +6515,186 @@
             ${escapeHtml(q.question)}
           </h3>
 
-          <div class="space-y-2.5 mb-4">
-            ${q.options.map((opt, idx) => {
-              let rowClass = 'bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.09] text-[#E4E4E7]';
-              let iconHtml = `<span class="w-5 h-5 rounded-full border border-white/20 text-[11px] flex items-center justify-center shrink-0 text-[#9A9AA4]">${idx + 1}</span>`;
+          ${!isVoiceMode ? `
+            <div class="space-y-2.5 mb-4">
+              ${q.options.map((opt, idx) => {
+                let rowClass = 'bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.09] text-[#E4E4E7]';
+                let iconHtml = `<span class="w-5 h-5 rounded-full border border-white/20 text-[11px] flex items-center justify-center shrink-0 text-[#9A9AA4]">${idx + 1}</span>`;
 
-              if (hasAnswered) {
-                if (idx === q.correctIndex) {
-                  rowClass = 'bg-[#10B981]/20 border-[#10B981]/60 text-[#6EE7B7] font-semibold';
-                  iconHtml = `<span class="w-5 h-5 rounded-full bg-[#10B981] text-[#052E16] text-[11px] font-bold flex items-center justify-center shrink-0">✓</span>`;
-                } else if (idx === session.selectedOption) {
-                  rowClass = 'bg-[#EF4444]/20 border-[#EF4444]/60 text-[#FCA5A5] font-semibold';
-                  iconHtml = `<span class="w-5 h-5 rounded-full bg-[#EF4444] text-white text-[11px] font-bold flex items-center justify-center shrink-0">✕</span>`;
-                } else {
-                  rowClass = 'bg-white/[0.02] border-white/[0.05] text-[#787882] opacity-65';
+                if (hasAnswered) {
+                  if (idx === q.correctIndex) {
+                    rowClass = 'bg-[#10B981]/20 border-[#10B981]/60 text-[#6EE7B7] font-semibold';
+                    iconHtml = `<span class="w-5 h-5 rounded-full bg-[#10B981] text-[#052E16] text-[11px] font-bold flex items-center justify-center shrink-0">✓</span>`;
+                  } else if (idx === session.selectedOption) {
+                    rowClass = 'bg-[#EF4444]/20 border-[#EF4444]/60 text-[#FCA5A5] font-semibold';
+                    iconHtml = `<span class="w-5 h-5 rounded-full bg-[#EF4444] text-white text-[11px] font-bold flex items-center justify-center shrink-0">✕</span>`;
+                  } else {
+                    rowClass = 'bg-white/[0.02] border-white/[0.05] text-[#787882] opacity-65';
+                  }
                 }
-              }
 
-              return `
-                <button onclick="selectQuizOption(${idx})" ${hasAnswered ? 'disabled' : ''}
-                        class="quiz-option-btn w-full text-left p-3.5 rounded-[14px] border text-[13.5px] leading-snug flex items-center gap-3 ${rowClass}">
-                  ${iconHtml}
-                  <span class="flex-1">${escapeHtml(opt)}</span>
-                </button>
-              `;
-            }).join('')}
-          </div>
-
-          ${!isExam && session.showTip && !hasAnswered ? `
-            <div class="mb-4 p-3 rounded-[12px] bg-[#F59E0B]/12 border border-[#F59E0B]/30 text-[12.5px] text-[#FDE68A] leading-relaxed">
-              <strong>Tipp:</strong> ${escapeHtml(q.tip || 'Achte auf die Schlüsselbegriffe aus dem Unterricht.')}
+                return `
+                  <button onclick="selectQuizOption(${idx})" ${hasAnswered ? 'disabled' : ''}
+                          class="quiz-option-btn w-full text-left p-3.5 rounded-[14px] border text-[13.5px] leading-snug flex items-center gap-3 ${rowClass}">
+                    ${iconHtml}
+                    <span class="flex-1">${escapeHtml(opt)}</span>
+                  </button>
+                `;
+              }).join('')}
             </div>
-          ` : ''}
 
-          ${hasAnswered ? `
-            <div class="mb-4 p-3.5 rounded-[13px] border text-[12.5px] leading-relaxed ${isCorrect ? 'bg-[#10B981]/12 border-[#10B981]/30 text-[#A7F3D0]' : 'bg-[#EF4444]/12 border-[#EF4444]/30 text-[#FECACA]'}">
-              <strong>${isCorrect ? 'Richtig (+1 Punkt)!' : 'Leider falsch — die grüne Antwort ist richtig:'}</strong><br/>
-              ${escapeHtml(q.explanation)}
-            </div>
-          ` : ''}
+            ${!isExam && session.showTip && !hasAnswered ? `
+              <div class="mb-4 p-3 rounded-[12px] bg-[#F59E0B]/12 border border-[#F59E0B]/30 text-[12.5px] text-[#FDE68A] leading-relaxed">
+                <strong>Tipp:</strong> ${escapeHtml(q.tip || 'Achte auf die Schlüsselbegriffe aus dem Unterricht.')}
+              </div>
+            ` : ''}
+
+            ${hasAnswered ? `
+              <div class="mb-4 p-3.5 rounded-[13px] border text-[12.5px] leading-relaxed ${isCorrect ? 'bg-[#10B981]/12 border-[#10B981]/30 text-[#A7F3D0]' : 'bg-[#EF4444]/12 border-[#EF4444]/30 text-[#FECACA]'}">
+                <strong>${isCorrect ? 'Richtig (+1 Punkt)!' : 'Leider falsch — die grüne Antwort ist richtig:'}</strong><br/>
+                ${escapeHtml(q.explanation)}
+              </div>
+            ` : ''}
+          ` : `
+            <!-- VOICE ANSWER MODE (Open Question without 4 Options) -->
+            ${!hasAnswered ? `
+              <div class="voice-panel-box p-4 rounded-[16px] bg-white/[0.04] border border-white/[0.09] mb-4 space-y-3.5">
+                <div class="flex items-center justify-between gap-3">
+                  <div class="flex items-center gap-3">
+                    <div class="relative shrink-0">
+                      ${voiceUiState.isListening ? '<span class="voice-mic-ring"></span>' : ''}
+                      <button type="button" onclick="toggleVoiceRecording()"
+                              title="${voiceUiState.isListening ? 'Aufnahme stoppen' : 'Antwort einsprechen'}"
+                              class="relative w-11 h-11 rounded-full flex items-center justify-center transition shadow-lg ${voiceUiState.isListening ? 'bg-[#EF4444] text-white shadow-[#EF4444]/35' : 'bg-[#3B82F6] hover:bg-[#2563EB] text-white shadow-[#3B82F6]/30'}">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2.5C9.92893 2.5 8.25 4.17893 8.25 6.25V11.75C8.25 13.8211 9.92893 15.5 12 15.5C14.0711 15.5 15.75 13.8211 15.75 11.75V6.25C15.75 4.17893 14.0711 2.5 12 2.5Z" />
+                          <path d="M5.75 10.75C6.30228 10.75 6.75 11.1977 6.75 11.75C6.75 14.6495 9.10051 17 12 17C14.8995 17 17.25 14.6495 17.25 11.75C17.25 11.1977 17.6977 10.75 18.25 10.75C18.8023 10.75 19.25 11.1977 19.25 11.75C19.25 15.4126 16.535 18.4422 13 18.9306V20.75H15.5C16.0523 20.75 16.5 21.1977 16.5 21.75C16.5 22.3023 16.0523 22.75 15.5 22.75H8.5C7.94772 22.75 7.5 22.3023 7.5 21.75C7.5 21.1977 7.94772 20.75 8.5 20.75H11V18.9306C7.46501 18.4422 4.75 15.4126 4.75 11.75C4.75 11.1977 5.19772 10.75 5.75 10.75Z" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div>
+                      <div class="text-[13px] font-bold text-[#F4F4F6]">
+                        ${voiceUiState.isListening ? 'Höre zu — sprich deine Lösung...' : 'Freie Sprach-Antwort'}
+                      </div>
+                      <div class="text-[11px] text-[#8E8E93]">
+                        ${voiceUiState.isListening ? 'Klicke auf das Mikrofon zum Stoppen' : 'Klicke aufs Mikrofon & erkläre die Lösung frei'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    ${voiceUiState.isListening ? `
+                      <div class="flex items-center gap-1 px-2 py-1">
+                        <span class="voice-wave-bar" style="--wv-idx: 0;"></span>
+                        <span class="voice-wave-bar" style="--wv-idx: 1;"></span>
+                        <span class="voice-wave-bar" style="--wv-idx: 2;"></span>
+                        <span class="voice-wave-bar" style="--wv-idx: 3;"></span>
+                      </div>
+                    ` : ''}
+                    ${isEnglishModule ? `
+                      <button type="button" onclick="toggleVoiceMicLang()"
+                              title="Spracherkennungs-Sprache wechseln"
+                              class="px-2 py-1 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-[10.5px] font-bold text-[#60A5FA] transition">
+                        ${appState.voiceMicLang === 'en-US' ? 'EN' : 'DE'}
+                      </button>
+                    ` : ''}
+                  </div>
+                </div>
+
+                <div>
+                  <textarea id="voice-transcript-input" rows="3"
+                            oninput="updateVoiceTranscript(this.value)"
+                            placeholder="Dein eingesprochener Text erscheint hier automatisch (oder direkt eintippen)..."
+                            class="w-full bg-[#111114] border border-white/[0.1] rounded-[12px] p-3 text-[13px] text-[#F4F4F6] placeholder-[#686870] leading-relaxed focus:outline-none focus:border-[#3B82F6]">${escapeHtml([voiceUiState.transcript, voiceUiState.interimText].filter(Boolean).join(' '))}</textarea>
+                </div>
+
+                <div class="flex items-center justify-between gap-2">
+                  <button type="button" onclick="voiceUiState.transcript=''; voiceUiState.interimText=''; renderQuizPopup(false);"
+                          class="text-[11.5px] text-[#8E8E93] hover:text-white transition">
+                    Text leeren
+                  </button>
+                  <button id="voice-submit-btn" type="button" onclick="submitVoiceAnswer()"
+                          ${!voiceUiState.transcript.trim() || voiceUiState.isEvaluating ? 'disabled' : ''}
+                          class="px-4 py-2 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white text-[12.5px] font-semibold transition ${!voiceUiState.transcript.trim() || voiceUiState.isEvaluating ? 'opacity-45 cursor-not-allowed' : ''}">
+                    ${voiceUiState.isEvaluating ? 'Wird bewertet...' : 'Antwort prüfen ✓'}
+                  </button>
+                </div>
+              </div>
+
+              ${session.showTip ? `
+                <div class="mb-4 p-3 rounded-[12px] bg-[#F59E0B]/12 border border-[#F59E0B]/30 text-[12.5px] text-[#FDE68A] leading-relaxed">
+                  <strong>Tipp:</strong> ${escapeHtml(q.tip || 'Achte auf die Schlüsselbegriffe aus dem Unterricht.')}
+                </div>
+              ` : ''}
+            ` : `
+              <!-- VOICE EVALUATION RESULT: QUALITY SCALE + WHAT WAS MISSING -->
+              <div class="space-y-3 mb-4 max-h-[340px] overflow-y-auto pr-1">
+                <div class="voice-panel-box p-3 rounded-[12px] bg-white/[0.04] border border-white/[0.08]">
+                  <div class="text-[10.5px] font-semibold uppercase tracking-wider text-[#8E8E93] mb-1">Deine gesprochene Antwort</div>
+                  <p class="text-[12.5px] text-[#E4E4E7] italic leading-relaxed">„${escapeHtml(voiceUiState.transcript)}“</p>
+                </div>
+
+                <!-- 0–100% / 1–10 Scale Card -->
+                <div class="voice-panel-box p-3.5 rounded-[14px] bg-white/[0.04] border border-white/[0.1]">
+                  <div class="flex items-center justify-between gap-2 mb-2">
+                    <div>
+                      <div class="text-[11px] font-semibold text-[#8E8E93]">Bewertungs-Skala</div>
+                      <div class="text-[14px] font-bold ${scaleTextClass}">${escapeHtml(evalData?.verdict || '')}</div>
+                    </div>
+                    <div class="text-right">
+                      <span class="text-[20px] font-extrabold ${scaleTextClass}">${scoreVal}%</span>
+                      <span class="block text-[10.5px] font-semibold text-[#8E8E93]">${(scoreVal / 10).toFixed(1)} / 10 Pkt.</span>
+                    </div>
+                  </div>
+
+                  <div class="w-full h-2.5 bg-black/45 rounded-full overflow-hidden mb-1.5">
+                    <div class="voice-scale-bar h-full rounded-full" style="width: ${scoreVal}%; background-color: ${scaleColor};"></div>
+                  </div>
+                  <div class="flex justify-between text-[9.5px] font-mono text-[#7E7E87]">
+                    <span>0%</span>
+                    <span>25%</span>
+                    <span>50%</span>
+                    <span>75%</span>
+                    <span>100%</span>
+                  </div>
+
+                  ${evalData?.feedback ? `
+                    <p class="text-[12px] text-[#D4D4D8] leading-relaxed mt-2.5 pt-2 border-t border-white/[0.07]">
+                      ${escapeHtml(evalData.feedback)}
+                    </p>
+                  ` : ''}
+                </div>
+
+                <!-- What was already right -->
+                ${evalData?.strengths && evalData.strengths.length > 0 ? `
+                  <div class="p-3 rounded-[12px] bg-[#10B981]/12 border border-[#10B981]/30">
+                    <div class="text-[11px] font-bold text-[#6EE7B7] mb-1.5">✓ Was schon richtig war:</div>
+                    <div class="flex flex-wrap gap-1.5">
+                      ${evalData.strengths.map(s => `
+                        <span class="px-2 py-0.5 rounded-full bg-[#10B981]/20 text-[11px] font-medium text-[#A7F3D0]">${escapeHtml(s)}</span>
+                      `).join('')}
+                    </div>
+                  </div>
+                ` : ''}
+
+                <!-- What was still missing -->
+                ${evalData?.missing && evalData.missing.length > 0 ? `
+                  <div class="p-3 rounded-[12px] bg-[#F59E0B]/12 border border-[#F59E0B]/30">
+                    <div class="text-[11px] font-bold text-[#FDE68A] mb-1.5">Was noch gefehlt hat:</div>
+                    <ul class="space-y-1 text-[12px] text-[#FDE68A] list-disc pl-4">
+                      ${evalData.missing.map(m => `<li>${escapeHtml(m)}</li>`).join('')}
+                    </ul>
+                  </div>
+                ` : ''}
+
+                <!-- Official Model Answer -->
+                <div class="p-3 rounded-[12px] border text-[12px] leading-relaxed ${isCorrect ? 'bg-[#10B981]/10 border-[#10B981]/25 text-[#A7F3D0]' : 'bg-[#EF4444]/10 border-[#EF4444]/25 text-[#FECACA]'}">
+                  <strong>Musterlösung:</strong> ${escapeHtml(q.options[q.correctIndex])}<br/>
+                  <span class="opacity-90">${escapeHtml(q.explanation)}</span>
+                </div>
+              </div>
+            `}
+          `}
 
           <div class="flex items-center justify-between pt-2 border-t border-white/[0.08]">
             ${isExam ? `
@@ -7502,9 +8096,10 @@
         if (!session.finished) {
           const q = session.questions[session.currentIndex];
           const isExam = session.mode === 'exam';
+          const isVoice = !isExam && appState.quizAnswerMode === 'voice';
           const hasAnswered = !isExam && session.selectedOption !== null;
 
-          if (!hasAnswered && ['1', '2', '3', '4'].includes(e.key)) {
+          if (!hasAnswered && !isVoice && ['1', '2', '3', '4'].includes(e.key)) {
             const idx = parseInt(e.key, 10) - 1;
             if (q && q.options[idx] !== undefined) {
               e.preventDefault();
