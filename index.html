@@ -36,6 +36,16 @@
       transition: background-color 0.28s ease, color 0.28s ease;
     }
 
+    input, textarea, select {
+      -webkit-user-select: text !important;
+      user-select: text !important;
+      touch-action: manipulation;
+    }
+
+    button {
+      touch-action: manipulation;
+    }
+
     /* ===================================================================== */
     /* APP DESIGN THEMES (Obsidian, Midnight, Emerald, Sunset, Daylight)     */
     /* ===================================================================== */
@@ -887,27 +897,27 @@
     #quiz-popup-overlay {
       -webkit-backdrop-filter: blur(7px);
       backdrop-filter: blur(7px);
-      transform: translateZ(0);
-      will-change: opacity;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .quiz-glass-card {
       position: relative;
       border-radius: 26px;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      background-color: rgba(19, 21, 20, 0.88);
+      background-color: rgba(19, 21, 20, 0.92);
       background-image:
         radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
         var(--quiz-ambient-glow, radial-gradient(95% 65% at 50% 0%, rgba(16, 185, 129, 0.22) 0%, rgba(19, 21, 20, 0) 72%));
       background-size: 16px 16px, 100% 100%;
       box-shadow: 0 24px 52px -14px rgba(0, 0, 0, 0.85);
-      contain: layout paint;
-      transform: translateZ(0);
       transition: border-color 0.2s ease;
     }
 
     .quiz-option-btn {
+      cursor: pointer;
       touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
       transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease, transform 0.1s ease;
     }
 
@@ -1587,8 +1597,8 @@
   </div>
 
   <!-- Interactive Quiz & Exam Pop-up -->
-  <div id="quiz-popup-overlay" onclick="handleQuizBackdropClick()" class="fixed inset-0 z-50 bg-black/68 backdrop-blur-[7px] hidden items-center justify-center p-4">
-    <div id="quiz-popup-box" onclick="event.stopPropagation()" class="w-full max-w-[440px]"></div>
+  <div id="quiz-popup-overlay" onclick="handleQuizBackdropClick()" class="fixed inset-0 z-50 bg-black/68 backdrop-blur-[7px] hidden items-start sm:items-center justify-center p-3 sm:p-4">
+    <div id="quiz-popup-box" onclick="event.stopPropagation()" class="w-full max-w-[440px] my-auto"></div>
   </div>
 
   <!-- Module Study Material Drawer -->
@@ -5506,17 +5516,26 @@
     }
 
     function stopActiveSpeechRecognition() {
+      if (voiceUiState.interimText) {
+        const prev = voiceUiState.transcript.trim();
+        voiceUiState.transcript = prev ? `${prev} ${voiceUiState.interimText.trim()}` : voiceUiState.interimText.trim();
+        voiceUiState.interimText = '';
+      }
       if (activeSpeechRecognition) {
-        try {
-          activeSpeechRecognition.onresult = null;
-          activeSpeechRecognition.onerror = null;
-          activeSpeechRecognition.onend = null;
-          activeSpeechRecognition.stop();
-        } catch (e) {}
+        const rec = activeSpeechRecognition;
         activeSpeechRecognition = null;
+        try {
+          rec.onstart = null;
+          rec.onresult = null;
+          rec.onerror = null;
+          rec.onend = null;
+          rec.stop();
+        } catch (e) {}
+        try {
+          rec.abort();
+        } catch (e) {}
       }
       voiceUiState.isListening = false;
-      voiceUiState.interimText = '';
     }
 
     function toggleQuizAnswerMode(mode) {
@@ -5549,7 +5568,7 @@
       const session = appState.activeQuizSession;
       if (!session || session.selectedOption !== null || voiceUiState.isEvaluating) return;
 
-      if (voiceUiState.isListening) {
+      if (voiceUiState.isListening || activeSpeechRecognition) {
         stopActiveSpeechRecognition();
         renderQuizPopup(false);
         return;
@@ -5563,9 +5582,10 @@
       }
 
       try {
+        const isMobileDevice = /iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent || '');
         const recognition = new SpeechRec();
         recognition.lang = appState.voiceMicLang || 'de-DE';
-        recognition.continuous = true;
+        recognition.continuous = !isMobileDevice;
         recognition.interimResults = true;
         recognition.maxAlternatives = 1;
 
@@ -5600,12 +5620,16 @@
         };
 
         recognition.onerror = (event) => {
+          if (voiceUiState.interimText) {
+            const prev = voiceUiState.transcript.trim();
+            voiceUiState.transcript = prev ? `${prev} ${voiceUiState.interimText}` : voiceUiState.interimText;
+            voiceUiState.interimText = '';
+          }
           voiceUiState.isListening = false;
-          voiceUiState.interimText = '';
           activeSpeechRecognition = null;
           if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
             showToast('Mikrofon-Zugriff blockiert — du kannst deine Antwort auch direkt eintippen.');
-          } else if (event.error !== 'aborted') {
+          } else if (event.error !== 'aborted' && event.error !== 'no-speech') {
             showToast('Sprachaufnahme beendet.');
           }
           renderQuizPopup(false);
@@ -5623,6 +5647,8 @@
         };
 
         activeSpeechRecognition = recognition;
+        voiceUiState.isListening = true;
+        renderQuizPopup(false);
         recognition.start();
       } catch (err) {
         voiceUiState.isListening = false;
@@ -5634,7 +5660,8 @@
 
     function normalizeGermanSpokenText(raw) {
       let text = String(raw || '').toLowerCase()
-        .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
+        .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+        .replace(/[-–—/]+/g, ' ');
 
       const numWords = [
         ['dreitausend', '3000'], ['zweitausendvierhundert', '2400'], ['viertausend', '4000'],
@@ -5649,7 +5676,7 @@
       numWords.forEach(([word, digit]) => {
         text = text.replace(new RegExp(`\\b${word}\\b`, 'g'), digit);
       });
-      return text.replace(/[^\w§%€\s/-]/g, ' ').replace(/\s+/g, ' ').trim();
+      return text.replace(/[^\w§%€\s]/g, ' ').replace(/\s+/g, ' ').trim();
     }
 
     function extractKeyConcepts(text) {
@@ -5671,17 +5698,19 @@
       const expectedAnswer = q.options[q.correctIndex] || '';
       const explanation = q.explanation || '';
       const userNorm = normalizeGermanSpokenText(spokenText);
-      const userTokens = new Set(extractKeyConcepts(spokenText));
-
       const expectedNorm = normalizeGermanSpokenText(expectedAnswer);
-      const criticalMatches = expectedNorm.match(/(?:§\s*\d+[a-z]?|art\.?\s*\d+[a-z]?|\d+(?:[.,]\d+)?\s*(?:%|€|jahre|monate|stunden|tage)?)/g) || [];
+      const userCompact = userNorm.replace(/\s+/g, '');
+      const expectedCompact = expectedNorm.replace(/\s+/g, '');
+
+      const userTokens = new Set(extractKeyConcepts(spokenText));
       const coreKeywords = extractKeyConcepts(expectedAnswer);
       const secondaryKeywords = extractKeyConcepts(explanation).filter(k => !coreKeywords.includes(k));
+      const criticalMatches = expectedNorm.match(/(?:§\s*\d+[a-z]?|art\.?\s*\d+[a-z]?|\d+(?:[.,]\d+)?\s*(?:%|€|jahre|monate|stunden|tage)?)/g) || [];
 
       let coreHits = 0;
       coreKeywords.forEach(kw => {
         const stem = kw.length > 5 ? kw.slice(0, kw.length - 2) : kw;
-        if (userTokens.has(kw) || userNorm.includes(stem)) {
+        if (userTokens.has(kw) || userNorm.includes(stem) || userCompact.includes(stem)) {
           coreHits += 1;
         }
       });
@@ -5689,7 +5718,7 @@
       let secondaryHits = 0;
       secondaryKeywords.slice(0, 6).forEach(kw => {
         const stem = kw.length > 5 ? kw.slice(0, kw.length - 2) : kw;
-        if (userTokens.has(kw) || userNorm.includes(stem)) {
+        if (userTokens.has(kw) || userNorm.includes(stem) || userCompact.includes(stem)) {
           secondaryHits += 1;
         }
       });
@@ -5697,15 +5726,21 @@
       let criticalPenalty = 0;
       criticalMatches.forEach(crit => {
         const cleanCrit = crit.replace(/\s+/g, '');
-        const cleanUser = userNorm.replace(/\s+/g, '');
-        if (!cleanUser.includes(cleanCrit)) {
+        if (!userCompact.includes(cleanCrit)) {
           criticalPenalty += 18;
         }
       });
 
       const coreRatio = coreKeywords.length > 0 ? (coreHits / coreKeywords.length) : 0;
       const secRatio = secondaryKeywords.length > 0 ? (secondaryHits / Math.min(6, secondaryKeywords.length)) : 0;
-      let rawScore = Math.round(coreRatio * 82 + secRatio * 18 - criticalPenalty);
+      let rawScore = Math.round(coreRatio * 84 + secRatio * 16 - criticalPenalty);
+
+      // Direct exact or full-phrase containment match => 100%
+      if (expectedCompact.length >= 3 && (userCompact === expectedCompact || userCompact.includes(expectedCompact))) {
+        rawScore = 100;
+      } else if (coreKeywords.length > 0 && coreHits === coreKeywords.length && criticalPenalty === 0) {
+        rawScore = Math.max(rawScore, 95);
+      }
 
       const expectedHasNegation = /\b(nicht|kein|keine|niemals|verboten|unwirksam|nichtig|ausgeschlossen)\b/.test(expectedNorm);
       const userHasNegation = /\b(nicht|kein|keine|niemals|verboten|unwirksam|nichtig|ausgeschlossen)\b/.test(userNorm);
@@ -5716,7 +5751,7 @@
       const score = Math.max(0, Math.min(100, rawScore));
       const isCorrect = score >= 55;
 
-      const readableWords = expectedAnswer.split(/[\s,;()•–—-]+/).filter(w => w.length >= 3);
+      const readableWords = expectedAnswer.split(/[\s,;()•–—-]+/).filter(w => w.length >= 2);
       const readableMatched = [];
       const readableMissing = [];
 
@@ -5724,7 +5759,7 @@
         const normW = normalizeGermanSpokenText(origWord);
         if (!normW || normW.length < 2) return;
         const stem = normW.length > 5 ? normW.slice(0, normW.length - 2) : normW;
-        if (userNorm.includes(stem)) {
+        if (userNorm.includes(stem) || userCompact.includes(stem)) {
           if (!readableMatched.includes(origWord)) readableMatched.push(origWord);
         } else if (coreKeywords.some(ck => normW.includes(ck) || ck.includes(normW))) {
           if (!readableMissing.includes(origWord)) readableMissing.push(origWord);
@@ -5742,7 +5777,7 @@
               : 'Noch unvollständig';
 
       const feedback = score >= 85
-        ? 'Starke mündliche Erklärung! Du hast alle wesentlichen Fachbegriffe und Zusammenhänge sicher genannt.'
+        ? 'Starke Antwort! Du hast alle wesentlichen Fachbegriffe und Zusammenhänge sicher getroffen.'
         : score >= 55
           ? 'Der Kern deiner Antwort stimmt! Schau dir unten noch die fehlenden Details für volle 100 % an.'
           : 'Ein erster Ansatz ist erkennbar, aber zentrale Schlüsselbegriffe oder Zahlen aus der Musterlösung haben noch gefehlt.';
@@ -5759,6 +5794,7 @@
 
     async function callGeminiVoiceEvaluator(q, spokenText) {
       const apiKey = "";
+      if (!apiKey) return null;
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
       const systemInstruction = "Du bist ein präziser, motivierender IHK-Prüfer und Lern-Coach. Bewerte die mündlich eingesprochene Antwort eines Auszubildenden anhand der Frage und Musterlösung. Vergib eine faire Skala von 0 bis 100 Prozent (ab 55% gilt die Antwort als bestanden/richtig). Liste konkret auf, was schon richtig genannt wurde und was genau noch gefehlt hat.";
@@ -6482,25 +6518,25 @@
           </div>
 
           ${!isExam ? `
-            <!-- Answer Mode Switcher: 4 Optionen vs. Sprach-Antwort -->
+            <!-- Answer Mode Switcher: Auswahl vs. Text -->
             <div class="flex items-center justify-between gap-2 mb-4 p-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
               <button type="button" onclick="toggleQuizAnswerMode('mc')"
-                      class="flex-1 py-1.5 px-3 rounded-full text-[11.5px] font-semibold transition flex items-center justify-center gap-1.5 ${!isVoiceMode ? 'bg-[#3B82F6] text-white shadow-sm' : 'text-[#8E8E93] hover:text-white'}">
+                      class="flex-1 py-2 px-3 rounded-full text-[12px] font-semibold transition flex items-center justify-center gap-1.5 ${!isVoiceMode ? 'bg-[#3B82F6] text-white shadow-sm' : 'text-[#8E8E93] hover:text-white'}">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                   <rect x="3" y="4" width="7" height="7" rx="2" />
                   <rect x="14" y="4" width="7" height="7" rx="2" />
                   <rect x="3" y="13" width="7" height="7" rx="2" />
                   <rect x="14" y="13" width="7" height="7" rx="2" />
                 </svg>
-                <span>4 Optionen</span>
+                <span>Auswahl</span>
               </button>
               <button type="button" onclick="toggleQuizAnswerMode('voice')"
-                      class="flex-1 py-1.5 px-3 rounded-full text-[11.5px] font-semibold transition flex items-center justify-center gap-1.5 ${isVoiceMode ? 'bg-[#3B82F6] text-white shadow-sm' : 'text-[#8E8E93] hover:text-white'}">
+                      class="flex-1 py-2 px-3 rounded-full text-[12px] font-semibold transition flex items-center justify-center gap-1.5 ${isVoiceMode ? 'bg-[#3B82F6] text-white shadow-sm' : 'text-[#8E8E93] hover:text-white'}">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2.5C9.92893 2.5 8.25 4.17893 8.25 6.25V11.75C8.25 13.8211 9.92893 15.5 12 15.5C14.0711 15.5 15.75 13.8211 15.75 11.75V6.25C15.75 4.17893 14.0711 2.5 12 2.5Z" />
                   <path d="M5.75 10.75C6.30228 10.75 6.75 11.1977 6.75 11.75C6.75 14.6495 9.10051 17 12 17C14.8995 17 17.25 14.6495 17.25 11.75C17.25 11.1977 17.6977 10.75 18.25 10.75C18.8023 10.75 19.25 11.1977 19.25 11.75C19.25 15.4126 16.535 18.4422 13 18.9306V20.75H15.5C16.0523 20.75 16.5 21.1977 16.5 21.75C16.5 22.3023 16.0523 22.75 15.5 22.75H8.5C7.94772 22.75 7.5 22.3023 7.5 21.75C7.5 21.1977 7.94772 20.75 8.5 20.75H11V18.9306C7.46501 18.4422 4.75 15.4126 4.75 11.75C4.75 11.1977 5.19772 10.75 5.75 10.75Z" />
                 </svg>
-                <span>Sprach-Antwort</span>
+                <span>Text</span>
               </button>
             </div>
           ` : ''}
@@ -6574,10 +6610,10 @@
                     </div>
                     <div>
                       <div class="text-[13px] font-bold text-[#F4F4F6]">
-                        ${voiceUiState.isListening ? 'Höre zu — sprich deine Lösung...' : 'Freie Sprach-Antwort'}
+                        ${voiceUiState.isListening ? 'Höre zu — sprich deine Lösung...' : 'Freie Text- & Sprach-Antwort'}
                       </div>
                       <div class="text-[11px] text-[#8E8E93]">
-                        ${voiceUiState.isListening ? 'Klicke auf das Mikrofon zum Stoppen' : 'Klicke aufs Mikrofon & erkläre die Lösung frei'}
+                        ${voiceUiState.isListening ? 'Klicke auf das Mikrofon zum Stoppen' : 'Tippe deine Antwort ein oder nutze das Mikrofon'}
                       </div>
                     </div>
                   </div>
@@ -6630,7 +6666,7 @@
               <!-- VOICE EVALUATION RESULT: QUALITY SCALE + WHAT WAS MISSING -->
               <div class="space-y-3 mb-4 max-h-[340px] overflow-y-auto pr-1">
                 <div class="voice-panel-box p-3 rounded-[12px] bg-white/[0.04] border border-white/[0.08]">
-                  <div class="text-[10.5px] font-semibold uppercase tracking-wider text-[#8E8E93] mb-1">Deine gesprochene Antwort</div>
+                  <div class="text-[10.5px] font-semibold uppercase tracking-wider text-[#8E8E93] mb-1">Deine Antwort</div>
                   <p class="text-[12.5px] text-[#E4E4E7] italic leading-relaxed">„${escapeHtml(voiceUiState.transcript)}“</p>
                 </div>
 
