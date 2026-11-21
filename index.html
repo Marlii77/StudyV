@@ -901,6 +901,11 @@
       -webkit-overflow-scrolling: touch;
     }
 
+    #quiz-popup-box {
+      transition: max-width 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: max-width;
+    }
+
     .quiz-glass-card {
       position: relative;
       border-radius: 26px;
@@ -912,6 +917,49 @@
       background-size: 16px 16px, 100% 100%;
       box-shadow: 0 24px 52px -14px rgba(0, 0, 0, 0.85);
       transition: border-color 0.2s ease;
+    }
+
+    .quiz-mode-pill {
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      left: 4px;
+      width: calc(50% - 4px);
+      border-radius: 9999px;
+      background-color: #3B82F6;
+      box-shadow: 0 2px 10px rgba(59, 130, 246, 0.38);
+      transition: transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+    }
+
+    @keyframes quizModeSlideRight {
+      from {
+        opacity: 0;
+        transform: translateX(14px) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    @keyframes quizModeSlideLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-14px) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    .quiz-mode-enter-right {
+      animation: quizModeSlideRight 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .quiz-mode-enter-left {
+      animation: quizModeSlideLeft 0.32s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
     .quiz-option-btn {
@@ -5497,6 +5545,8 @@
     // =========================================================================
 
     let activeSpeechRecognition = null;
+    let quizModeTransitionDir = null;
+    let quizMorphCleanupTimer = null;
 
     const voiceUiState = {
       isListening: false,
@@ -5541,10 +5591,55 @@
     function toggleQuizAnswerMode(mode) {
       const targetMode = mode === 'voice' ? 'voice' : 'mc';
       if (appState.quizAnswerMode === targetMode) return;
+
+      const box = document.getElementById('quiz-popup-box');
+      const oldCard = box ? box.querySelector('.quiz-glass-card') : null;
+      const oldHeight = oldCard ? oldCard.getBoundingClientRect().height : 0;
+
+      if (quizMorphCleanupTimer) {
+        clearTimeout(quizMorphCleanupTimer);
+        quizMorphCleanupTimer = null;
+      }
+
       stopActiveSpeechRecognition();
+      quizModeTransitionDir = targetMode === 'voice' ? 'to-voice' : 'to-mc';
       appState.quizAnswerMode = targetMode;
       savePersistedState();
       renderQuizPopup(false);
+      quizModeTransitionDir = null;
+
+      // Animate the sliding switcher pill cleanly between Auswahl and Text
+      const pill = box ? box.querySelector('.quiz-mode-pill') : null;
+      if (pill) {
+        const startPos = targetMode === 'voice' ? '0%' : '100%';
+        const endPos = targetMode === 'voice' ? '100%' : '0%';
+        pill.style.transition = 'none';
+        pill.style.transform = `translateX(${startPos})`;
+        void pill.offsetWidth;
+        pill.style.transition = '';
+        pill.style.transform = `translateX(${endPos})`;
+      }
+
+      // Smooth FLIP height morphing when card height adapts between Auswahl and Text
+      const newCard = box ? box.querySelector('.quiz-glass-card') : null;
+      if (newCard && oldHeight > 0) {
+        const targetHeight = newCard.offsetHeight;
+        if (Math.abs(targetHeight - oldHeight) > 1) {
+          newCard.style.height = `${oldHeight}px`;
+          newCard.style.overflow = 'hidden';
+          void newCard.offsetHeight;
+          newCard.style.transition = 'height 0.36s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease';
+          newCard.style.height = `${targetHeight}px`;
+          quizMorphCleanupTimer = setTimeout(() => {
+            if (newCard) {
+              newCard.style.height = '';
+              newCard.style.overflow = '';
+              newCard.style.transition = '';
+            }
+            quizMorphCleanupTimer = null;
+          }, 375);
+        }
+      }
     }
 
     function toggleVoiceMicLang() {
@@ -5994,7 +6089,7 @@
 
       document.body.classList.add('quiz-open');
       const box = document.getElementById('quiz-popup-box');
-      if (box) box.className = appState.quizAnswerMode === 'voice' ? 'w-full max-w-[500px]' : 'w-full max-w-[440px]';
+      if (box) box.className = appState.quizAnswerMode === 'voice' ? 'w-full max-w-[500px] my-auto' : 'w-full max-w-[440px] my-auto';
       const overlay = document.getElementById('quiz-popup-overlay');
       if (overlay) {
         overlay.classList.remove('hidden');
@@ -6052,7 +6147,7 @@
 
       document.body.classList.add('quiz-open');
       const box = document.getElementById('quiz-popup-box');
-      if (box) box.className = appState.quizAnswerMode === 'voice' ? 'w-full max-w-[500px]' : 'w-full max-w-[440px]';
+      if (box) box.className = appState.quizAnswerMode === 'voice' ? 'w-full max-w-[500px] my-auto' : 'w-full max-w-[440px] my-auto';
       const overlay = document.getElementById('quiz-popup-overlay');
       if (overlay) {
         overlay.classList.remove('hidden');
@@ -6221,6 +6316,10 @@
 
     function closeQuizPopup() {
       resetVoiceUiState();
+      if (quizMorphCleanupTimer) {
+        clearTimeout(quizMorphCleanupTimer);
+        quizMorphCleanupTimer = null;
+      }
       if (appState.examTimerId) {
         clearInterval(appState.examTimerId);
         appState.examTimerId = null;
@@ -6228,7 +6327,7 @@
       appState.activeQuizSession = null;
       document.body.classList.remove('quiz-open');
       const box = document.getElementById('quiz-popup-box');
-      if (box) box.className = 'w-full max-w-[440px]';
+      if (box) box.className = 'w-full max-w-[440px] my-auto';
       const overlay = document.getElementById('quiz-popup-overlay');
       if (overlay) {
         overlay.classList.add('hidden');
@@ -6375,9 +6474,14 @@
       const entryAnim = isInitialOpen ? 'animate-scale-in' : '';
       const isExam = session.mode === 'exam';
       const isVoiceMode = !isExam && appState.quizAnswerMode === 'voice';
+      const modeEnterClass = quizModeTransitionDir === 'to-voice'
+        ? 'quiz-mode-enter-right'
+        : quizModeTransitionDir === 'to-mc'
+          ? 'quiz-mode-enter-left'
+          : '';
 
       if (!isExam) {
-        box.className = isVoiceMode ? 'w-full max-w-[500px]' : 'w-full max-w-[440px]';
+        box.className = isVoiceMode ? 'w-full max-w-[500px] my-auto' : 'w-full max-w-[440px] my-auto';
       }
 
       if (session.finished) {
@@ -6519,9 +6623,10 @@
 
           ${!isExam ? `
             <!-- Answer Mode Switcher: Auswahl vs. Text -->
-            <div class="flex items-center justify-between gap-2 mb-4 p-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
+            <div class="relative flex items-center justify-between gap-2 mb-4 p-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
+              <span class="quiz-mode-pill" style="transform: translateX(${isVoiceMode ? '100%' : '0%'});"></span>
               <button type="button" onclick="toggleQuizAnswerMode('mc')"
-                      class="flex-1 py-2 px-3 rounded-full text-[12px] font-semibold transition flex items-center justify-center gap-1.5 ${!isVoiceMode ? 'bg-[#3B82F6] text-white shadow-sm' : 'text-[#8E8E93] hover:text-white'}">
+                      class="relative z-10 flex-1 py-2 px-3 rounded-full text-[12px] font-semibold transition-colors duration-200 flex items-center justify-center gap-1.5 ${!isVoiceMode ? 'text-white' : 'text-[#8E8E93] hover:text-white'}">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                   <rect x="3" y="4" width="7" height="7" rx="2" />
                   <rect x="14" y="4" width="7" height="7" rx="2" />
@@ -6531,7 +6636,7 @@
                 <span>Auswahl</span>
               </button>
               <button type="button" onclick="toggleQuizAnswerMode('voice')"
-                      class="flex-1 py-2 px-3 rounded-full text-[12px] font-semibold transition flex items-center justify-center gap-1.5 ${isVoiceMode ? 'bg-[#3B82F6] text-white shadow-sm' : 'text-[#8E8E93] hover:text-white'}">
+                      class="relative z-10 flex-1 py-2 px-3 rounded-full text-[12px] font-semibold transition-colors duration-200 flex items-center justify-center gap-1.5 ${isVoiceMode ? 'text-white' : 'text-[#8E8E93] hover:text-white'}">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2.5C9.92893 2.5 8.25 4.17893 8.25 6.25V11.75C8.25 13.8211 9.92893 15.5 12 15.5C14.0711 15.5 15.75 13.8211 15.75 11.75V6.25C15.75 4.17893 14.0711 2.5 12 2.5Z" />
                   <path d="M5.75 10.75C6.30228 10.75 6.75 11.1977 6.75 11.75C6.75 14.6495 9.10051 17 12 17C14.8995 17 17.25 14.6495 17.25 11.75C17.25 11.1977 17.6977 10.75 18.25 10.75C18.8023 10.75 19.25 11.1977 19.25 11.75C19.25 15.4126 16.535 18.4422 13 18.9306V20.75H15.5C16.0523 20.75 16.5 21.1977 16.5 21.75C16.5 22.3023 16.0523 22.75 15.5 22.75H8.5C7.94772 22.75 7.5 22.3023 7.5 21.75C7.5 21.1977 7.94772 20.75 8.5 20.75H11V18.9306C7.46501 18.4422 4.75 15.4126 4.75 11.75C4.75 11.1977 5.19772 10.75 5.75 10.75Z" />
@@ -6551,6 +6656,7 @@
             ${escapeHtml(q.question)}
           </h3>
 
+          <div class="quiz-mode-body ${modeEnterClass}">
           ${!isVoiceMode ? `
             <div class="space-y-2.5 mb-4">
               ${q.options.map((opt, idx) => {
@@ -6731,6 +6837,7 @@
               </div>
             `}
           `}
+          </div>
 
           <div class="flex items-center justify-between pt-2 border-t border-white/[0.08]">
             ${isExam ? `
